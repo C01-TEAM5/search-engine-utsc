@@ -1,6 +1,6 @@
 ## CSC C01 Process
 
-<img src="./CSCC01_ProjectP1_Team5_GroupPicture.jpg">
+<img src="./extra/CSCC01_ProjectP1_Team5_GroupPicture.jpg">
 
 Our team met twice in person to complete the first phase of the project. 
 The first meeting was a brief planning meeting where we discussed our 
