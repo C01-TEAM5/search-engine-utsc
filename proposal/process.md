@@ -1,6 +1,6 @@
 ## CSC C01 Process
 
-<img src="./extra/CSCC01_ProjectP1_Team5_GroupPicture.jpg">
+<img src="/extra/CSCC01_ProjectP1_Team5_GroupPicture.jpg">
 
 Our team met twice in person to complete the first phase of the project. 
 The first meeting was a brief planning meeting where we discussed our 
@@ -18,7 +18,7 @@ basis.
 Our workflow was organized using Google Docs and Slack. Slack was used 
 as a primary communication channel for offline discussions. Google Docs 
 was used to collaboratively write and view written notes and progress 
-for phase 1 files. For the user interface, we used JustInMindâ€™s 
+for phase 1 files. For the user interface, we used JustInMind’s 
 prototyper, a program available on the BV lab machines.
 
 Team decisions were made on a majority vote basis (requiring 3 of 4 
