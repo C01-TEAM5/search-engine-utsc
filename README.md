@@ -28,4 +28,4 @@ repo
         |   prototypeV1.vp  // prototype project file for JustInMind
 ```
 
-All user stories are managed within JIRA and <code>repo/app/docs/crc_cards.pdf</code> contains our initial design for the application.
+All user stories are managed within JIRA and `repo/app/docs/crc_cards.pdf` contains our initial design for the application.
