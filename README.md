@@ -1,6 +1,6 @@
-## CSCC01 Project Summary
+﻿## CSCC01 Project Summary
 
-**Objective:** Design and develop a search engine for instructors (including teaching assistants) and students U of T. Students and Instructors can upload and search for documents. The students and instructors have the option to create an account and the uploaded files will be indexed separately to allow for file filtering. Any visitor of the application can use the query system to search through the documents.
+**Objective:** Design and develop a search engine for instructors (including teaching assistants) and students at UTSC. Students and instructors can upload and search for documents. The students and instructors have the option to create an account and the uploaded files will be indexed separately to allow for file filtering. Any visitor of the application can use the query system to search through the documents.
 
 ## Directory structure
 
