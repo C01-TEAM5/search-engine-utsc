@@ -28,4 +28,6 @@ repo
         |   prototypeV1.vp  // prototype project file for JustInMind
 ```
 
-All user stories are managed within JIRA and `repo/app/docs/crc_cards.pdf` contains our initial design for the application.
+All user stories are managed within [JIRA](https://cmsweb.utsc.utoronto.ca/jira) and `repo/app/docs/crc_cards.pdf` contains our initial design for the application.
+
+**1 story point = 2 hrs/day**
