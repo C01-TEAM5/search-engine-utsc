@@ -9,7 +9,7 @@ repo
 |   .gitignore
 |   README.md
 |
-└───app/
+└───searchEngineWebApp
 |   |   <source code (maven)>
 |   |
 |   └───docs/
