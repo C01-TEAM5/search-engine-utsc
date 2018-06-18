@@ -16,7 +16,8 @@ public class IndexHandler{
 	
 	private static final String uploadinfo = null;   // hard-code the file info need to index for now
 	
-	/* Construct a new IndexHandler.
+	/**
+	 * Construct a new IndexHandler.
 	 * This class represents the indexer for the search engine.
 	 * Index is stored in RAM.
 	 */
@@ -24,7 +25,8 @@ public class IndexHandler{
 		
 	}
 	
-	/* Takes a DocFile as a parameter and adds the contents of the DocFile
+	/** 
+	 * Takes a DocFile as a parameter and adds the contents of the DocFile
 	 * to the index.
 	 * 
 	 * File types that can be passed in include:
@@ -41,7 +43,8 @@ public class IndexHandler{
 
 	}
 	
-	/* Update the indexing of a file that is currently indexed.
+	/**
+	 * Update the indexing of a file that is currently indexed.
 	 * This method is called when a document is changed and needs to
 	 * be re-indexed.
 	 * 
@@ -51,7 +54,8 @@ public class IndexHandler{
 		//TODO
 	}
 	
-	/* Remove the specified document from the index.
+	/** 
+	 * Remove the specified document from the index.
 	 * If the document has not been indexed, nothing happens.
 	 * 
 	 * @param DocFile the object of the file to be removed from the index
@@ -59,4 +63,5 @@ public class IndexHandler{
 	public void removeDoc(DocFile deletefile) {
 		
 	}
+
 }
