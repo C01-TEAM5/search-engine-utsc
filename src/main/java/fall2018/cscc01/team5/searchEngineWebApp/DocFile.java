@@ -6,6 +6,7 @@ public class DocFile {
 	private boolean isPublic; //Whether the document can be accessed publicly
 	private String courseCode; //Optional course code association
 	private String owner; //Uploader of the file
+	private int fileID; //ID number of the file for updating/deletion
 	
 	/** 
 	 * A DocFile is an object representing a file in the system.
@@ -14,13 +15,13 @@ public class DocFile {
 	 * be connected to certain UTSC Courses.
 	 * 
 	 */
-	public DocFile(String filename, String owner, boolean isPublic) {
+	public DocFile(String filename, String owner, int fileID, boolean isPublic) {
 		
 		this.filename = filename;
 		this.isPublic = isPublic;
 		this.courseCode = null;
 		this.owner = owner;
-		
+		this.fileID = fileID;
 	}
 
 }
