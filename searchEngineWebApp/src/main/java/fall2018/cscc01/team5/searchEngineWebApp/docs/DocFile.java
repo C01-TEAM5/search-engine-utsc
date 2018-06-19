@@ -23,5 +23,26 @@ public class DocFile {
 		this.owner = owner;
 		this.fileID = fileID;
 	}
+	
+	/**
+	 * Returns a string representation of the file type.
+	 * The string representation is all characters after the final '.' in the path.
+	 * If there is no '.' in the filename, an empty string is returned.
+	 * 
+	 * @return String filetype of the DocFile
+	 */
+	public String getFileType() {
+		
+		int dotIndex = filename.lastIndexOf('.')+1;
+		String fileType = "";
+		
+		//if there is a . in the filename, get everything after it
+		if (dotIndex > 0) {
+			fileType = filename.substring(dotIndex);
+			
+		}
+		
+		return fileType;
+	}
 
 }
