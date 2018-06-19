@@ -1,11 +1,7 @@
-package fall2018.cscc01.team5.searchEngineWebApp;
+package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
-import java.io.IOException;
-
+import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
