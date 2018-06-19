@@ -1,6 +1,9 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+
+import java.util.Arrays;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -9,6 +12,7 @@ public class IndexHandler{
 	
 	private static StandardAnalyzer analyzer = new StandardAnalyzer();  // Use default setting  
 	private static Directory index = new RAMDirectory();    // Save Index in RAM
+	private static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
 	
 	private static final String uploadinfo = null;   // hard-code the file info need to index for now
 	
@@ -37,6 +41,19 @@ public class IndexHandler{
 		
 		//Add the Document to the Index
 
+	}
+	
+	/**
+	 * Checks to see if a DocFile is valid. A valid DocFile is any file with
+	 * the following extensions: .pdf, .txt, .docx, .html
+	 * 
+	 * @param file the DocFile to check validity of
+	 * @return boolean true if the DocFile is a valid extension
+	 */
+	public static boolean isValidDocFile(DocFile file) {
+		
+		return Arrays.asList(VALIDDOCTYPES).contains(file.getFileType()); 
+		
 	}
 	
 	/**
