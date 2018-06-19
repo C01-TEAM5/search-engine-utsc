@@ -13,50 +13,55 @@ public class IndexHandler{
 	
 	private static StandardAnalyzer analyzer = new StandardAnalyzer();  // Use default setting  
 	private static Directory index = new RAMDirectory();    // Save Index in RAM
-	private static Document doc = new Document();   // a collection of fields that can relate to the document, ie file name, uploader, type, content 
 	
 	private static final String uploadinfo = null;   // hard-code the file info need to index for now
 	
-	/* Constructor*/
+	/**
+	 * Construct a new IndexHandler.
+	 * This class represents the indexer for the search engine.
+	 * Index is stored in RAM.
+	 */
 	public IndexHandler() {
 		
 	}
 	
-	/* The main function to perform index functionality
-	 * Can index/remove/update index all file types
+	/** 
+	 * Takes a DocFile as a parameter and adds the contents of the DocFile
+	 * to the index.
 	 * 
-	 * Call it in SearchEngine for indexing before search
+	 * File types that can be passed in include:
+	 * .txt, .pdf, .html, .docx
+	 * 
+	 * @param DocFile the object of the file that will be added to the index
 	 */
-	public static void StarIndexing() throws IOException {
+	public void addDoc(DocFile newfile) {
+		
+		//Depending on the file type, call the appropriate parse command
+		//to get the required Document
+		
+		//Add the Document to the Index
+
+	}
+	
+	/**
+	 * Update the indexing of a file that is currently indexed.
+	 * This method is called when a document is changed and needs to
+	 * be re-indexed.
+	 * 
+	 * @param DocFile the object of the file to be updated.
+	 */
+	public static void updateDoc(DocFile updatefile) {
 		//TODO
 	}
 	
-	/* Index TXT file, including index/update/delete a file
-	 * Helper function for startIndexing
+	/** 
+	 * Remove the specified document from the index.
+	 * If the document has not been indexed, nothing happens.
+	 * 
+	 * @param DocFile the object of the file to be removed from the index
 	 */
-	public static void indexTXT() {
-		//TODO
+	public void removeDoc(DocFile deletefile) {
+		
 	}
-	
-	/* Index HTML file, including index/update/delete a file
-	 * Helper function for startIndexing
-	 */
-	public static void indexHTML() {
-		//TODO
-	}
-	
-	/* Index PDF file, including index/update/delete a file
-	 * Helper function for startIndexing
-	 */
-	public static void indexPDF() {
-		//TODO
-	}
-	
-	/* Index doc file, including index/update/delete a file
-	 * Helper function for startIndexing
-	 */
-	public static void indexDOC() {
-		//TODO
-	}
-	
+
 }
