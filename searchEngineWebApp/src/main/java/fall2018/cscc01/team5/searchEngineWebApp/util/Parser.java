@@ -1,5 +1,6 @@
-package fall2018.cscc01.team5.searchEngineWebApp;
+package fall2018.cscc01.team5.searchEngineWebApp.util;
 
+import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import org.apache.lucene.document.Document;
 
 /**
