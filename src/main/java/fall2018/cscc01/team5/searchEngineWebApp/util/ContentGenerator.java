@@ -12,7 +12,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
  * it to the existing Document object.
  */
 public class ContentGenerator {
-
+	
 	/**
 	 * The primary method that is called to generate a content field.
 	 * This method determines the type of file, parses it appropriately
@@ -29,21 +29,15 @@ public class ContentGenerator {
 		
 		String fileType = file.getFileType();
 		
-		switch(fileType) {
-			case "pdf":
-				generatePdf(doc,file);
-				break;
-			case "txt":
-				generateTxt(doc,file);
-				break;
-			case "html":
-				generateHtml(doc, file);
-				break;
-			case "docx":
-				generateDocx(doc, file);
-				break;
+		if (fileType.equals("pdf")){		
+			generatePdf(doc,file);
+		} else if (fileType.equals("txt")) {
+			generateTxt(doc,file);
+		} else if (fileType.equals("html")) {
+			generateHtml(doc, file);
+		} else if (fileType.equals("docx")) {
+			generateDocx(doc, file);
 		}
-		
 	}
 	
 	/**
