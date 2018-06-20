@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+    <display-name>Search Engine Web App</display-name>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.servlets.SearchServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+</web-app>
