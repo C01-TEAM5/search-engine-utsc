@@ -2,6 +2,7 @@
 <web-app>
 
     <display-name>Search Engine Web App</display-name>
+
     <servlet>
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.servlets.SearchServlet</servlet-class>
@@ -12,4 +13,10 @@
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+
 </web-app>
