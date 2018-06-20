@@ -53,6 +53,7 @@ public class ContentGenerator {
      */
     private static void generateHtml (Document doc, DocFile file) {
 
+    
     }
 
     /**
