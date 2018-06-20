@@ -69,6 +69,7 @@ public class IndexHandlerTest {
 		// titled document should still be found with no changes
 		assertTrue(search("Hello World").contains("Title"));		
 	}
+	
 	public void testIndexHandlerRemoveNull() {
 		int expectedSize = search("Hello World").size();
 		indexHandler.removeDoc(null);
@@ -80,8 +81,30 @@ public class IndexHandlerTest {
 	
 	
 	// standard file types
+	public void testIndexHandlerAdd() {
+		int expectedSize = search("Hello World").size() + 1;
+		indexHandler.addDoc(file);
+		
+		// should successfully add the file and increase its size by 1
+		assertEquals(expectedSize, search("Hello World").size());
+	}
+	
+	public void testIndexHandlerUpdate() {
+		indexHandler.updateDoc(file);
+		assertTrue(search("Hello World").contains("OldTitle") &&
+				search("Hello World").contains("NewTitle"));
+	}
+
+	public void testIndexHandlerRemove() {
+		int expectedSize = search("Hello World").size() - 1;
+		indexHandler.removeDoc(file);
+
+		// should successfully remove the file and decrease its size by 1
+		assertEquals(expectedSize, search("Hello World").size());	
+	}
 	
 	// invalid file types
+	
 	
 	// boundary cases
     
