@@ -55,8 +55,8 @@ public class IndexHandler{
 
         //Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
-        String fileID = Integer.toString(newFile.getFileID());
-        Field docIDField = new TextField("DocID", fileID, Store.YES);
+        String filePath = newFile.getPath();
+        Field docIDField = new TextField("Path", filePath, Store.YES);
         Field userIDField = new TextField("Owner",newFile.getOwner(),Store.YES);
 		
         newDocument.add(docIDField);

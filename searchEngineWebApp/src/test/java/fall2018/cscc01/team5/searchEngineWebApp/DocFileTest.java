@@ -7,19 +7,19 @@ public class DocFileTest extends TestCase {
 	
 	public void testGetFileType () {
 		
-		DocFile testFile = new DocFile("hello","Chris",1,false);
+		DocFile testFile = new DocFile("hello","Chris","C:\\hello",false);
 		assertEquals(true, testFile.getFileType().equals(""));
 		
-		testFile = new DocFile("run.txt","Andrew",2,true);
+		testFile = new DocFile("run.txt","Andrew","C:\\run.txt",true);
 		assertEquals(true, testFile.getFileType().equals("txt"));
 		
-		testFile = new DocFile("","Emily",2,true);
+		testFile = new DocFile("","Emily","C:\\",true);
 		assertEquals(true, testFile.getFileType().equals(""));
 		
-		testFile = new DocFile("essay.","Kalindu",2,true);
+		testFile = new DocFile("essay.","Kalindu","C:\\essay.",true);
 		assertEquals(true, testFile.getFileType().equals(""));
 		
-		testFile = new DocFile("outline.h","Abbas",2,true);
+		testFile = new DocFile("outline.h","Abbas","C:\\outline.h",true);
 		assertEquals(true, testFile.getFileType().equals("h"));
 	}
 
