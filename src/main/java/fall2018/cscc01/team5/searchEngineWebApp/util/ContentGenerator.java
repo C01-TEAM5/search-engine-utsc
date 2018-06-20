@@ -32,12 +32,16 @@ public class ContentGenerator {
 		switch(fileType) {
 			case "pdf":
 				generatePdf(doc,file);
+				break;
 			case "txt":
 				generateTxt(doc,file);
+				break;
 			case "html":
 				generateHtml(doc, file);
+				break;
 			case "docx":
 				generateDocx(doc, file);
+				break;
 		}
 		
 	}
