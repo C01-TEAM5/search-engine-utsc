@@ -1,20 +1,30 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Parser;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.FieldType;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler{
 	
-	private static StandardAnalyzer analyzer = new StandardAnalyzer();  // Use default setting  
-	private static Directory index = new RAMDirectory();    // Save Index in RAM
+	private static StandardAnalyzer analyzer = null;  // Use default setting  
+	private static Directory index = null;    // Save Index in RAM
+	private static IndexWriter writer;
 	private static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
 	
-	private static final String uploadinfo = null;   // hard-code the file info need to index for now
 	
 	/**
 	 * Construct a new IndexHandler.
@@ -22,24 +32,52 @@ public class IndexHandler{
 	 * Index is stored in RAM.
 	 */
 	public IndexHandler() {
-		
+		analyzer = new StandardAnalyzer();
+		index = new RAMDirectory();
+		IndexWriterConfig config = new IndexWriterConfig(analyzer);
+		try {
+			IndexWriter writer = new IndexWriter(index, config);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/** 
 	 * Takes a DocFile as a parameter and adds the contents of the DocFile
-	 * to the index.
+	 * to the index. If an invalid document type is passed in, nothing happens.
 	 * 
 	 * File types that can be passed in include:
 	 * .txt, .pdf, .html, .docx
 	 * 
+	 * Precondition: DocFiles passed into addDoc must not be already indexed
+	 * 
 	 * @param DocFile the object of the file that will be added to the index
 	 */
-	public void addDoc(DocFile newfile) {
+	public void addDoc(DocFile newFile) {
 		
-		//Depending on the file type, call the appropriate parse command
-		//to get the required Document
+		//Check if the file extension is valid
+		if (!isValid(newFile)) {
+			return;
+		}
+			
+		//Create the new document, add in DocID fields and UploaderID fields
+		Document newDocument = new Document();
+		String fileID = Integer.toString(newFile.getFileID());
+		Field docIDField = new TextField("DocID", fileID, Store.YES);
+		Field userIDField = new TextField("Owner",newFile.getOwner(),Store.YES);
+		
+		newDocument.add(docIDField);
+		newDocument.add(userIDField);
+		
+		//Call Content Generator to add in the ContentField
 		
 		//Add the Document to the Index
+		try {
+			writer.addDocument(newDocument);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 
 	}
 	
@@ -50,7 +88,7 @@ public class IndexHandler{
 	 * @param file the DocFile to check validity of
 	 * @return boolean true if the DocFile is a valid extension
 	 */
-	public static boolean isValidDocFile(DocFile file) {
+	private static boolean isValid(DocFile file) {
 		
 		return Arrays.asList(VALIDDOCTYPES).contains(file.getFileType()); 
 		
