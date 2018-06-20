@@ -103,11 +103,27 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("Hello World").size());	
 	}
 	
-	// invalid file types
-	
 	
 	// boundary cases
-    
+	
+	public void testIndexHandlerUpdateNonExisting() {
+		
+		indexHandler.updateDoc(file);
+		
+		// should not be able to update a non-existing doc in the Index
+		// titled document should still be found with no changes
+		assertTrue(search("Hello World").contains("Title"));
+	}
+	
+	public void testIndexHandlerRemoveEmpty() {
+		
+    	// clear Lucene db ****
+		
+    	indexHandler.removeDoc(file);
+    	
+    	// should not be able to remove a document from an empty db
+    	assertEquals(0, search("").size());
+    }
     
     
 
