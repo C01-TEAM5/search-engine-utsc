@@ -1,5 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,9 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
+import org.junit.Test;
+
+import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
 public class IndexHandlerTest {
 	
@@ -30,6 +36,7 @@ public class IndexHandlerTest {
     private static IndexWriterConfig config;
     private static IndexWriter w;
     
+    private IndexHandler indexHandler = new IndexHandler();
     
     @Before
     public void init() {
@@ -45,6 +52,32 @@ public class IndexHandlerTest {
     
     
 	// null parameter testing
+	@Test
+	public void testIndexHandlerAddNull() {
+		int expectedSize = search("Hello World").size();
+		indexHandler.addDoc(null);
+
+		// should not be able to add a null doc to the Index
+		// size of search results should not change
+		assertEquals(expectedSize, search("Hello World").size());
+	}
+	
+	public void testIndexHandlerUpdateNull() {
+		indexHandler.updateDoc(null);
+		
+		// should not be able to update a null doc in the Index
+		// titled document should still be found with no changes
+		assertTrue(search("Hello World").contains("Title"));		
+	}
+	public void testIndexHandlerRemoveNull() {
+		int expectedSize = search("Hello World").size();
+		indexHandler.removeDoc(null);
+
+		// should not be able to remove a null doc from the Index
+		// size of search results should not change
+		assertEquals(expectedSize, search("Hello World").size());
+	}
+	
 	
 	// standard file types
 	
