@@ -1,8 +1,7 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.util.Parser;
-
+import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -13,18 +12,24 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler{
 	
-	private static StandardAnalyzer analyzer = null;  // Use default setting  
-	private static Directory index = null;    // Save Index in RAM
-	private static IndexWriter writer;
+	private static StandardAnalyzer analyzer;  // Use default setting  
+	private static Directory index;    // Save Index in RAM
 	private static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
-	
 	
 	/**
 	 * Construct a new IndexHandler.
@@ -34,12 +39,6 @@ public class IndexHandler{
 	public IndexHandler() {
 		analyzer = new StandardAnalyzer();
 		index = new RAMDirectory();
-		IndexWriterConfig config = new IndexWriterConfig(analyzer);
-		try {
-			IndexWriter writer = new IndexWriter(index, config);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/** 
@@ -59,7 +58,9 @@ public class IndexHandler{
 		if (!isValid(newFile)) {
 			return;
 		}
-			
+		
+		IndexWriterConfig config = new IndexWriterConfig(analyzer);
+		
 		//Create the new document, add in DocID fields and UploaderID fields
 		Document newDocument = new Document();
 		String fileID = Integer.toString(newFile.getFileID());
@@ -70,10 +71,13 @@ public class IndexHandler{
 		newDocument.add(userIDField);
 		
 		//Call Content Generator to add in the ContentField
+		ContentGenerator.generateContent(newDocument, newFile);
 		
 		//Add the Document to the Index
 		try {
+			IndexWriter writer = new IndexWriter(index, config);
 			writer.addDocument(newDocument);
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
