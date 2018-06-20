@@ -45,4 +45,12 @@ public class DocFile {
 		return fileType;
 	}
 
+	public int getFileID() {
+		return fileID;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
 }
