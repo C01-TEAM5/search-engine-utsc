@@ -1,8 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.util;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.TextField;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 
