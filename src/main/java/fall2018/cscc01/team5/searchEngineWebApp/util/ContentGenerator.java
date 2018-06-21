@@ -1,15 +1,14 @@
 package fall2018.cscc01.team5.searchEngineWebApp.util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
 /**
  * Utility class designed to generate content fields and add them to Documents that are being added to the index.
@@ -60,6 +59,28 @@ public class ContentGenerator {
      */
     private static void generateHtml (Document doc, DocFile file) {
 
+        // create a file object using the file path
+        File input = new File(file.getPath());
+        // Parse the file using the Jsoup parser
+        org.jsoup.nodes.Document parsedDoc = null;
+        try {
+            parsedDoc = Jsoup.parse(input, "UTF-8", "");
+            // index title of the document (for now using content key)
+            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, parsedDoc.title(), Store.YES));
+            // index all other text
+            for (Element element: parsedDoc.select("*")) {
+                // add "value" and "text" attributed of each tag to the index if they are not empty
+                String eleValue = element.attr("value");
+                String eleText = element.text();
+                if (!eleValue.equals(""))
+                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, eleValue, Store.YES));
+                if (!eleText.equals(""))
+                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, eleText, Store.YES));
+            }
+
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
 
     /**
