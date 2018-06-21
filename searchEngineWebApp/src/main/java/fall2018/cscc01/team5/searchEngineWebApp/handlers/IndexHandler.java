@@ -18,8 +18,10 @@ import org.apache.lucene.store.RAMDirectory;
 public class IndexHandler{
 	
     private static StandardAnalyzer analyzer;  // Use default setting  
-    private static Directory ramIndex;    //store index in RAM
-    private static String storePath;	//The path where the index will be stored
+    private static Directory ramIndex;         //store index in RAM
+    private IndexWriterConfig config;          // Index Writer Configurations
+    private IndexWriter writer;                // Index Writer
+    private static String storePath;	       //The path where the index will be stored
     private static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
 	
     /**
