@@ -69,28 +69,28 @@ public class ContentGenerator {
      * @param file the DocFile whose content is being added
      */
     private static void generateTxt (Document doc, DocFile file) {
-    	
-    	String filePath = file.getPath();
-    	
-    	FileReader fileReader = null;
-		try {
-			fileReader = new FileReader(filePath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-    	
-		BufferedReader BufferedFileReader = new BufferedReader(fileReader);
-    	String lineContent = null;
-    	try {
-			while ((lineContent = BufferedFileReader.readLine()) != null) {
-				doc.add(new TextField(Constants.INDEX_KEY_CONTENT, lineContent, Store.YES));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
+
+        String filePath = file.getPath();
+
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(filePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        BufferedReader BufferedFileReader = new BufferedReader(fileReader);
+        String lineContent = null;
+        try {
+            while ((lineContent = BufferedFileReader.readLine()) != null) {
+                doc.add(new TextField(Constants.INDEX_KEY_CONTENT, lineContent, Store.YES));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
-    
+
 
     /**
      * Generates the content field for a Docx DocFile.
