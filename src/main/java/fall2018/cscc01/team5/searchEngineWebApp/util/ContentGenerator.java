@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
+import java.io.File;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 
@@ -50,6 +52,31 @@ public class ContentGenerator {
      */
     private static void generatePdf (Document doc, DocFile file) {
 
+        //Required for use with JDK 8
+        System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+        
+        String pdfContents = "";
+        PDDocument pdfDoc = null;
+        String filePath = file.getPath();
+        File pdfFile = new File(filePath);
+        
+        try {
+            pdfDoc = PDDocument.load(pdfFile);
+            PDFTextStripper strip = new PDFTextStripper();
+            pdfContents = strip.getText(pdfDoc);
+            doc.add(new TextField("Content", pdfContents, Store.YES));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (pdfDoc != null) {
+                try {
+                    pdfDoc.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
     }
 
     /**
