@@ -18,9 +18,9 @@ import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler{
 	
-    private static StandardAnalyzer analyzer;  // Use default setting  
-    private static Directory ramIndex;    //store index in RAM
-    private static String storePath;	//The path where the index will be stored
+    private StandardAnalyzer analyzer;  // Use default setting
+    private Directory ramIndex;    //store index in RAM
+    private String storePath;	//The path where the index will be stored
 
 	
     /**
