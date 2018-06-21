@@ -108,5 +108,9 @@ public class IndexHandler{
     public void removeDoc(DocFile deletefile) {
 		
     }
+    
+    public Directory getRamIndex() {
+        return ramIndex;
+    }
 
 }
