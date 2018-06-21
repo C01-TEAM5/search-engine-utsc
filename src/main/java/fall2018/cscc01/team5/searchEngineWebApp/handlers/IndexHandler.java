@@ -1,6 +1,7 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class IndexHandler{
     private static StandardAnalyzer analyzer;  // Use default setting  
     private static Directory ramIndex;    //store index in RAM
     private static String storePath;	//The path where the index will be stored
-    private static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
+
 	
     /**
      * Construct a new IndexHandler.
@@ -42,7 +43,7 @@ public class IndexHandler{
      * 
      * Precondition: DocFiles passed into addDoc must not be already indexed
      * 
-     * @param DocFile the object of the file that will be added to the index
+     * @param newFile the object of the file that will be added to the index
      */
     public void addDoc(DocFile newFile) {
 		
@@ -56,8 +57,8 @@ public class IndexHandler{
         //Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
         String filePath = newFile.getPath();
-        Field docIDField = new TextField("Path", filePath, Store.YES);
-        Field userIDField = new TextField("Owner",newFile.getOwner(),Store.YES);
+        Field docIDField = new TextField(Constants.INDEX_KEY_PATH, filePath, Store.YES);
+        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER,newFile.getOwner(),Store.YES);
 		
         newDocument.add(docIDField);
         newDocument.add(userIDField);
@@ -84,7 +85,7 @@ public class IndexHandler{
      */
     private static boolean isValid(DocFile file) {
 		
-        return Arrays.asList(VALIDDOCTYPES).contains(file.getFileType()); 
+        return Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
 		
 	}
 	
@@ -93,7 +94,7 @@ public class IndexHandler{
      * This method is called when a document is changed and needs to
      * be re-indexed.
      * 
-     * @param DocFile the object of the file to be updated.
+     * @param updatefile the object of the file to be updated.
      */
     public static void updateDoc(DocFile updatefile) {
         //TODO
@@ -103,7 +104,7 @@ public class IndexHandler{
      * Remove the specified document from the index.
      * If the document has not been indexed, nothing happens.
      * 
-     * @param DocFile the object of the file to be removed from the index
+     * @param deletefile the object of the file to be removed from the index
      */
     public void removeDoc(DocFile deletefile) {
 		

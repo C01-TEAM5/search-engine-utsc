@@ -31,13 +31,13 @@ public class ContentGenerator {
 
         String fileType = file.getFileType();
 
-        if (fileType.equals("pdf")) {
+        if (fileType.equals(Constants.FILETYPE_PDF)) {
             generatePdf(doc, file);
-        } else if (fileType.equals("txt")) {
+        } else if (fileType.equals(Constants.FILETYPE_TXT)) {
             generateTxt(doc, file);
-        } else if (fileType.equals("html")) {
+        } else if (fileType.equals(Constants.FILETYPE_HTML)) {
             generateHtml(doc, file);
-        } else if (fileType.equals("docx")) {
+        } else if (fileType.equals(Constants.FILETYPE_DOCX)) {
             generateDocx(doc, file);
         }
     }
@@ -60,7 +60,6 @@ public class ContentGenerator {
      */
     private static void generateHtml (Document doc, DocFile file) {
 
-    
     }
 
     /**
@@ -84,7 +83,7 @@ public class ContentGenerator {
     	String lineContent = null;
     	try {
 			while ((lineContent = BufferedFileReader.readLine()) != null) {
-				doc.add(new TextField("Content", lineContent, Store.YES));
+				doc.add(new TextField(Constants.INDEX_KEY_CONTENT, lineContent, Store.YES));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
