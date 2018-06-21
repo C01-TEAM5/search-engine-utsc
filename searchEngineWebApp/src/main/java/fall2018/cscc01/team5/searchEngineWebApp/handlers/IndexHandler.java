@@ -121,5 +121,31 @@ public class IndexHandler {
     public void removeDoc(DocFile deletefile) {
 
     }
+    
+    
+    
+    /**
+     * Commits the changes to a local copy from the RAM without shutting down the
+     * indexHandler.
+     */
+    public void commitWriter() {
+        try {
+            writer.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Commits and closes the changes to a local copy from the RAM 
+     * shuts down the writer from the IndexHandler
+     */
+    public void closeWriter() {
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
