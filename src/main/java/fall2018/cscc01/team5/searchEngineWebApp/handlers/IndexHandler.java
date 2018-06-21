@@ -80,9 +80,7 @@ public class IndexHandler {
 
         // Add the Document to the Index
         try {
-            IndexWriter writer = new IndexWriter(ramIndex, config);
             writer.addDocument(newDocument);
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
