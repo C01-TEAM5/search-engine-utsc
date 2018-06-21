@@ -1,6 +1,13 @@
 package fall2018.cscc01.team5.searchEngineWebApp.util;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.TextField;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 
@@ -63,8 +70,28 @@ public class ContentGenerator {
      * @param file the DocFile whose content is being added
      */
     private static void generateTxt (Document doc, DocFile file) {
-
+    	
+    	String filePath = file.getPath();
+    	
+    	FileReader fileReader = null;
+		try {
+			fileReader = new FileReader(filePath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+    	
+		BufferedReader BufferedFileReader = new BufferedReader(fileReader);
+    	String lineContent = null;
+    	try {
+			while ((lineContent = BufferedFileReader.readLine()) != null) {
+				doc.add(new TextField("Content", lineContent, Store.YES));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
     }
+    
 
     /**
      * Generates the content field for a Docx DocFile.
