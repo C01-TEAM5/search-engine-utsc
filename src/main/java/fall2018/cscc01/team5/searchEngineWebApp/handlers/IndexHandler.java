@@ -81,7 +81,7 @@ public class IndexHandler {
      * @param file the DocFile to check validity of
      * @return boolean true if the DocFile is a valid extension
      */
-    private static boolean isValid (DocFile file) {
+    private boolean isValid (DocFile file) {
 
         return Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
 
@@ -93,7 +93,7 @@ public class IndexHandler {
      *
      * @param updatefile the object of the file to be updated.
      */
-    public static void updateDoc (DocFile updatefile) {
+    public void updateDoc (DocFile updatefile) {
         //TODO
     }
 
@@ -104,6 +104,14 @@ public class IndexHandler {
      */
     public void removeDoc (DocFile deletefile) {
 
+    }
+    
+    public Directory getRamIndex() {
+        return ramIndex;
+    }
+
+    public StandardAnalyzer getAnalyzer() {
+        return analyzer;
     }
 
 }
