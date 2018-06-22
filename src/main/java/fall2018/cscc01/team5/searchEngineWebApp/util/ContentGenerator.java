@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
@@ -164,12 +164,19 @@ public class ContentGenerator {
         try {
             
             FileInputStream fileInputStream = new FileInputStream(filePath);
-            XWPFDocument docx = new XWPFDocument(fileInputStream);
-            List<XWPFParagraph> paragraphs = docx.getParagraphs();
+            XWPFDocument document = new XWPFDocument(fileInputStream);
+            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+            
+            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, extractor.getText(), Store.YES));
+            //System.out.println(extractor.getText());
     
+            /*
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
             for (XWPFParagraph paragraph : paragraphs) {
                 doc.add(new TextField(Constants.INDEX_KEY_CONTENT, paragraph.getText(), Store.YES));
+                System.out.println(paragraph.getText());
             }
+            */
 
             fileInputStream.close();
             
