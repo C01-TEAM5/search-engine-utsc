@@ -123,10 +123,9 @@ public class IndexHandler {
      */
     public void removeDoc (DocFile deletefile) {
     	
-    	//Term term = new Term(Constants.INDEX_KEY_OWNER, deletefile.getOwner());
     	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
 
-    	System.out.println("delete file: " + term.field() + " " + term.text());
+    	//System.out.println("delete file: " + term.field() + " " + term.text());
     	
     	try {
 			writer.deleteDocuments(term);
