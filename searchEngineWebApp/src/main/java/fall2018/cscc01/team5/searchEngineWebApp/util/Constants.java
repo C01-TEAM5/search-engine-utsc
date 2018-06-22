@@ -10,6 +10,7 @@ public class Constants {
     public static final String INDEX_KEY_CONTENT = "Content";
     public static final String INDEX_KEY_OWNER = "Owner";
     public static final String INDEX_KEY_PATH = "Path";
+    public static final String INDEX_KEY_TITLE = "Title";
     
     public static final int SEARCH_HITS_PER_PAGE = 10;
 
