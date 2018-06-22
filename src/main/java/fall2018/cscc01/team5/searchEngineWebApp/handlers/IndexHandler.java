@@ -19,19 +19,33 @@ import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
 
-    private StandardAnalyzer analyzer;  // Use default setting
-    private Directory ramIndex;    //store index in RAM
-    private String storePath;    //The path where the index will be stored
-
-
+    private StandardAnalyzer analyzer;    // Use default setting
+    private Directory ramIndex;           // store index in RAM
+    private IndexWriterConfig config;            // Index Writer Configurations
+    private IndexWriter writer;                  // Index Writer
+    private String storePath;             // The path where the index will be stored
+    
     /**
-     * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
+     * Construct a new IndexHandler. This class represents the indexer for the
+     * search engine. Index is stored in RAM.
      */
     public IndexHandler (String storedPath) {
         analyzer = new StandardAnalyzer();
         ramIndex = new RAMDirectory();
         storePath = storedPath;
+        config = new IndexWriterConfig(analyzer);
+
+        // write separate IndexWriter to RAM for each IndexHandler
+        // writer will have to be manually closed with each instance call
+        // see IndexWriter documentation for .close()
+        // explaining continuous closing of IndexWriter is an expensive operation
+        try {
+            writer = new IndexWriter(ramIndex, config);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
     
     /**
      * Takes a DocFile as a parameter and adds the contents of the DocFile to the index. If an invalid document type is
@@ -45,14 +59,12 @@ public class IndexHandler {
      */
     public void addDoc (DocFile newFile) {
 
-        //Check if the file extension is valid
+        // Check if the file extension is valid
         if (!isValid(newFile)) {
             return;
         }
-
-        IndexWriterConfig config = new IndexWriterConfig(analyzer);
-
-        //Create the new document, add in DocID fields and UploaderID fields
+        
+        // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
         String filePath = newFile.getPath();
         Field docIDField = new TextField(Constants.INDEX_KEY_PATH, filePath, Store.YES);
@@ -64,11 +76,9 @@ public class IndexHandler {
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
 
-        //Add the Document to the Index
+        // Add the Document to the Index
         try {
-            IndexWriter writer = new IndexWriter(ramIndex, config);
             writer.addDocument(newDocument);
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +94,6 @@ public class IndexHandler {
     private boolean isValid (DocFile file) {
 
         return Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
-
     }
 
     /**
@@ -109,12 +118,42 @@ public class IndexHandler {
 
     }
     
+    
+    /**
+     * Commits the changes to a local copy from the RAM without shutting down the
+     * indexHandler.
+     */
+    public void commitWriter() {
+        try {
+            writer.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Commits and closes the changes to a local copy from the RAM 
+     * shuts down the writer from the IndexHandler
+     */
+    public void closeWriter() {
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public StandardAnalyzer getAnalyzer() {
+        return analyzer;
+    }
+    
     public Directory getRamIndex() {
         return ramIndex;
     }
-
-    public StandardAnalyzer getAnalyzer() {
-        return analyzer;
+    
+    public IndexWriter getIndexWriter() {
+        return writer;
     }
 
 }
