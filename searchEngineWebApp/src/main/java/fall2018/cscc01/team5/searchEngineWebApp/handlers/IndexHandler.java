@@ -94,7 +94,10 @@ public class IndexHandler {
      * @param updatefile the object of the file to be updated.
      */
     public void updateDoc (DocFile updatefile) {
-        //TODO
+
+        // remove the file from the index and re-add it
+        this.removeDoc(updatefile);
+        this.addDoc(updatefile);
     }
 
     /**
