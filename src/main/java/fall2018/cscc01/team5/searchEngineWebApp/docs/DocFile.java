@@ -7,6 +7,7 @@ public class DocFile {
 	private String courseCode; //Optional course code association
 	private String owner; //Uploader of the file
 	private String path; //ID number of the file for updating/deletion
+	private String title; //The title of the Document
 	
 	/** 
 	 * A DocFile is an object representing a file in the system.
@@ -15,13 +16,14 @@ public class DocFile {
 	 * be connected to certain UTSC Courses.
 	 * 
 	 */
-	public DocFile(String filename, String owner, String path, boolean isPublic) {
+	public DocFile(String filename, String title, String owner, String path, boolean isPublic) {
 		
 		this.filename = filename;
 		this.isPublic = isPublic;
 		this.courseCode = null;
 		this.owner = owner;
 		this.path = path;
+		this.title = title;
 	}
 	
 	/**
@@ -53,4 +55,7 @@ public class DocFile {
 		return owner;
 	}
 
+	public String getTitle() {
+	    return title;
+	}
 }

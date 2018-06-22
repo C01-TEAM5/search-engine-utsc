@@ -50,9 +50,9 @@ public class IndexHandler {
     /**
      * Takes a DocFile as a parameter and adds the contents of the DocFile to the index. If an invalid document type is
      * passed in, nothing happens.
-     * <p>
+     * 
      * File types that can be passed in include: .txt, .pdf, .html, .docx
-     * <p>
+     * 
      * Precondition: DocFiles passed into addDoc must not be already indexed
      *
      * @param newFile the object of the file that will be added to the index
@@ -66,12 +66,14 @@ public class IndexHandler {
         
         // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
-        String filePath = newFile.getPath();
-        Field docIDField = new TextField(Constants.INDEX_KEY_PATH, filePath, Store.YES);
-        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
 
+        Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
+        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
+        Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
+        
         newDocument.add(docIDField);
         newDocument.add(userIDField);
+        newDocument.add(titleField);
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
