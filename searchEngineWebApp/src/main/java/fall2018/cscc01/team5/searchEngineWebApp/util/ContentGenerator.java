@@ -10,6 +10,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -153,7 +154,7 @@ public class ContentGenerator {
      * @param file the DocFile whose content is being added
      */
     private static void generateDocx (Document doc, DocFile file) {
-
+        
     }
 
 }
