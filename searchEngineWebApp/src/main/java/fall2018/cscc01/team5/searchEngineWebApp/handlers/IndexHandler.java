@@ -14,6 +14,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
@@ -50,9 +51,9 @@ public class IndexHandler {
     /**
      * Takes a DocFile as a parameter and adds the contents of the DocFile to the index. If an invalid document type is
      * passed in, nothing happens.
-     * <p>
+     * 
      * File types that can be passed in include: .txt, .pdf, .html, .docx
-     * <p>
+     * 
      * Precondition: DocFiles passed into addDoc must not be already indexed
      *
      * @param newFile the object of the file that will be added to the index
@@ -66,12 +67,14 @@ public class IndexHandler {
         
         // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
-        String filePath = newFile.getPath();
-        Field docIDField = new TextField(Constants.INDEX_KEY_PATH, filePath, Store.YES);
-        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
 
+        Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
+        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
+        Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
+        
         newDocument.add(docIDField);
         newDocument.add(userIDField);
+        newDocument.add(titleField);
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
@@ -143,6 +146,52 @@ public class IndexHandler {
         }
     }
     
+    /**
+     * Searches the index using the "Title" field with a provided
+     * query. Returns the results as a String to be shown to the user.
+     * 
+     * @param query
+     * @return String results of the search.
+     */
+    public String searchByTitle(String query) {
+        return null;
+        
+    }
+    
+    /**
+     * Searches the index using the Content field with the provided
+     * query. Returns the results as a String to be shown to the user.
+     * 
+     * @param query
+     * @return String results of the search.
+     */
+    public String searchByContent(String query) {
+        return null;
+    }
+    
+    /**
+     * Searches the index using the Owner field with the provided
+     * query. Returns the results as a String to be shown to the user.
+     * 
+     * @param query
+     * @return String results of the search.
+     */
+    public String searchByUser(String query) {
+        return null;
+    }
+    
+    /**
+     * Helper function to the search methods. When provided an ScoreDoc array,
+     * this function builds the string that will be returned to the user.
+     * Each search method will use this to provide a uniform returned String
+     * for all searches.
+     * 
+     * @param results a ScoreDoc array containing the hits
+     * @return String results of the search
+     */
+    public String searchResponse(ScoreDoc[] results) {
+        return null;
+    }
     
     public StandardAnalyzer getAnalyzer() {
         return analyzer;
