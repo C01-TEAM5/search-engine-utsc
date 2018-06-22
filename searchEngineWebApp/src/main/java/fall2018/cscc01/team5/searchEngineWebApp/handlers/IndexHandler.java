@@ -21,8 +21,8 @@ public class IndexHandler {
 
     private StandardAnalyzer analyzer;    // Use default setting
     private Directory ramIndex;           // store index in RAM
-    private IndexWriterConfig config;            // Index Writer Configurations
-    private IndexWriter writer;                  // Index Writer
+    private IndexWriterConfig config;     // Index Writer Configurations
+    private IndexWriter writer;           // Index Writer
     private String storePath;             // The path where the index will be stored
     
     /**
