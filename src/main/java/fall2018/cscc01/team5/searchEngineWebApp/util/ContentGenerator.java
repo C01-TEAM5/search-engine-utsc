@@ -69,7 +69,7 @@ public class ContentGenerator {
             pdfDoc = PDDocument.load(pdfFile);
             PDFTextStripper strip = new PDFTextStripper();
             pdfContents = strip.getText(pdfDoc);
-            doc.add(new TextField("Content", pdfContents, Store.YES));
+            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, pdfContents, Store.YES));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
