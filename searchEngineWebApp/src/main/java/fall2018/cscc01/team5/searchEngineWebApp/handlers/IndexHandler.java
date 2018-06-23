@@ -11,9 +11,11 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -68,6 +70,7 @@ public class IndexHandler {
         // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
 
+        //Field docIDField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
@@ -82,6 +85,7 @@ public class IndexHandler {
         // Add the Document to the Index
         try {
             writer.addDocument(newDocument);
+            writer.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,7 +122,17 @@ public class IndexHandler {
      * @param deletefile the object of the file to be removed from the index
      */
     public void removeDoc (DocFile deletefile) {
+    	
+    	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
 
+    	//System.out.println("delete file: " + term.field() + " " + term.text());
+    	
+    	try {
+			writer.deleteDocuments(term);
+			writer.commit();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}   	
     }
     
     
