@@ -72,10 +72,12 @@ public class IndexHandler {
         Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
+        Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
         
         newDocument.add(docIDField);
         newDocument.add(userIDField);
         newDocument.add(titleField);
+        newDocument.add(typeField);
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
@@ -189,6 +191,9 @@ public class IndexHandler {
      * @return String results of the search.
      */
     public String searchByType(String fileType) {
+        
+        
+        
         return null;
     }
     
