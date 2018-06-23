@@ -27,41 +27,34 @@ import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
 import org.junit.Test;
 
+import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class IndexHandlerTest {
 	
-	private static StandardAnalyzer analyzer;
-    private static Directory index;
-    private static IndexWriterConfig config;
-    private static IndexWriter w;
-    
-    private IndexHandler indexHandler = new IndexHandler();
+    private static IndexHandler indexHandler = null; 
+    private static DocFile file = null;
     
     @Before
     public void init() {
-    	try {
-	    	analyzer = new StandardAnalyzer();
-	        index = new RAMDirectory();
-	        config = new IndexWriterConfig(analyzer);
-        	w = new IndexWriter(index, config);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        indexHandler = new IndexHandler("");
+        file = new DocFile("hello.txt","hello","Chris","C:\\Users\\chrischow\\Documents\\hello.txt",false);
     }
     
     
 	// null parameter testing
 	@Test
 	public void testIndexHandlerAddNull() {
-		int expectedSize = search("Hello World").size();
+		int expectedSize = search("hello").size();
 		indexHandler.addDoc(null);
 
 		// should not be able to add a null doc to the Index
 		// size of search results should not change
-		assertEquals(expectedSize, search("Hello World").size());
+		assertEquals(expectedSize, search("hello").size());
 	}
 	
+	/*
 	public void testIndexHandlerUpdateNull() {
 		indexHandler.updateDoc(null);
 		
@@ -78,23 +71,28 @@ public class IndexHandlerTest {
 		// size of search results should not change
 		assertEquals(expectedSize, search("Hello World").size());
 	}
-	
+	*/
 	
 	// standard file types
+    @Test
 	public void testIndexHandlerAdd() {
-		int expectedSize = search("Hello World").size() + 1;
+		int expectedSize = search("hello").size() + 1;
 		indexHandler.addDoc(file);
+		int aa = search("hello").size();
 		
 		// should successfully add the file and increase its size by 1
-		assertEquals(expectedSize, search("Hello World").size());
+		assertEquals(expectedSize, search("hello").size());
 	}
-	
+    
+    /*
+	@Test
 	public void testIndexHandlerUpdate() {
 		indexHandler.updateDoc(file);
 		assertTrue(search("Hello World").contains("OldTitle") &&
 				search("Hello World").contains("NewTitle"));
 	}
 
+    @Test
 	public void testIndexHandlerRemove() {
 		int expectedSize = search("Hello World").size() - 1;
 		indexHandler.removeDoc(file);
@@ -125,7 +123,7 @@ public class IndexHandlerTest {
     	assertEquals(0, search("").size());
     }
     
-    
+    */
 
 	
 	/*
@@ -134,15 +132,17 @@ public class IndexHandlerTest {
 	 */
     private static List<String> search(String query) {
 
+        
     	List<String> results = new ArrayList<String>();
     	
 		try {
+		    indexHandler.commitWriter();
 			// create a query from user's query search
-			Query q = new QueryParser("title", analyzer).parse(query);
+			Query q = new QueryParser(Constants.INDEX_KEY_TITLE, indexHandler.getAnalyzer()).parse(query);
 			
 			// get search results
 	        int hitsPerPage = 10;
-	        IndexReader reader = DirectoryReader.open(index);
+	        IndexReader reader = DirectoryReader.open(indexHandler.getRamIndex());
 	        IndexSearcher searcher = new IndexSearcher(reader);
 	        TopDocs docs = searcher.search(q, hitsPerPage);
 	        ScoreDoc[] hits = docs.scoreDocs;
@@ -151,7 +151,7 @@ public class IndexHandlerTest {
 	        for(int i=0;i<hits.length;++i) {
 	            int docId = hits[i].doc;
 	            Document d = searcher.doc(docId);
-	            results.add(d.get("title"));
+	            results.add(d.get(Constants.INDEX_KEY_TITLE));
 	        }
 	        
 	        // close
