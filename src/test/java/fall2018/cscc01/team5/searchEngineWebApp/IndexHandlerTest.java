@@ -42,7 +42,7 @@ public class IndexHandlerTest {
         file = new DocFile("hello.txt","hello","Chris","C:\\Users\\chrischow\\Documents\\hello.txt",false);
     }
     
-    
+    /*
 	// null parameter testing
 	@Test
 	public void testIndexHandlerAddNull() {
@@ -54,22 +54,23 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("hello").size());
 	}
 	
-	/*
+	@Test
 	public void testIndexHandlerUpdateNull() {
 		indexHandler.updateDoc(null);
 		
 		// should not be able to update a null doc in the Index
 		// titled document should still be found with no changes
-		assertTrue(search("Hello World").contains("Title"));		
+		assertTrue(search("hello").contains("hello"));		
 	}
 	
+	@Test
 	public void testIndexHandlerRemoveNull() {
-		int expectedSize = search("Hello World").size();
+		int expectedSize = search("hello").size();
 		indexHandler.removeDoc(null);
 
 		// should not be able to remove a null doc from the Index
 		// size of search results should not change
-		assertEquals(expectedSize, search("Hello World").size());
+		assertEquals(expectedSize, search("hello").size());
 	}
 	*/
 	
@@ -163,38 +164,5 @@ public class IndexHandlerTest {
 		
 		return results;
 	}
-
-    
-    // more mock objects for testing
-    // to be deleted
-    
-	/*
-	public static void main(String[] args) throws IOException, ParseException {
-        analyzer = new StandardAnalyzer();
-        index = new RAMDirectory();
-        config = new IndexWriterConfig(analyzer);
-        w = new IndexWriter(index, config);
-
-
-        //addDoc(w, "Lucene in Action");
-        //addDoc(w, "Lucene for Dummies");
-        //addDoc(w, "Managing Gigabytes");
-        //addDoc(w, "The Art of Computer Science");
-        w.close();
-
-
-        System.out.println(search("asdfasfsa").size());
-        System.out.println(search("lucene").size());
-    }
-    private static void addDoc(IndexWriter w, String title) {
-        try {
-	    	Document doc = new Document();
-	        doc.add(new TextField("title", title, Field.Store.YES));
-	        w.addDocument(doc);
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-    }
-    */
 
 }
