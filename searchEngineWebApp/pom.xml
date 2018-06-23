@@ -59,12 +59,12 @@
     		<version>2.0.9</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
 		<dependency>
     		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi</artifactId>
-    		<version>3.17</version>
-		</dependency>
-		
+    		<artifactId>poi-ooxml</artifactId>
+    		<version>3.7-beta3</version>
+		</dependency>	
     </dependencies>
 
     <build>

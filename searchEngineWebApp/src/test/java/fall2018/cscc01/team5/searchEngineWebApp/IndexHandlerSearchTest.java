@@ -10,6 +10,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,6 +32,7 @@ public class IndexHandlerSearchTest {
         generateTxtFiles();
         generateHtmlFiles();
         generatePdfFiles();
+        generateDocxFiles();
         
     }
     
@@ -87,7 +91,7 @@ public class IndexHandlerSearchTest {
     
     /**
      * Generate PDFs for testing.
-     * Source: http://www.baeldung.com/java-pdf-creation
+     * Source for learning: http://www.baeldung.com/java-pdf-creation
      * 
      * @throws IOException
      */
@@ -130,8 +134,44 @@ public class IndexHandlerSearchTest {
         
     }
     
-    private static void generateDocxFiles() {
+    /**
+     * Create new docx files for testing.
+     * 
+     * Source for learning:
+     * https://www.tutorialspoint.com/apache_poi_word/apache_poi_word_quick_guide.htm
+     * 
+     * @throws IOException
+     */
+    private static void generateDocxFiles() throws IOException {
+
+        XWPFDocument docx1 = new XWPFDocument();
+        File loadFile = new File("docx1.docx");
+        FileOutputStream stream = new FileOutputStream(loadFile);
         
+        //Create new paragraph
+        XWPFParagraph paragraph = docx1.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.setText("My essay\n" + "Shakespeare writes very good books. My favourite" +
+                " part of his stories is that they are all very different." + 
+                " Some of his stories are sad and others are very happy and funny.");
+        
+        docx1.write(stream);
+        stream.close();
+        
+        XWPFDocument docx2 = new XWPFDocument();
+        loadFile = new File("docx2.docx");
+        stream = new FileOutputStream(loadFile);
+        
+        //Create new paragraph
+        paragraph = docx2.createParagraph();
+        run = paragraph.createRun();
+        run.setText("This is a story about when I got lost in the forest." +
+                "I ran as fast as I could but I didn't know where to go" +
+                "Luckily I found a highway and was able to walk back home afterwards." +
+                "Run run run run run. I run fast.");
+        
+        docx2.write(stream);
+        stream.close();
     }
     
     private static void removeFiles() {
@@ -153,6 +193,12 @@ public class IndexHandlerSearchTest {
         
         File pdf2 = new File("pdf2.pdf");
         pdf2.delete();
+        
+        File docx1 = new File("docx1.docx");
+        docx1.delete();
+        
+        File docx2 = new File("docx2.docx");
+        docx2.delete();     
         
     }
 
