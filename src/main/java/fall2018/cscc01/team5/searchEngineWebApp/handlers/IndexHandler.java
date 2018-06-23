@@ -12,12 +12,16 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
@@ -28,6 +32,7 @@ public class IndexHandler {
     private IndexWriterConfig config;     // Index Writer Configurations
     private IndexWriter writer;           // Index Writer
     private String storePath;             // The path where the index will be stored
+    private int hitsPerPage = 10;
     
     /**
      * Construct a new IndexHandler. This class represents the indexer for the
@@ -212,7 +217,19 @@ public class IndexHandler {
      * @return the ScoreDoc of results
      */
     private ScoreDoc [] searchExec(Query query) {
-        return null;        
+        
+        ScoreDoc[] hits = null;
+        
+        try {
+            IndexReader reader = DirectoryReader.open(ramIndex);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TopDocs docs = searcher.search(query, hitsPerPage);
+            hits = docs.scoreDocs;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return hits;        
     }
     
     /**
