@@ -39,7 +39,7 @@ public class IndexHandlerTest {
     @Before
     public void init() {
         indexHandler = new IndexHandler("");
-        file = new DocFile("hello.txt","hello","Chris","C:\\Users\\chrischow\\Documents\\hello.txt",false);
+        //file = new DocFile("hello.txt","hello","Chris","C:\\Users\\chrischow\\Documents\\hello.txt",false);
     }
     
     /*
@@ -72,7 +72,7 @@ public class IndexHandlerTest {
 		// size of search results should not change
 		assertEquals(expectedSize, search("hello").size());
 	}
-	*/
+	
 	
 	// standard file types
     @Test
@@ -85,7 +85,7 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("hello").size());
 	}
     
-    /*
+    
 	@Test
 	public void testIndexHandlerUpdate() {
 		indexHandler.updateDoc(file);
