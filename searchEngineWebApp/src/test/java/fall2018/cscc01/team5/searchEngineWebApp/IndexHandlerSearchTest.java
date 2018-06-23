@@ -130,6 +130,10 @@ public class IndexHandlerSearchTest {
         
     }
     
+    private static void generateDocxFiles() {
+        
+    }
+    
     private static void removeFiles() {
         
         File text1 = new File("text1.txt");
