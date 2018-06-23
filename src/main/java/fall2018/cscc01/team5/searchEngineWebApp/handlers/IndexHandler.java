@@ -14,6 +14,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -181,19 +182,6 @@ public class IndexHandler {
     }
     
     /**
-     * Helper function to the search methods. When provided an ScoreDoc array,
-     * this function builds the string that will be returned to the user.
-     * Each search method will use this to provide a uniform returned String
-     * for all searches.
-     * 
-     * @param results a ScoreDoc array containing the hits
-     * @return String results of the search
-     */
-    public String searchResponse(ScoreDoc[] results) {
-        return null;
-    }
-    
-    /**
      * Searches the index by File Type with the provided
      * query. Returns the results as a String to be shown to the user.
      * 
@@ -204,7 +192,27 @@ public class IndexHandler {
         return null;
     }
     
+    /**
+     * Execute function for all searcher functions
+     * @param query is the query to search in Query format
+     * @return the ScoreDoc of results
+     */
+    private ScoreDoc [] searchExec(Query query) {
+        return null;        
+    }
     
+    /**
+     * Helper function to the search methods. When provided an ScoreDoc array,
+     * this function builds the string that will be returned to the user.
+     * Each search method will use this to provide a uniform returned String
+     * for all searches.
+     * 
+     * @param results a ScoreDoc array containing the hits
+     * @return String results of the search
+     */
+    public String searchResponse(ScoreDoc[] results) {
+        return null;
+    }   
     
     
     public StandardAnalyzer getAnalyzer() {
