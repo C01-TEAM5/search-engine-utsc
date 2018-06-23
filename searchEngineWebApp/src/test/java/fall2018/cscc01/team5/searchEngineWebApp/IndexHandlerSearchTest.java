@@ -2,9 +2,14 @@ package fall2018.cscc01.team5.searchEngineWebApp;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +21,14 @@ public class IndexHandlerSearchTest {
      * Files are created and then added into the index.
      * 
      * @throws IOException
+     * @throws DocumentException 
      */
     @BeforeClass
     public static void indexSetup() throws IOException {
         
         generateTxtFiles();
         generateHtmlFiles();
+        generatePdfFiles();
         
     }
     
@@ -78,7 +85,48 @@ public class IndexHandlerSearchTest {
         
     }
     
+    /**
+     * Generate PDFs for testing.
+     * Source: http://www.baeldung.com/java-pdf-creation
+     * 
+     * @throws IOException
+     */
     private static void generatePdfFiles() throws IOException {
+        
+        System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+        
+        PDDocument pdf1 = new PDDocument();
+        PDPage p1 = new PDPage();
+        pdf1.addPage(p1);
+         
+        PDPageContentStream contentStream = new PDPageContentStream(pdf1, p1);
+         
+        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.beginText();
+        contentStream.showText("Come to the trade show!");
+        contentStream.showText("Monday to Friday from 9 AM to 6 PM");
+        contentStream.endText();
+        contentStream.close();
+         
+        pdf1.save("pdf1.pdf");
+        pdf1.close();
+        
+        PDDocument pdf2 = new PDDocument();
+        PDPage p2 = new PDPage();
+        pdf2.addPage(p2);
+         
+        contentStream = new PDPageContentStream(pdf2, p2);
+         
+        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.beginText();
+        contentStream.showText("My Dog Spot");
+        contentStream.showText("Here is my dog spot. He is missing.");
+        contentStream.showText("Call my phone number if you find him.");
+        contentStream.endText();
+        contentStream.close();
+         
+        pdf2.save("pdf2.pdf");
+        pdf2.close();
         
     }
     
@@ -95,6 +143,12 @@ public class IndexHandlerSearchTest {
         
         File html2 = new File("html2.html");
         html2.delete();
+        
+        File pdf1 = new File("pdf1.pdf");
+        pdf1.delete();
+        
+        File pdf2 = new File("pdf2.pdf");
+        pdf2.delete();
         
     }
 
