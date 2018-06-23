@@ -193,6 +193,20 @@ public class IndexHandler {
         return null;
     }
     
+    /**
+     * Searches the index by File Type with the provided
+     * query. Returns the results as a String to be shown to the user.
+     * 
+     * @param query
+     * @return String results of the search.
+     */
+    public String searchByType(String fileType) {
+        return null;
+    }
+    
+    
+    
+    
     public StandardAnalyzer getAnalyzer() {
         return analyzer;
     }
