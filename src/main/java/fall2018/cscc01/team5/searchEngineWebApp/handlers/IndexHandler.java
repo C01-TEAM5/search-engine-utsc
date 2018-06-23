@@ -199,10 +199,13 @@ public class IndexHandler {
      */
     public String searchByType(String fileType) {
         
+        String result = "";
+        
         try {
             Query query = new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(fileType);
         
-        
+            result = searchResponse(searchExec(query));
+            
         } catch (ParseException e) {
             e.printStackTrace();
         }
