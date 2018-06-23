@@ -1,5 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
@@ -18,10 +19,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
@@ -155,7 +154,36 @@ public class IndexHandler {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Accept a list of queries and filters and return a list of DocFile that
+     * matches
+     *
+     * @param queries a list of String queries
+     * @param filters a list of String filters (list of Contants.INDEX_KEY*)
+     * @return a list of DocFile that matches all queries and filters
+     */
+    public String search(String[] queries, String[] filters) throws ParseException {
+
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // loop through all filters
+        for (String filter: filters) {
+            // loop through all queries
+            for (String query: queries) {
+                Query parsedQ = new QueryParser(filter, analyzer).parse(query);
+                masterQueryBuilder.add(parsedQ, BooleanClause.Occur.MUST);
+            }
+        }
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery));
+    }
+
+
+
     /**
      * Searches the index using the "Title" field with a provided
      * query. Returns the results as a String to be shown to the user.
