@@ -21,6 +21,7 @@ public class IndexHandlerSearchTest {
     public static void indexSetup() throws IOException {
         
         generateTxtFiles();
+        generateHtmlFiles();
         
     }
     
@@ -56,6 +57,31 @@ public class IndexHandlerSearchTest {
         
     }
     
+    private static void generateHtmlFiles() throws IOException {
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
+        writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
+        writer.write("<h1>We are the best team in the league</h1>");
+        writer.write("<a href=\"https://www.myteam.com\">See our team jersey!</a>");
+        writer.write("<p>We are going to win the championship.</p>");
+        writer.write("</body></html>");
+        writer.close();
+        
+        writer = new BufferedWriter(new FileWriter("html2.html"));
+        writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
+        writer.write("<h1>I am a great singer.</h1>");
+        writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
+        writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
+        writer.write("<p>I hate baseball.</p>");
+        writer.write("</body></html>");
+        writer.close();
+        
+    }
+    
+    private static void generatePdfFiles() throws IOException {
+        
+    }
+    
     private static void removeFiles() {
         
         File text1 = new File("text1.txt");
@@ -63,6 +89,12 @@ public class IndexHandlerSearchTest {
         
         File text2 = new File("text2.txt");
         text2.delete();
+        
+        File html1 = new File("html1.html");
+        html1.delete();
+        
+        File html2 = new File("html2.html");
+        html2.delete();
         
     }
 
