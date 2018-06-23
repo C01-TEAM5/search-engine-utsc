@@ -167,13 +167,16 @@ public class IndexHandler {
 
         // create a master query builder
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
-        // loop through all filters
-        for (String filter: filters) {
-            // loop through all queries
-            for (String query: queries) {
+        // loop through all queries
+        for (String query: queries) {
+            // create a boolean query for the each query
+            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+            // loop through all filters
+            for (String filter : filters) {
                 Query parsedQ = new QueryParser(filter, analyzer).parse(query);
-                masterQueryBuilder.add(parsedQ, BooleanClause.Occur.MUST);
+                queryBuilder.add(parsedQ, BooleanClause.Occur.MUST);
             }
+            masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
         }
 
         // build the masterQuery
@@ -222,7 +225,7 @@ public class IndexHandler {
      * Searches the index by File Type with the provided
      * query. Returns the results as a String to be shown to the user.
      * 
-     * @param query
+     * @param fileType
      * @return String results of the search.
      */
     public String searchByType(String fileType) {
