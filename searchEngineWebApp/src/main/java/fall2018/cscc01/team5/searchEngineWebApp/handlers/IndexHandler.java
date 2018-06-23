@@ -14,6 +14,8 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
@@ -192,6 +194,13 @@ public class IndexHandler {
      */
     public String searchByType(String fileType) {
         
+        try {
+            Query query = new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(fileType);
+        
+        
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         
         
         return null;
