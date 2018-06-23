@@ -242,6 +242,21 @@ public class IndexHandler {
      * @return String results of the search
      */
     public String searchResponse(ScoreDoc[] results) {
+        
+        try {
+            IndexReader reader = DirectoryReader.open(ramIndex);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            
+            for(int i = 0; i < results.length; i++) {
+                int docId = results[i].doc;
+                Document document = searcher.doc(docId);
+                
+                System.out.println(document.get(Constants.INDEX_KEY_TITLE));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
         return null;
     }   
     
