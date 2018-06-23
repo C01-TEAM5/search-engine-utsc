@@ -1,5 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
@@ -18,10 +19,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
@@ -78,11 +77,15 @@ public class IndexHandler {
 
         Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
+        Field filenameField = new TextField(Constants.INDEX_KEY_FILENAME, newFile.getFilename(), Store.YES);
+        Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
         Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
         
         newDocument.add(docIDField);
         newDocument.add(userIDField);
+        newDocument.add(filenameField);
+        newDocument.add(isPublicField);
         newDocument.add(titleField);
         newDocument.add(typeField);
 
@@ -155,7 +158,39 @@ public class IndexHandler {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Accept a list of queries and filters and return a list of DocFile that
+     * matches
+     *
+     * @param queries a list of String queries
+     * @param filters a list of String filters (list of Contants.INDEX_KEY*)
+     * @return a list of DocFile that matches all queries and filters
+     */
+    public DocFile[] search(String[] queries, String[] filters) throws ParseException {
+
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // loop through all queries
+        for (String query: queries) {
+            // create a boolean query for the each query
+            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+            // loop through all filters
+            for (String filter : filters) {
+                Query parsedQ = new QueryParser(filter, analyzer).parse(query);
+                queryBuilder.add(parsedQ, BooleanClause.Occur.MUST);
+            }
+            masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
+        }
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery));
+    }
+
+
+
     /**
      * Searches the index using the "Title" field with a provided
      * query. Returns the results as a String to be shown to the user.
@@ -194,12 +229,12 @@ public class IndexHandler {
      * Searches the index by File Type with the provided
      * query. Returns the results as a String to be shown to the user.
      * 
-     * @param query
-     * @return String results of the search.
+     * @param fileType
+     * @return a list of DocFile of the search.
      */
-    public String searchByType(String fileType) {
+    public DocFile[] searchByType(String fileType) {
         
-        String result = "";
+        DocFile[] result = null;
         
         try {
             Query query = new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(fileType);
@@ -211,7 +246,7 @@ public class IndexHandler {
         }
         
         
-        return null;
+        return result;
     }
     
     /**
@@ -242,10 +277,12 @@ public class IndexHandler {
      * for all searches.
      * 
      * @param results a ScoreDoc array containing the hits
-     * @return String results of the search
+     * @return a list of DocFile results of the search
      */
-    public String searchResponse(ScoreDoc[] results) {
-        
+    public DocFile[] searchResponse(ScoreDoc[] results) {
+
+        DocFile[] result = new DocFile[results.length];
+
         try {
             IndexReader reader = DirectoryReader.open(ramIndex);
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -254,13 +291,19 @@ public class IndexHandler {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
                 
-                System.out.println(document.get(Constants.INDEX_KEY_TITLE));
+                //System.out.println(document.get(Constants.INDEX_KEY_TITLE));
+                result[i] = new DocFile(
+                        document.get(Constants.INDEX_KEY_FILENAME),
+                        document.get(Constants.INDEX_KEY_TITLE),
+                        document.get(Constants.INDEX_KEY_OWNER),
+                        document.get(Constants.INDEX_KEY_PATH),
+                        document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
         
-        return null;
+        return result;
     }   
     
     
