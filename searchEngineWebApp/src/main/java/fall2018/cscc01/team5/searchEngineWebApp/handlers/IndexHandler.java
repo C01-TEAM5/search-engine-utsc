@@ -79,7 +79,6 @@ public class IndexHandler {
         Document newDocument = new Document();
 
         Field docIDField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
-        //Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field filenameField = new TextField(Constants.INDEX_KEY_FILENAME, newFile.getFilename(), Store.YES);
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
@@ -219,66 +218,6 @@ public class IndexHandler {
         BooleanQuery masterQuery = masterQueryBuilder.build();
 
         return searchResponse(searchExec(masterQuery));
-    }
-
-
-
-    /**
-     * Searches the index using the "Title" field with a provided
-     * query. Returns the results as a String to be shown to the user.
-     * 
-     * @param query
-     * @return String results of the search.
-     */
-    public String searchByTitle(String query) {
-        return null;
-        
-    }
-    
-    /**
-     * Searches the index using the Content field with the provided
-     * query. Returns the results as a String to be shown to the user.
-     * 
-     * @param query
-     * @return String results of the search.
-     */
-    public String searchByContent(String query) {
-        return null;
-    }
-    
-    /**
-     * Searches the index using the Owner field with the provided
-     * query. Returns the results as a String to be shown to the user.
-     * 
-     * @param query
-     * @return String results of the search.
-     */
-    public String searchByUser(String query) {
-        return null;
-    }
-    
-    /**
-     * Searches the index by File Type with the provided
-     * query. Returns the results as a String to be shown to the user.
-     * 
-     * @param fileType
-     * @return a list of DocFile of the search.
-     */
-    public DocFile[] searchByType(String fileType) {
-        
-        DocFile[] result = null;
-        
-        try {
-            Query query = new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(fileType);
-        
-            result = searchResponse(searchExec(query));
-            
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        
-        
-        return result;
     }
     
     /**
