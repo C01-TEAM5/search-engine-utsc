@@ -35,7 +35,9 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
@@ -51,8 +53,8 @@ public class IndexHandlerTest {
     private static DocFile pdfFile = null;
     private static DocFile docxFile = null;
     
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         indexHandler = new IndexHandler("");
         
         try {
@@ -63,8 +65,14 @@ public class IndexHandlerTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
     }
+    
+    @AfterClass
+    public static void cleanUp() {
+        indexHandler.closeWriter();
+        removeFiles();
+    }
+    
     
     private static void generateTxt() throws IOException {
         // txt file
@@ -126,7 +134,23 @@ public class IndexHandlerTest {
         docxFile = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);  
     }
     
-    /*
+    private static void removeFiles() {
+        
+        File text1 = new File("text1.txt");
+        text1.delete();
+
+        File html1 = new File("html1.html");
+        html1.delete();
+        
+        File pdf1 = new File("pdf1.pdf");
+        pdf1.delete();
+
+        File docx1 = new File("docx1.docx");
+        docx1.delete();
+    }
+    
+
+    
 	// null parameter testing
 	@Test
 	public void testIndexHandlerAddNull() {
@@ -137,7 +161,7 @@ public class IndexHandlerTest {
 		// size of search results should not change
 		assertEquals(expectedSize, search("hello").size());
 	}
-	
+	/*
 	@Test
 	public void testIndexHandlerUpdateNull() {
 		indexHandler.updateDoc(null);
