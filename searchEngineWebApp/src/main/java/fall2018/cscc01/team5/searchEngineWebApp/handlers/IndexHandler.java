@@ -71,7 +71,6 @@ public class IndexHandler {
         Document newDocument = new Document();
 
         Field docIDField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
-        //Field docIDField = new TextField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
         
@@ -92,18 +91,6 @@ public class IndexHandler {
     }
 
     /**
-     * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
-     * .docx, .html
-     *
-     * @param file the DocFile to check validity of
-     * @return boolean true if the DocFile is a valid extension
-     */
-    private boolean isValid (DocFile file) {
-
-        return Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
-    }
-
-    /**
      * Update the indexing of a file that is currently indexed. This method is called when a document is changed and
      * needs to be re-indexed.
      *
@@ -111,6 +98,11 @@ public class IndexHandler {
      */
     public void updateDoc (DocFile updatefile) {
 
+        // Check if the file extension is valid
+        if (!isValid(updatefile)) {
+            return;
+        }
+        
         // remove the file from the index and re-add it
         this.removeDoc(updatefile);
         this.addDoc(updatefile);
@@ -122,7 +114,12 @@ public class IndexHandler {
      * @param deletefile the object of the file to be removed from the index
      */
     public void removeDoc (DocFile deletefile) {
-    	
+
+        // Check if the file extension is valid
+        if (!isValid(deletefile)) {
+            return;
+        }
+        
     	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
 
     	//System.out.println("delete file: " + term.field() + " " + term.text());
@@ -132,7 +129,18 @@ public class IndexHandler {
 			writer.commit();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}   	
+		}
+    }
+    
+    /**
+     * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
+     * .docx, .html
+     *
+     * @param file the DocFile to check validity of
+     * @return boolean true if the DocFile is a valid extension
+     */
+    private boolean isValid (DocFile file) {
+        return file!= null && Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
     }
     
     
