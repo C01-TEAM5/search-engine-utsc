@@ -1,20 +1,13 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -122,10 +115,38 @@ public class IndexHandlerSearchTest {
     
     /**
      * Testing the title search functionality.
+     * @throws ParseException 
      * 
      */
     @Test
-    public void testTitleSearch() {
+    public void testTypeSearch() throws ParseException {
+        //Test searching an invalid type
+        String[] query = {".hello"};
+        String[] filter = {"Type"};
+        DocFile [] actualFiles = index.search(query, filter, true);
+        DocFile [] expectedFiles = {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test searching on txt
+        query = new String[]{".txt"};
+        filter = new String[]{"Type"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[]{docFiles.get(TXT1),docFiles.get(TXT2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test searching on html & pdf
+        query = new String[]{".html", ".pdf"};
+        filter = new String[]{"Type"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[]{docFiles.get(HTML1),docFiles.get(HTML2),docFiles.get(PDF1),docFiles.get(PDF2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test searching on docx
+        query = new String[]{".docx"};
+        filter = new String[]{"Type"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[]{docFiles.get(DOCX1),docFiles.get(DOCX2)};
+        assertArrayEquals(expectedFiles,actualFiles);
         
     }
     
@@ -172,6 +193,13 @@ public class IndexHandlerSearchTest {
         DocFile [] expectedFiles = {docFiles.get(HTML2),docFiles.get(HTML1),docFiles.get(TXT2)};
         assertArrayEquals(expectedFiles,actualFiles);
         
+        //Look for instances of baseball and monday being in Content or Title fields
+        query = new String[] {"baseball","monday"};
+        filter = new String[] {"Content", "Title"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[] {docFiles.get(HTML2),docFiles.get(PDF1),docFiles.get(HTML1),docFiles.get(TXT2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
         //Check case when Query is in Two of the three filters
         query = new String[] {"mark"};
         filter = new String[] {"Content", "Title", "Owner"};
@@ -193,6 +221,29 @@ public class IndexHandlerSearchTest {
         expectedFiles = new DocFile[] {docFiles.get(DOCX1)};
         assertArrayEquals(expectedFiles,actualFiles);
     }
+    
+    /**
+     * Test method to test expanded search.
+     * @throws ParseException 
+     * 
+     */
+    @Test
+    public void testPathSearch() throws ParseException {
+        
+        String[] query = {"html2.html"};
+        String[] filter = {"Path"};
+        DocFile [] actualFiles = index.search(query, filter, true);
+        DocFile [] expectedFiles = {docFiles.get(HTML2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+
+        query = new String[]{"html2.html", "pdf1.pdf"};
+        filter = new String[]{"Path"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[]{docFiles.get(HTML2),docFiles.get(PDF1)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+    }
+    
     
     /**
      * Remove the txt, html, docx and pdf files created
