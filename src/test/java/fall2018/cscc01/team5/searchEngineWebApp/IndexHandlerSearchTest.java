@@ -11,7 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -65,42 +68,55 @@ public class IndexHandlerSearchTest {
      * Test method to test out different types of content search.
      * 
      * @throws ParseException
+     * @throws IOException 
      */
     @Test
-    public void testContentSearch() throws ParseException {
-        
+    public void testContentSearch() throws ParseException, IOException {
+                
         //Test for content found in only one file
         String[] query = {"run"};
         String[] filter = {"Content"};
-        DocFile [] actualFiles = index.search(query, filter);
+        DocFile [] actualFiles = index.search(query, filter, false);
         DocFile [] expectedFiles = {docFiles.get(DOCX2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test empty search
+        query = new String[] {""};
+        actualFiles = index.search(query, filter, false);
+        expectedFiles = new DocFile[] {};
         assertArrayEquals(expectedFiles,actualFiles);
         
         //Test for content found in multiple files
         //Also checks case sensitivity
         //Ensure correct order
         query = new String[] {"baseball"};
-        actualFiles = index.search(query, filter);
+        actualFiles = index.search(query, filter, false);
         expectedFiles = new DocFile[]{docFiles.get(HTML2), docFiles.get(HTML1)};
         assertArrayEquals(expectedFiles,actualFiles);
         
         //Test for content across multiple different file types
         //Ensure correct order
         query = new String[] {"water"};
-        actualFiles = index.search(query, filter);
+        actualFiles = index.search(query, filter, false);
         expectedFiles = new DocFile[] {docFiles.get(PDF1),docFiles.get(TXT1)};
         assertArrayEquals(expectedFiles,actualFiles);
         
         //Test for content that doesn't exist in any files
         query = new String[] {"supercalifragulistic"};
-        actualFiles = index.search(query, filter);
+        actualFiles = index.search(query, filter, false);
         expectedFiles = new DocFile[] {};
         assertArrayEquals(expectedFiles,actualFiles);
         
         //Check to make sure HTML files are stripped properly
         query = new String[] {"html", "h1", "a href"};
-        actualFiles = index.search(query, filter);
+        actualFiles = index.search(query, filter, false);
         expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Check behaviour when multiple queries searched at once
+        query = new String[] {"dog", "cats"};
+        actualFiles = index.search(query, filter, false);
+        expectedFiles = new DocFile[] {docFiles.get(TXT1),docFiles.get(PDF2),docFiles.get(HTML1)};
         assertArrayEquals(expectedFiles,actualFiles);
     }
     
@@ -124,10 +140,58 @@ public class IndexHandlerSearchTest {
         //Look for instances of baseball being in Content and Title fields
         String[] query = {"baseball"};
         String[] filter = {"Content", "Title"};
-        DocFile [] actualFiles = index.search(query, filter);
+        DocFile [] actualFiles = index.search(query, filter, false);
         DocFile [] expectedFiles = {docFiles.get(HTML2)};
         assertArrayEquals(expectedFiles,actualFiles);
         
+        //Look for Elephants in both body and title (only happens in body)
+        query = new String[] {"elephants"};
+        actualFiles = index.search(query, filter, false);
+        expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Look for Spot in both body and title (only happens in title)
+        query = new String[] {"lost"};
+        actualFiles = index.search(query, filter, false);
+        expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+    }
+    
+    /**
+     * Test method to test expanded search.
+     * @throws ParseException 
+     * 
+     */
+    @Test
+    public void testExpandedSearch() throws ParseException {
+        //Look for instances of baseball being in Content or Title fields
+        String[] query = {"baseball"};
+        String[] filter = {"Content", "Title"};
+        DocFile [] actualFiles = index.search(query, filter, true);
+        DocFile [] expectedFiles = {docFiles.get(HTML2),docFiles.get(HTML1),docFiles.get(TXT2)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Check case when Query is in Two of the three filters
+        query = new String[] {"mark"};
+        filter = new String[] {"Content", "Title", "Owner"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[] {docFiles.get(HTML1),docFiles.get(PDF1)};
+        assertArrayEquals(expectedFiles,actualFiles);
+
+        //Check case when query is not in either filter
+        query = new String[] {"alice"};
+        filter = new String[] {"Content", "Title"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Check case when query is in the final filter
+        query = new String[] {"alice"};
+        filter = new String[] {"Content", "Title", "Owner"};
+        actualFiles = index.search(query, filter, true);
+        expectedFiles = new DocFile[] {docFiles.get(DOCX1)};
+        assertArrayEquals(expectedFiles,actualFiles);
     }
     
     /**
@@ -164,13 +228,13 @@ public class IndexHandlerSearchTest {
         
         BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
         writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
-        writer.write("<h1>I am a great singer who doesn't like baseball.</h1>");
+        writer.write("<h1>I am a great singer who doesn't like baseball but has a dog.</h1>");
         writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
         writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html1.html","Mark's CD","Mark","html1.html",false));
+        docFiles.add(new DocFile("html1.html","Mark CD","Mark","html1.html",false));
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
@@ -219,14 +283,14 @@ public class IndexHandlerSearchTest {
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
         contentStream.showText("My Dog Spot");
-        contentStream.showText("Here is my dog spot. He is missing.");
-        contentStream.showText("Call my phone number if you find him.");
+        contentStream.showText("Here is my dog spot. He is a missing dog.");
+        contentStream.showText("Call my phone number if you find him. I miss my dog.");
         contentStream.endText();
         contentStream.close();
          
         pdf2.save("pdf2.pdf");
         pdf2.close();
-        docFiles.add(new DocFile("pdf2.pdf","Spot","Alice","pdf2.pdf",true));
+        docFiles.add(new DocFile("pdf2.pdf","Spot Lost","Jane","pdf2.pdf",true));
         
     }
     
