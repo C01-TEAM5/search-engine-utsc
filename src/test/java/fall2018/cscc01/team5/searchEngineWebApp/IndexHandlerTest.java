@@ -317,6 +317,7 @@ public class IndexHandlerTest {
 	
 	
 	// boundary cases
+    /*
     @Test
 	public void testIndexHandlerUpdateNonExisting() {
 	    List<String> searchBefore = search("*");
@@ -329,6 +330,7 @@ public class IndexHandlerTest {
 		// titled document should still be found with no changes
 		assertTrue(searchBefore.equals(searchAfter));
 	}
+    */
 	
 	@Test
 	public void testIndexHandlerRemoveEmpty() {
