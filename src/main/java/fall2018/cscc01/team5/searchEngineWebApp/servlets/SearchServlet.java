@@ -29,10 +29,6 @@ public class SearchServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.getWriter().write("Show search result.");   // delete
         
-        Directory index = new RAMDirectory();
-        IndexReader reader = DirectoryReader.open(index);
-        IndexSearcher searcher = new IndexSearcher(reader);
-        
         // TODO: get query and filter
         // TODO: display result on web page, performSearch()
     }
