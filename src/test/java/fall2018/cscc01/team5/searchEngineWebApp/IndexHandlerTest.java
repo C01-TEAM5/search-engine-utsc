@@ -315,29 +315,31 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
 	
-	/*
-	// boundary cases
 	
+	// boundary cases
+    @Test
 	public void testIndexHandlerUpdateNonExisting() {
-		
-		indexHandler.updateDoc(file);
-		
+	    indexHandler.addDoc(txtFile);
+        List<String> searchBefore = search("*");
+
+        DocFile txtFile2 = new DocFile("text1.txt","Dog Story 2","Janice","text1.txt",true);
+        indexHandler.updateDoc(txtFile2);
+        List<String> searchAfter = search("*");
+
 		// should not be able to update a non-existing doc in the Index
 		// titled document should still be found with no changes
-		assertTrue(search("Hello World").contains("Title"));
+		assertTrue(searchBefore.equals(searchAfter));
 	}
 	
+	@Test
 	public void testIndexHandlerRemoveEmpty() {
-		
-    	// clear Lucene db ****
-		
-    	indexHandler.removeDoc(file);
+    	indexHandler.removeDoc(txtFile);
     	
     	// should not be able to remove a document from an empty db
-    	assertEquals(0, search("").size());
+    	assertEquals(0, search("*").size());
     }
     
-    */
+    
 
 	
 	/*
