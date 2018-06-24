@@ -319,8 +319,7 @@ public class IndexHandlerTest {
 	// boundary cases
     @Test
 	public void testIndexHandlerUpdateNonExisting() {
-	    indexHandler.addDoc(txtFile);
-        List<String> searchBefore = search("*");
+	    List<String> searchBefore = search("*");
 
         DocFile txtFile2 = new DocFile("text1.txt","Dog Story 2","Janice","text1.txt",true);
         indexHandler.updateDoc(txtFile2);
