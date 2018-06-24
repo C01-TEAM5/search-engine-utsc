@@ -1,6 +1,7 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -35,6 +37,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,8 +56,8 @@ public class IndexHandlerTest {
     private static DocFile pdfFile = null;
     private static DocFile docxFile = null;
     
-    @BeforeClass
-    public static void init() {
+    @Before
+    public void init() {
         indexHandler = new IndexHandler("");
         
         try {
@@ -66,8 +69,6 @@ public class IndexHandlerTest {
             
             // initial database
             indexHandler.commitWriter();
-            indexHandler.addDoc(txtFile);
-            indexHandler.addDoc(htmlFile);
             indexHandler.commitWriter();
             
         } catch (IOException e) {
@@ -75,8 +76,8 @@ public class IndexHandlerTest {
         }
     }
     
-    @AfterClass
-    public static void cleanUp() {
+    @After
+    public void cleanUp() {
         indexHandler.closeWriter();
         removeFiles();
     }
@@ -156,70 +157,103 @@ public class IndexHandlerTest {
         File docx1 = new File("docx1.docx");
         docx1.delete();
     }
-    
-
-
-    
-	// null parameter testing
-	@Test
-	public void testIndexHandlerAddNull() {
-		int expectedSize = search("*").size();
-		indexHandler.addDoc(null);
-		
-		// should not be able to add a null doc to the Index
-		// size of search results should not change
-		assertEquals(expectedSize, search("*").size());
-	}
-	@Test
-	public void testIndexHandlerUpdateNull() {
-		List<String> searchBefore = search("*");
-	    indexHandler.updateDoc(null);
-	    List<String> searchAfter = search("*");
-	    
-		// should not be able to update a null doc in the Index
-		// titled document should still be found with no changes
-		assertTrue(searchAfter.equals(searchBefore));		
-	}
 	
-	@Test
-	public void testIndexHandlerRemoveNull() {
-		int expectedSize = search("*").size();
-		indexHandler.removeDoc(null);
-
-		// should not be able to remove a null doc from the Index
-		// size of search results should not change
-		assertEquals(expectedSize, search("*").size());
-	}
 	
-	/*
 	// standard file types
     @Test
-	public void testIndexHandlerAdd() {
+	public void testIndexHandlerAddTxt() {
 		int expectedSize = search("*").size() + 1;
-		indexHandler.addDoc(docx);
+        indexHandler.addDoc(txtFile);
 		
 		// should successfully add the file and increase its size by 1
-		assertEquals(expectedSize, search("hello").size());
+		assertEquals(expectedSize, search("*").size());
 	}
-    
-    
-	@Test
-	public void testIndexHandlerUpdate() {
-		indexHandler.updateDoc(file);
-		assertTrue(search("Hello World").contains("OldTitle") &&
-				search("Hello World").contains("NewTitle"));
-	}
-
     @Test
-	public void testIndexHandlerRemove() {
-		int expectedSize = search("Hello World").size() - 1;
-		indexHandler.removeDoc(file);
+    public void testIndexHandlerAddHtml() {
+        int expectedSize = search("*").size() + 1;
+        indexHandler.addDoc(htmlFile);
+        
+        // should successfully add the file and increase its size by 1
+        assertEquals(expectedSize, search("*").size());
+    }
+    @Test
+    public void testIndexHandlerAddPdf() {
+        int expectedSize = search("*").size() + 1;
+        indexHandler.addDoc(pdfFile);
+        
+        // should successfully add the file and increase its size by 1
+        assertEquals(expectedSize, search("*").size());
+    }
+    @Test
+    public void testIndexHandlerAddDocx() {
+        int expectedSize = search("*").size() + 1;
+        indexHandler.addDoc(docxFile);
+        
+        // should successfully add the file and increase its size by 1
+        assertEquals(expectedSize, search("*").size());
+    }
+    
+    /*
+    @Test
+    public void testIndexHandlerUpdate() {
+        List<String> searchBefore = search("*");
+        indexHandler.updateDoc(txtFile);
+        List<String> searchAfter = search("*");
+        
+        // should successfully update the file and the lists should be different
+        assertFalse(searchAfter.equals(searchBefore));
+    }
+    */
+    
+    @Test
+    public void testIndexHandlerRemove() {
+        int expectedSize = search("*").size() - 1;
 
-		// should successfully remove the file and decrease its size by 1
-		assertEquals(expectedSize, search("Hello World").size());	
-	}
+        List<String> aa = search("*");
+        indexHandler.removeDoc(pdfFile);
+
+        List<String> bb = search("*");
+        // should successfully remove the file and decrease its size by 1
+        assertEquals(expectedSize, search("*").size());   
+    }
+    
+    
+    
+
+
 	
+	// null parameter testing
+    @Test
+    public void testIndexHandlerAddNull() {
+        int expectedSize = search("*").size();
+        indexHandler.addDoc(null);
+        
+        // should not be able to add a null doc to the Index
+        // size of search results should not change
+        assertEquals(expectedSize, search("*").size());
+    }
+    @Test
+    public void testIndexHandlerUpdateNull() {
+        List<String> searchBefore = search("*");
+        indexHandler.updateDoc(null);
+        List<String> searchAfter = search("*");
+        
+        // should not be able to update a null doc in the Index
+        // titled document should still be found with no changes
+        assertTrue(searchAfter.equals(searchBefore));       
+    }
+    
+    @Test
+    public void testIndexHandlerRemoveNull() {
+        int expectedSize = search("*").size();
+        indexHandler.removeDoc(null);
+
+        // should not be able to remove a null doc from the Index
+        // size of search results should not change
+        assertEquals(expectedSize, search("*").size());
+    }
 	
+	/*
 	// boundary cases
 	
 	public void testIndexHandlerUpdateNonExisting() {
