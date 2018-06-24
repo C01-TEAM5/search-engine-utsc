@@ -4,15 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import org.jsoup.Jsoup;
@@ -142,6 +147,7 @@ public class ContentGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         try {
             fileReader.close();
             BufferedFileReader.close();
@@ -160,7 +166,31 @@ public class ContentGenerator {
      * @param file the DocFile whose content is being added
      */
     private static void generateDocx (Document doc, DocFile file) {
+        
+        String filePath = file.getPath();
+        
+        try {
+            
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            XWPFDocument document = new XWPFDocument(fileInputStream);
+            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+            
+            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, extractor.getText(), Store.YES));
+            //System.out.println(extractor.getText());
+    
+            /*
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+            for (XWPFParagraph paragraph : paragraphs) {
+                doc.add(new TextField(Constants.INDEX_KEY_CONTENT, paragraph.getText(), Store.YES));
+                System.out.println(paragraph.getText());
+            }
+            */
 
+            fileInputStream.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
