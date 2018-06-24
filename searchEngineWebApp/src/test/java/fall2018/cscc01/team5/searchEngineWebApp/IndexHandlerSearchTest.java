@@ -1,6 +1,7 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -63,6 +64,7 @@ public class IndexHandlerSearchTest {
     @AfterClass
     public static void cleanUp() {
         
+        index.closeWriter();
         removeFiles();
         
     }
@@ -197,10 +199,10 @@ public class IndexHandlerSearchTest {
     }
     
     private static void removeFiles() {
-        
+               
         File text1 = new File("text1.txt");
         text1.delete();
-        
+
         File text2 = new File("text2.txt");
         text2.delete();
         
