@@ -8,6 +8,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.naming.NameNotFoundException;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -125,7 +127,7 @@ public class IndexHandler {
     public void updateDoc (DocFile updatefile) {
 
         // remove the file from the index and re-add it
-        this.removeDoc(updatefile);
+		this.removeDoc(updatefile);
         this.addDoc(updatefile);
     }
 
@@ -137,15 +139,45 @@ public class IndexHandler {
     public void removeDoc (DocFile deletefile) {
     	
     	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
-
     	//System.out.println("delete file: " + term.field() + " " + term.text());
     	
+    	// Check if path exists
+    	if  (pathExists(deletefile.getPath())) {
+    		// remove doc if exits
+        	try {
+    			writer.deleteDocuments(term);
+    			writer.commit();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		} 
+    	}
+    	return;
+    		  	
+    }
+    
+    
+    /** 
+     * Check if the path exists in Index Dir. 
+     * 
+     * @param path the path to check if it exists in Index Directory.
+     * @return true if it exists. Otherwise return false.
+     */
+    public boolean pathExists(String path) {
+    	
+    	String[] searchpath = {Constants.INDEX_KEY_PATH};
+    	DocFile[] result = null;
+    	String[] arg = {path};
+		
     	try {
-			writer.deleteDocuments(term);
-			writer.commit();
-		} catch (IOException e) {
+			result = search(arg, searchpath, true);
+		} catch (ParseException e) {
 			e.printStackTrace();
-		}   	
+		}
+		
+		if (result.length == 0) {
+			return false;
+		}
+		return true;
     }
     
     
