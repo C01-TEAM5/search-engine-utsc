@@ -142,6 +142,13 @@ public class ContentGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            fileReader.close();
+            BufferedFileReader.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
