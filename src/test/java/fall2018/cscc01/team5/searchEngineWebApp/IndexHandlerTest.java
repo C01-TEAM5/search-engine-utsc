@@ -3,6 +3,10 @@ package fall2018.cscc01.team5.searchEngineWebApp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,13 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,11 +46,84 @@ public class IndexHandlerTest {
 	
     private static IndexHandler indexHandler = null; 
     private static DocFile file = null;
+    private static DocFile txtFile = null;
+    private static DocFile htmlFile = null;
+    private static DocFile pdfFile = null;
+    private static DocFile docxFile = null;
     
     @Before
     public void init() {
         indexHandler = new IndexHandler("");
-        //file = new DocFile("hello.txt","hello","Chris","C:\\Users\\chrischow\\Documents\\hello.txt",false);
+        
+        try {
+            generateTxt();
+            generateHtml();
+            generatePdf();
+            generateDocx();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+    }
+    
+    private static void generateTxt() throws IOException {
+        // txt file
+        BufferedWriter writer = new BufferedWriter(new FileWriter("text1.txt"));
+        writer.write("The dog runs fast.\n");
+        writer.write("Cats don't like water.\n");
+        writer.write("Elephants remember everything.");
+        writer.close();
+        txtFile = new DocFile("text1.txt","Dog Story","Janice","text1.txt",true);
+    }
+    private static void generateHtml() throws IOException {
+        // html file
+        BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
+        writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
+        writer.write("<h1>I am a great singer who doesn't like baseball.</h1>");
+        writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
+        writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
+        writer.write("<p>I hate baseball.</p>");
+        writer.write("</body></html>");
+        writer.close();
+        htmlFile = new DocFile("html1.html","Mark's CD","Mark","html1.html",false);
+    }
+    private static void generatePdf() throws IOException {        
+        // pdf file
+        System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+        
+        PDDocument pdf1 = new PDDocument();
+        PDPage p1 = new PDPage();
+        pdf1.addPage(p1);
+         
+        PDPageContentStream contentStream = new PDPageContentStream(pdf1, p1);
+         
+        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.beginText();
+        contentStream.showText("Come to the water trade show!");
+        contentStream.showText("Monday to Friday from 9 AM to 6 PM. Free water.");
+        contentStream.endText();
+        contentStream.close();
+         
+        pdf1.save("pdf1.pdf");
+        pdf1.close();
+        pdfFile = new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true); 
+    }
+    private static void generateDocx() throws IOException {
+        // docx file
+        XWPFDocument docx1 = new XWPFDocument();
+        File loadFile = new File("docx1.docx");
+        FileOutputStream stream = new FileOutputStream(loadFile);
+        
+        //Create new paragraph
+        XWPFParagraph paragraph = docx1.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.setText("My essay\n" + "Shakespeare writes very good books. My favourite" +
+                " part of his stories is that they are all very different." + 
+                " Some of his stories are sad and others are very happy and funny.");
+        
+        docx1.write(stream);
+        stream.close();
+        docxFile = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);  
     }
     
     /*
