@@ -180,10 +180,27 @@ public class IndexHandler {
      *
      * @param queries a list of String queries
      * @param filters a list of String filters (list of Contants.INDEX_KEY*)
+     * @param expandedSearch if true filters will be used as additions to the search results, otherwise
+     *                       filters will further narrow down a search
      * @return a list of DocFile that matches all queries and filters
      */
-    public DocFile[] search(String[] queries, String[] filters) throws ParseException {
+    public DocFile[] search(String[] queries, String[] filters, boolean expandedSearch) throws ParseException {
 
+        if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
+        else return search(queries, filters, BooleanClause.Occur.MUST);
+    }
+
+    /**
+     * Accept a list of queries and filters and return a list of DocFile that
+     * matches
+     *
+     * @param queries a list of String queries
+     * @param filters a list of String filters (list of Contants.INDEX_KEY*)
+     * @param filterOccur if Occur.SHOULD filters will be used as additions to the search results, otherwise, if
+     *                       Occur.MUST filters will further narrow down a search
+     * @return a list of DocFile that matches all queries and filters
+     */
+    private DocFile[] search(String[] queries, String[] filters, BooleanClause.Occur filterOccur) throws ParseException {
         // create a master query builder
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
         // loop through all queries
@@ -193,7 +210,7 @@ public class IndexHandler {
             // loop through all filters
             for (String filter : filters) {
                 Query parsedQ = new QueryParser(filter, analyzer).parse(query);
-                queryBuilder.add(parsedQ, BooleanClause.Occur.MUST);
+                queryBuilder.add(parsedQ, filterOccur);
             }
             masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
         }
