@@ -62,6 +62,14 @@ public class IndexHandlerTest {
             generateHtml();
             generatePdf();
             generateDocx();
+            
+            
+            // initial database
+            indexHandler.commitWriter();
+            indexHandler.addDoc(txtFile);
+            indexHandler.addDoc(htmlFile);
+            indexHandler.commitWriter();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,44 +158,45 @@ public class IndexHandlerTest {
     }
     
 
+
     
 	// null parameter testing
 	@Test
 	public void testIndexHandlerAddNull() {
-		int expectedSize = search("hello").size();
+		int expectedSize = search("*").size();
 		indexHandler.addDoc(null);
-
+		
 		// should not be able to add a null doc to the Index
 		// size of search results should not change
-		assertEquals(expectedSize, search("hello").size());
+		assertEquals(expectedSize, search("*").size());
 	}
-	/*
 	@Test
 	public void testIndexHandlerUpdateNull() {
-		indexHandler.updateDoc(null);
-		
+		List<String> searchBefore = search("*");
+	    indexHandler.updateDoc(null);
+	    List<String> searchAfter = search("*");
+	    
 		// should not be able to update a null doc in the Index
 		// titled document should still be found with no changes
-		assertTrue(search("hello").contains("hello"));		
+		assertTrue(searchAfter.equals(searchBefore));		
 	}
 	
 	@Test
 	public void testIndexHandlerRemoveNull() {
-		int expectedSize = search("hello").size();
+		int expectedSize = search("*").size();
 		indexHandler.removeDoc(null);
 
 		// should not be able to remove a null doc from the Index
 		// size of search results should not change
-		assertEquals(expectedSize, search("hello").size());
+		assertEquals(expectedSize, search("*").size());
 	}
 	
-	
+	/*
 	// standard file types
     @Test
 	public void testIndexHandlerAdd() {
-		int expectedSize = search("hello").size() + 1;
-		indexHandler.addDoc(file);
-		int aa = search("hello").size();
+		int expectedSize = search("*").size() + 1;
+		indexHandler.addDoc(docx);
 		
 		// should successfully add the file and increase its size by 1
 		assertEquals(expectedSize, search("hello").size());
@@ -247,7 +256,10 @@ public class IndexHandlerTest {
 		try {
 		    indexHandler.commitWriter();
 			// create a query from user's query search
-			Query q = new QueryParser(Constants.INDEX_KEY_TITLE, indexHandler.getAnalyzer()).parse(query);
+			QueryParser parser= new QueryParser(Constants.INDEX_KEY_TITLE, indexHandler.getAnalyzer());
+			parser.setAllowLeadingWildcard(true);
+			Query q = parser.parse(query);
+
 			
 			// get search results
 	        int hitsPerPage = 10;
