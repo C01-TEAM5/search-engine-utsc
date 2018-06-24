@@ -173,18 +173,18 @@ public class ContentGenerator {
             
             FileInputStream fileInputStream = new FileInputStream(filePath);
             XWPFDocument document = new XWPFDocument(fileInputStream);
-            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             
+            //XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+            /*
             doc.add(new TextField(Constants.INDEX_KEY_CONTENT, extractor.getText(), Store.YES));
             //System.out.println(extractor.getText());
-    
-            /*
+            */
+            
             List<XWPFParagraph> paragraphs = document.getParagraphs();
             for (XWPFParagraph paragraph : paragraphs) {
                 doc.add(new TextField(Constants.INDEX_KEY_CONTENT, paragraph.getText(), Store.YES));
-                System.out.println(paragraph.getText());
             }
-            */
+            
 
             fileInputStream.close();
             
