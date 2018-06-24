@@ -19,7 +19,7 @@ public class DocFile {
 
         this.filename = filename;
         this.isPublic = isPublic;
-        this.courseCode = null;
+        this.courseCode = "None";
         this.owner = owner;
         this.path = path;
         this.title = title;
@@ -142,11 +142,11 @@ public class DocFile {
 
         String result = "DocFile [" +
                 "filename: " + filename +
-                "owner: " + owner +
-                "title: " + title +
-                "path: " + path +
-                "course code: " + courseCode +
-                "public status: " + isPublic +
+                ", owner: " + owner +
+                ", title: " + title +
+                ", path: " + path +
+                ", course code: " + courseCode +
+                ", public status: " + isPublic +
                 "]";
 
         return result;

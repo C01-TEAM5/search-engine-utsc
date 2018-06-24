@@ -1,5 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
@@ -8,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -26,6 +30,14 @@ public class IndexHandlerSearchTest {
     
     private static IndexHandler index = new IndexHandler("test");
     private static ArrayList<DocFile> docFiles = new ArrayList<DocFile>();
+    public static final int TXT1 = 0;
+    public static final int TXT2 = 1;
+    public static final int HTML1 = 2;
+    public static final int HTML2 = 3;
+    public static final int PDF1 = 4;
+    public static final int PDF2 = 5;
+    public static final int DOCX1 = 6;
+    public static final int DOCX2 = 7;
     
     /**
      * Set up the required txt, html, docx and pdf files.
@@ -49,10 +61,72 @@ public class IndexHandlerSearchTest {
         
     }
     
+    /**
+     * Test method to test out different types of content search.
+     * 
+     * @throws ParseException
+     */
     @Test
-    public void testSearch() {
+    public void testContentSearch() throws ParseException {
         
+        //Test for content found in only one file
+        String[] query = {"run"};
+        String[] filter = {"Content"};
+        DocFile [] actualFiles = index.search(query, filter);
+        DocFile [] expectedFiles = {docFiles.get(DOCX2)};
+        assertArrayEquals(expectedFiles,actualFiles);
         
+        //Test for content found in multiple files
+        //Also checks case sensitivity
+        //Ensure correct order
+        query = new String[] {"baseball"};
+        actualFiles = index.search(query, filter);
+        expectedFiles = new DocFile[]{docFiles.get(HTML2), docFiles.get(HTML1)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test for content across multiple different file types
+        //Ensure correct order
+        query = new String[] {"water"};
+        actualFiles = index.search(query, filter);
+        expectedFiles = new DocFile[] {docFiles.get(PDF1),docFiles.get(TXT1)};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Test for content that doesn't exist in any files
+        query = new String[] {"supercalifragulistic"};
+        actualFiles = index.search(query, filter);
+        expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+        
+        //Check to make sure HTML files are stripped properly
+        query = new String[] {"html", "h1", "a href"};
+        actualFiles = index.search(query, filter);
+        expectedFiles = new DocFile[] {};
+        assertArrayEquals(expectedFiles,actualFiles);
+    }
+    
+    /**
+     * Testing the title search functionality.
+     * 
+     */
+    @Test
+    public void testTitleSearch() {
+        
+    }
+    
+    
+    /**
+     * Test method to test searching across multiple filters at once.
+     * @throws ParseException 
+     */
+    @Test
+    public void testMultipleFilterSearch() throws ParseException {
+        
+        //Look for instances of baseball being in Content and Title fields
+        String[] query = {"baseball"};
+        String[] filter = {"Content", "Title"};
+        DocFile [] actualFiles = index.search(query, filter);
+        DocFile [] expectedFiles = {docFiles.get(HTML2)};
+        assertArrayEquals(expectedFiles,actualFiles);
         
     }
     
@@ -82,30 +156,30 @@ public class IndexHandlerSearchTest {
         writer.write("When my computer runs, it makes a loud noise.\n");
         writer.write("It runs all day and all night, I should turn it off.");
         writer.close();
-        docFiles.add(new DocFile("text2.txt","Computer Story","Adam","text2.txt",false));
+        docFiles.add(new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false));
         
     }
     
     private static void generateHtmlFiles() throws IOException {
         
         BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
-        writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
-        writer.write("<h1>We are the best team in the league</h1>");
-        writer.write("<a href=\"https://www.myteam.com\">See our team jersey!</a>");
-        writer.write("<p>We are going to win the championship.</p>");
-        writer.write("</body></html>");
-        writer.close();
-        docFiles.add(new DocFile("html1.html","Baseball Team","Naomi","html1.html",false));
-        
-        writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
-        writer.write("<h1>I am a great singer.</h1>");
+        writer.write("<h1>I am a great singer who doesn't like baseball.</h1>");
         writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
         writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html2.html","Mark's CD","Mark","html2.html",true));
+        docFiles.add(new DocFile("html1.html","Mark's CD","Mark","html1.html",false));
+        
+        writer = new BufferedWriter(new FileWriter("html2.html"));
+        writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
+        writer.write("<h1>We are the best baseball team in the league</h1>");
+        writer.write("<a href=\"https://www.myteam.com\">See our team jersey!</a>");
+        writer.write("<p>We are going to win the championship.</p>");
+        writer.write("</body></html>");
+        writer.close();
+        docFiles.add(new DocFile("html2.html","My Baseball Team","Naomi","html2.html",true));
         
     }
     
@@ -127,8 +201,8 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("Come to the trade show!");
-        contentStream.showText("Monday to Friday from 9 AM to 6 PM");
+        contentStream.showText("Come to the water trade show!");
+        contentStream.showText("Monday to Friday from 9 AM to 6 PM. Free water.");
         contentStream.endText();
         contentStream.close();
          
