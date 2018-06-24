@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -17,7 +18,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+
 public class IndexHandlerSearchTest {
+    
+    private static IndexHandler index = new IndexHandler("test");
+    private static ArrayList<DocFile> docFiles = new ArrayList<DocFile>();
     
     /**
      * Set up the required txt, html, docx and pdf files.
@@ -34,10 +41,17 @@ public class IndexHandlerSearchTest {
         generatePdfFiles();
         generateDocxFiles();
         
+        for (DocFile docFile:docFiles) {
+            index.addDoc(docFile);
+        }
+        
+        
     }
     
     @Test
-    public void testSearchByType() {
+    public void testSearch() {
+        
+        
         
     }
     
@@ -60,11 +74,13 @@ public class IndexHandlerSearchTest {
         writer.write("Cats don't like water.\n");
         writer.write("Elephants remember everything.");
         writer.close();
-
+        docFiles.add(new DocFile("text1.txt","Dog Story","Janice","text1.txt",true));
+        
         writer = new BufferedWriter(new FileWriter("text2.txt"));
         writer.write("When my computer runs, it makes a loud noise.\n");
         writer.write("It runs all day and all night, I should turn it off.");
         writer.close();
+        docFiles.add(new DocFile("text2.txt","Computer Story","Adam","text2.txt",false));
         
     }
     
@@ -77,6 +93,7 @@ public class IndexHandlerSearchTest {
         writer.write("<p>We are going to win the championship.</p>");
         writer.write("</body></html>");
         writer.close();
+        docFiles.add(new DocFile("html1.html","Baseball Team","Naomi","html1.html",false));
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
@@ -86,6 +103,7 @@ public class IndexHandlerSearchTest {
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
+        docFiles.add(new DocFile("html2.html","Mark's CD","Mark","html2.html",true));
         
     }
     
@@ -114,6 +132,7 @@ public class IndexHandlerSearchTest {
          
         pdf1.save("pdf1.pdf");
         pdf1.close();
+        docFiles.add(new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true));
         
         PDDocument pdf2 = new PDDocument();
         PDPage p2 = new PDPage();
@@ -131,6 +150,7 @@ public class IndexHandlerSearchTest {
          
         pdf2.save("pdf2.pdf");
         pdf2.close();
+        docFiles.add(new DocFile("pdf2.pdf","Spot","Alice","pdf2.pdf",true));
         
     }
     
@@ -157,6 +177,7 @@ public class IndexHandlerSearchTest {
         
         docx1.write(stream);
         stream.close();
+        docFiles.add(new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true));
         
         XWPFDocument docx2 = new XWPFDocument();
         loadFile = new File("docx2.docx");
@@ -172,6 +193,7 @@ public class IndexHandlerSearchTest {
         
         docx2.write(stream);
         stream.close();
+        docFiles.add(new DocFile("docx2.docx","My Running Story","Adam","docx2.docx",true));
     }
     
     private static void removeFiles() {
