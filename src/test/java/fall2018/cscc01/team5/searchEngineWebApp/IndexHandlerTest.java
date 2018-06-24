@@ -68,8 +68,6 @@ public class IndexHandlerTest {
             
             
             // initial database
-            indexHandler.commitWriter();
-            indexHandler.commitWriter();
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,6 +154,7 @@ public class IndexHandlerTest {
 
         File docx1 = new File("docx1.docx");
         docx1.delete();
+
     }
 	
 	
@@ -169,6 +168,29 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("*").size());
 	}
     @Test
+    public void testIndexHandlerUpdateTxt() {
+        indexHandler.addDoc(txtFile);
+        List<String> searchBefore = search("*");
+
+        DocFile txtFile2 = new DocFile("text1.txt","Dog Story 2","Janice","text1.txt",true);
+        indexHandler.updateDoc(txtFile2);
+        List<String> searchAfter = search("*");
+        
+        // should successfully update the file and the lists should be different
+        assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
+    }
+    @Test
+    public void testIndexHandlerRemoveTxt() {
+        indexHandler.addDoc(txtFile);
+        int expectedSize = search("*").size() - 1;
+        indexHandler.removeDoc(txtFile);
+
+        // should successfully remove the file and decrease its size by 1
+        assertEquals(expectedSize, search("*").size());   
+    }
+    
+    
+    @Test
     public void testIndexHandlerAddHtml() {
         int expectedSize = search("*").size() + 1;
         indexHandler.addDoc(htmlFile);
@@ -176,6 +198,29 @@ public class IndexHandlerTest {
         // should successfully add the file and increase its size by 1
         assertEquals(expectedSize, search("*").size());
     }
+    @Test
+    public void testIndexHandlerUpdateHtml() {
+        indexHandler.addDoc(htmlFile);
+        List<String> searchBefore = search("*");
+
+        DocFile htmlFile2 = new DocFile("html1.html","Mark's CD 2","Mark","html1.html",false);
+        indexHandler.updateDoc(htmlFile2);
+        List<String> searchAfter = search("*");
+        
+        // should successfully update the file and the lists should be different
+        assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
+    }
+    @Test
+    public void testIndexHandlerRemoveHtml() {
+        indexHandler.addDoc(htmlFile);
+        int expectedSize = search("*").size() - 1;
+        indexHandler.removeDoc(htmlFile);
+
+        // should successfully remove the file and decrease its size by 1
+        assertEquals(expectedSize, search("*").size());   
+    }
+    
+    
     @Test
     public void testIndexHandlerAddPdf() {
         int expectedSize = search("*").size() + 1;
@@ -185,6 +230,30 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
+    public void testIndexHandlerUpdatePdf() {
+        indexHandler.addDoc(pdfFile);
+        List<String> searchBefore = search("*");
+
+        DocFile pdfFile2 = new DocFile("pdf1.pdf","The Trade Show2","Mark","pdf1.pdf",true);
+        indexHandler.updateDoc(pdfFile2);
+        List<String> searchAfter = search("*");
+        
+        // should successfully update the file and the lists should be different
+        assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
+    }
+    @Test
+    public void testIndexHandlerRemovePdf() {
+        indexHandler.addDoc(pdfFile);
+        int expectedSize = search("*").size() - 1;
+        indexHandler.removeDoc(pdfFile);
+
+        // should successfully remove the file and decrease its size by 1
+        assertEquals(expectedSize, search("*").size());   
+    }
+    
+    
+    
+    @Test
     public void testIndexHandlerAddDocx() {
         int expectedSize = search("*").size() + 1;
         indexHandler.addDoc(docxFile);
@@ -192,36 +261,29 @@ public class IndexHandlerTest {
         // should successfully add the file and increase its size by 1
         assertEquals(expectedSize, search("*").size());
     }
-    
-    /*
     @Test
-    public void testIndexHandlerUpdate() {
+    public void testIndexHandlerUpdateDocx() {
+        indexHandler.addDoc(docxFile);
         List<String> searchBefore = search("*");
-        indexHandler.updateDoc(txtFile);
+
+        DocFile docxFile2 = new DocFile("docx1.docx","Shakespeare's Books2","Alice","docx1.docx",true);
+        indexHandler.updateDoc(docxFile2);
         List<String> searchAfter = search("*");
         
         // should successfully update the file and the lists should be different
-        assertFalse(searchAfter.equals(searchBefore));
+        assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
     }
-    */
-    
     @Test
-    public void testIndexHandlerRemove() {
+    public void testIndexHandlerRemoveDocx() {
+        indexHandler.addDoc(docxFile);
         int expectedSize = search("*").size() - 1;
+        indexHandler.removeDoc(docxFile);
 
-        List<String> aa = search("*");
-        indexHandler.removeDoc(pdfFile);
-
-        List<String> bb = search("*");
         // should successfully remove the file and decrease its size by 1
         assertEquals(expectedSize, search("*").size());   
     }
     
     
-    
-
-
-	
 	// null parameter testing
     @Test
     public void testIndexHandlerAddNull() {
