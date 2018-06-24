@@ -16,8 +16,10 @@ import java.io.FileInputStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import org.jsoup.Jsoup;
@@ -165,18 +167,23 @@ public class ContentGenerator {
             
             FileInputStream fileInputStream = new FileInputStream(filePath);
             XWPFDocument document = new XWPFDocument(fileInputStream);
-            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-            
-            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, extractor.getText(), Store.YES));
-            //System.out.println(extractor.getText());
-    
-            /*
-            List<XWPFParagraph> paragraphs = document.getParagraphs();
-            for (XWPFParagraph paragraph : paragraphs) {
-                doc.add(new TextField(Constants.INDEX_KEY_CONTENT, paragraph.getText(), Store.YES));
-                System.out.println(paragraph.getText());
+
+            // includes only body text (i.e paragraphs and tables)
+            List<IBodyElement> bodyElement = document.getBodyElements();
+            for (IBodyElement element : bodyElement) {
+                
+                // for body text
+                if (element instanceof XWPFParagraph) {
+                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFParagraph) element).getText(), Store.YES));
+                    //System.out.println(((XWPFParagraph) element).getText());
+                    
+                // for body tables
+                } else if (element instanceof XWPFTable) {
+                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFTable) element).getText(), Store.YES));
+                    //System.out.println(((XWPFTable) element).getText());
+                    
+                }
             }
-            */
 
             fileInputStream.close();
             

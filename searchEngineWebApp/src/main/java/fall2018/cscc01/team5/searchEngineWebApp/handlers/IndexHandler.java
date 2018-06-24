@@ -14,6 +14,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -88,18 +89,6 @@ public class IndexHandler {
     }
 
     /**
-     * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
-     * .docx, .html
-     *
-     * @param file the DocFile to check validity of
-     * @return boolean true if the DocFile is a valid extension
-     */
-    private boolean isValid (DocFile file) {
-
-        return Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
-    }
-
-    /**
      * Update the indexing of a file that is currently indexed. This method is called when a document is changed and
      * needs to be re-indexed.
      *
@@ -118,7 +107,34 @@ public class IndexHandler {
      * @param deletefile the object of the file to be removed from the index
      */
     public void removeDoc (DocFile deletefile) {
+        
+        // Check if the file extension is valid
+        if (!isValid(deletefile)) {
+            return;
+        }
+        
+        Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
 
+        //System.out.println("delete file: " + term.field() + " " + term.text());
+        
+        try {
+            writer.deleteDocuments(term);
+            writer.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }  
+    }
+    
+    /**
+     * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
+     * .docx, .html
+     *
+     * @param file the DocFile to check validity of
+     * @return boolean true if the DocFile is a valid extension
+     */
+    private boolean isValid (DocFile file) {
+        
+        return file!= null && Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
     }
     
     
