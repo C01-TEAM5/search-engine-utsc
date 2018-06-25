@@ -253,10 +253,12 @@ public class IndexHandler {
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
         // loop through all queries
         for (String query: queries) {
+            if (query.equals("")) continue;
             // create a boolean query for the each query
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
             // loop through all filters
             for (String filter : filters) {
+                if (filter.equals("")) continue;
                 Query parsedQ = new QueryParser(filter, analyzer).parse(query);
                 queryBuilder.add(parsedQ, filterOccur);
             }

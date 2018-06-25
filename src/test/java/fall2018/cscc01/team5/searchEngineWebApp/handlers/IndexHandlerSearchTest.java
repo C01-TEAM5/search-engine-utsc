@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp;
+package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import static org.junit.Assert.assertArrayEquals;
 import java.io.BufferedWriter;
