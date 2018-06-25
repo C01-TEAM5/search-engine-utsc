@@ -307,12 +307,12 @@ public class IndexHandlerTest {
 	
 	
 	// boundary cases
-    /*
+
     @Test
 	public void testIndexHandlerUpdateNonExisting() {
 	    List<String> searchBefore = search("*");
 
-        DocFile txtFile2 = new DocFile("text1.txt","Dog Story 2","Janice","text1.txt",true);
+        DocFile txtFile2 = new DocFile("textNonExistingFile.txt","Dog Story 2","Janice","textNonExistingFile.txt",true);
         indexHandler.updateDoc(txtFile2);
         List<String> searchAfter = search("*");
 
@@ -320,7 +320,7 @@ public class IndexHandlerTest {
 		// titled document should still be found with no changes
 		assertTrue(searchBefore.equals(searchAfter));
 	}
-    */
+
 	
 	@Test
 	public void testIndexHandlerRemoveEmpty() {
