@@ -1,10 +1,12 @@
 package fall2018.cscc01.team5.searchEngineWebApp;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-public class DocFileTest extends TestCase {
+public class DocFileTest {
 	
+    @Test
 	public void testGetFileType () {
 		
 		DocFile testFile = new DocFile("hello","Hello","Chris","C:\\hello",false);
