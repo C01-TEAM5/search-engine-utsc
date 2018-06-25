@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.dom4j.DocumentException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class IndexHandlerSearchTest {
      * @throws DocumentException 
      */
     @BeforeClass
-    public static void indexSetup() throws IOException {
+    public static void indexSetup() throws IOException, DocumentException {
         
         generateTxtFiles();
         generateHtmlFiles();
@@ -230,13 +231,13 @@ public class IndexHandlerSearchTest {
     @Test
     public void testPathSearch() throws ParseException {
         
-        String[] query = {"html2.html"};
+        String[] query = {"*html2.html"};
         String[] filter = {"Path"};
         DocFile [] actualFiles = index.search(query, filter, true);
         DocFile [] expectedFiles = {docFiles.get(HTML2)};
         assertArrayEquals(expectedFiles,actualFiles);
 
-        query = new String[]{"html2.html", "pdf1.pdf"};
+        query = new String[]{"*html2.html", "*pdf1.pdf"};
         filter = new String[]{"Path"};
         actualFiles = index.search(query, filter, true);
         expectedFiles = new DocFile[]{docFiles.get(HTML2),docFiles.get(PDF1)};
