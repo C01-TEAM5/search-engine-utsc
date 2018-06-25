@@ -149,7 +149,15 @@ public class ContentGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
+        try {
+            fileReader.close();
+            BufferedFileReader.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -160,36 +168,32 @@ public class ContentGenerator {
      * @param file the DocFile whose content is being added
      */
     private static void generateDocx (Document doc, DocFile file) {
-        
+
         String filePath = file.getPath();
-        
+
         try {
-            
+
             FileInputStream fileInputStream = new FileInputStream(filePath);
             XWPFDocument document = new XWPFDocument(fileInputStream);
-
             // includes only body text (i.e paragraphs and tables)
             List<IBodyElement> bodyElement = document.getBodyElements();
             for (IBodyElement element : bodyElement) {
-                
+
                 // for body text
                 if (element instanceof XWPFParagraph) {
                     doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFParagraph) element).getText(), Store.YES));
-                    //System.out.println(((XWPFParagraph) element).getText());
-                    
-                // for body tables
+
+                    // for body tables
                 } else if (element instanceof XWPFTable) {
                     doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFTable) element).getText(), Store.YES));
-                    //System.out.println(((XWPFTable) element).getText());
-                    
+
                 }
             }
 
             fileInputStream.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
