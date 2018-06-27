@@ -5,22 +5,48 @@
     <meta charset="UTF-8">
     <title>UTSC Document Search</title>
 </head>
-<body>
+<body>    
     <div id="search-background"></div>
     
     <div class="header">
         <img src="./media/utscblue-300x132.png" />
-        <div class = "header-choices">
-            <a href="http://www.google.com">Sign In</a>
+        <div class= "header-choices">
+            <a href="">Sign In</a>
             <a href="">Register</a>
         </div>
     </div>
 
-    <form>
-        <div class ="search-bar">
-            <input type="search">
-        </div>
-    </form>
+    <div class = "search-form">
+        <form>
+            <div class="uploader-filter">
+                <button type="button">All</button>
+                <button type="button">Instructor</button>
+                <button type="button">Student</button>
+            </div>
+            <input type="search" placeholder="Search a keyword">
+            <button type="submit">Go</button> 
+            <br>       
+            <div class="search-check">
+                <input type="checkbox" id="txt">
+                <label for="txt">.txt</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="pdf">
+                <label for="pdf">.pdf</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="html">
+                <label for="html">.html</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="docx">
+                <label for="docx">.docx</label>
+            </div>
+        </form>
+    </div>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 </body>
