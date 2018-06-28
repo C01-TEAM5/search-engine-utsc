@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -38,8 +39,7 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) 
             throws ServletException, IOException {
-        throw new ServletException("GET method used with " +
-                getClass().getName()+": POST method required.");
+        //throw new ServletException("GET method used with " + getClass().getName()+": POST method required.");
      }
     
     @Override
@@ -53,31 +53,35 @@ public class UploadServlet extends HttpServlet {
         
         // empty return
         if( !isMultipart ) {
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet upload</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<p>No file uploaded</p>"); 
-            out.println("</body>");
-            out.println("</html>");
             return;
          }
         
+        
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        
-        // maximum size that will be stored in memory
-        factory.setSizeThreshold(maxMemSize);
-     
-        // Location to save data that is larger than maxMemSize.
-        factory.setRepository(new File("c:\\temp"));
-
-        // Create a new file upload handler
+        factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
         ServletFileUpload upload = new ServletFileUpload(factory);
-     
-        // maximum file size to be uploaded.
-        upload.setSizeMax( maxFileSize );
+        upload.setSizeMax(maxFileSize); // maximum file size to be uploaded.
         
+        try {
+            // parse multiple files   
+            List items = upload.parseRequest(req);
+            Iterator itemIterator  = items.iterator();
+            
+            while (itemIterator.hasNext()) {
+                FileItem item = (FileItem) itemIterator.next();
+                
+                // gets file data
+                if (!item.isFormField()) {
+                    
+                }
+                
+            }   
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        /*
         try { 
             // Parse the request to get file items.
             List fileItems = upload.parseRequest(req);
@@ -116,6 +120,7 @@ public class UploadServlet extends HttpServlet {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        */
     }
     
     
