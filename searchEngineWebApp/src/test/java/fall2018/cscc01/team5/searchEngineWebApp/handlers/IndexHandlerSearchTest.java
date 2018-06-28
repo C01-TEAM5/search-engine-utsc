@@ -25,7 +25,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
 public class IndexHandlerSearchTest {
     
-    private static IndexHandler index = new IndexHandler("test");
+    private static IndexHandler index = IndexHandler.getInstance();
     private static ArrayList<DocFile> docFiles = new ArrayList<DocFile>();
     public static final int TXT1 = 0;
     public static final int TXT2 = 1;
