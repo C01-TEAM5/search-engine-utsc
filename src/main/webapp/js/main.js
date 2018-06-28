@@ -20,13 +20,21 @@
             event.preventDefault();
 
             var filterList = [];
-
+            const expandSearch = true;
             const searchQuery = search.value;
+
+            if (expandSearch) {filterList.push("eSrch")}
             if (searchTxt.checked) {filterList.push("sTxt")}
             if (searchPdf.checked) {filterList.push("sPdf")}
             if (searchHtml.checked) {filterList.push("sHtml")}
             if (searchDocx.checked) {filterList.push("sDocx")}
-            api.search(searchQuery, filterList);
+            api.search(searchQuery, filterList, function(error, result) {
+                if (result != null) {
+                    //Handle results
+                } else {
+                    //Handle errors
+                }
+            });
 
 
         }
