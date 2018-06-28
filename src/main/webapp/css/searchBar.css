@@ -1,0 +1,67 @@
+.searchBar {
+    display: block;
+    padding: 4% 10%;
+    border-bottom: 1px dotted #234567;
+}
+
+.searchBar input[type=text] {
+    width: 88%;
+    height: 27px;
+    padding-left: 1%;
+    border: 2px solid #3F51B5;
+    font-size: 16px;
+}
+
+.searchBar button {
+    position: absolute;
+    height: 33px;
+    width: 8%
+    background-color: #62b7de;
+    font-weight: bold;
+    font-size: 13px;
+    border: 2px solid #3F51B5;
+    border-left: none;
+}
+
+#uploaderType {
+    float:left;
+}
+
+#uploaderType label {
+    float:left;
+    width:90px;
+    background-color:#EFEFEF;
+    border-radius:1px;
+    border-top:1px solid #D0D0D0;
+    overflow:auto;
+}
+
+#uploaderType label.A  {
+    border-left: 1px solid #D0D0D0;
+}
+
+#uploaderType label#B  {
+    border-right: 1px solid #D0D0D0;
+}
+
+#uploaderType label span {
+    text-align:center;
+    font-size: 17px;
+    padding:4px 0px;
+    display:block;
+}
+
+#uploaderType label input {
+    position:absolute;
+    top:-20px;
+}
+
+#uploaderType input:checked + span {
+    background-color: #151675;
+    color:#F7F7F7;
+}
+
+.FileType {
+    padding: 1%;
+    font-size: 17px;
+}
