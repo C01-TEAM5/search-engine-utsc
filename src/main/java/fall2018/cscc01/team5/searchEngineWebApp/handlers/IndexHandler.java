@@ -32,21 +32,23 @@ import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
 
+    private static IndexHandler indexHandler;
+
     private StandardAnalyzer analyzer;    // Use default setting
     private Directory ramIndex;           // store index in RAM
     private IndexWriterConfig config;     // Index Writer Configurations
     private IndexWriter writer;           // Index Writer
-    private String storePath;             // The path where the index will be stored
+    //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 10;
     
     /**
      * Construct a new IndexHandler. This class represents the indexer for the
      * search engine. Index is stored in RAM.
      */
-    public IndexHandler (String storedPath) {
+    private IndexHandler () {
         analyzer = new StandardAnalyzer();
         ramIndex = new RAMDirectory();
-        storePath = storedPath;
+        //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
         // write separate IndexWriter to RAM for each IndexHandler
@@ -58,6 +60,20 @@ public class IndexHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Return the shared instance of this index handler.
+     *
+     * @return a shared IndexHandler
+     */
+    public static IndexHandler getInstance() {
+        if (indexHandler == null) {
+            indexHandler = new IndexHandler();
+            return indexHandler;
+        }
+
+        return indexHandler;
     }
     
     
@@ -201,6 +217,7 @@ public class IndexHandler {
     public void closeWriter() {
         try {
             writer.close();
+            indexHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
