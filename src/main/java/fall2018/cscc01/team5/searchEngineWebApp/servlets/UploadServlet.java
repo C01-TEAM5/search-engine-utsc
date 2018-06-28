@@ -75,7 +75,7 @@ public class UploadServlet extends HttpServlet {
                     long sizeInBytes = item.getSize();
                     
                     // writes data to indexHandler
-                    DocFile docFile  = new DocFile(fileName, fileName, "", filePath, true);
+                    DocFile docFile  = new DocFile(fileName, fileName, "", filePath, false);
                     IndexHandler indexHandler = new IndexHandler("");
                     indexHandler.addDoc(docFile);
                     
