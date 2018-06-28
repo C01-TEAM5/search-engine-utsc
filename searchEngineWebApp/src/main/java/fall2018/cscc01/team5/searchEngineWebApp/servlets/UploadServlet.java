@@ -23,7 +23,6 @@ public class UploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private boolean isMultipart;
-    private String filePath;
     private int maxFileSize = 50 * 1024;
     private int maxMemSize = 4 * 1024;
     private File file ;
@@ -32,7 +31,6 @@ public class UploadServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        filePath = getServletContext().getInitParameter("file-upload");
     }
 
     @Override
@@ -95,33 +93,6 @@ public class UploadServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-    }
-    
-    
-    
-    
-
-    /* Perform searching, return search result (change void)
-     * If we want more info than just file name in the search result,
-     * then search result return in SearchResult type
-     *
-     * Assume the query and filter we get are all in string type for now
-     */
-    public String performSearch (String queryString, String fileType, String uploader) {
-        return null;
-        //TODO
-    }
-    
-    /**
-     * makes a new docfile and stores it to the indexHandler 
-     * @param filename is the name of the file
-     * @param title is the title of the file
-     * @param owner is the owner of the file
-     * @param path is the file path
-     * @param isPublic is whether the file can be viewed
-     */
-    private static void storeToIndex(String filename, String title, String owner, String path, boolean isPublic) {
-
     }
 
 }
