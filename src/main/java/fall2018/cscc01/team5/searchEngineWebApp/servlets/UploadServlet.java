@@ -1,11 +1,14 @@
 package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +21,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
+
+@WebServlet("/upload")
 public class UploadServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -78,6 +83,11 @@ public class UploadServlet extends HttpServlet {
                     DocFile docFile  = new DocFile(fileName, fileName, "", filePath, false);
                     IndexHandler indexHandler = new IndexHandler("");
                     indexHandler.addDoc(docFile);
+                    
+                    File file = new File(filePath + fileName);
+                    item.write(file);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    writer.close();
                     
                 }
                 
