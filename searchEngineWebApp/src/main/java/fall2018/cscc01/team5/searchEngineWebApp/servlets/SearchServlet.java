@@ -1,28 +1,18 @@
 package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
-
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
 import java.io.IOException;
 
 public class SearchServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-    }
 
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
