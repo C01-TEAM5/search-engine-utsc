@@ -35,8 +35,28 @@ public class SearchServlet extends HttpServlet {
         }
         
         String[] filterList = req.getParameterValues("filters");
-        StringBuilder results;
+        
+        Gson gson = new Gson();
+        resp.setContentType("application/json");
+        
+        String[] searchQuery = {query};
+        String[] filterQuery = {};
+        IndexHandler handler = IndexHandler.getInstance();
         try {
+			String searchResults = printResults(handler.search(searchQuery,filterQuery,true));
+	        String jsonResponse = gson.toJson(searchResults);
+	        
+	        PrintWriter output = resp.getWriter();
+	        output.print(jsonResponse);
+	        output.flush();
+        } catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        //StringBuilder results;
+        
+        /*try {
 			results = performSearch(query, filterList);
 	        Gson gson = new Gson();
 	        resp.setContentType("application/json");
@@ -48,8 +68,17 @@ public class SearchServlet extends HttpServlet {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
         
+    }
+    
+    private String printResults(DocFile[] resultFiles) {
+		
+    	if (resultFiles.length==0) {
+    		return "No results found.";
+    	}
+    	
+    	return null;
     }
     
     /* Perform searching, return search result (change void)
