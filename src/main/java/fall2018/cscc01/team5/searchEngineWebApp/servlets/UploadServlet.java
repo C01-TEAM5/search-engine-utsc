@@ -1,9 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -20,6 +19,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import org.apache.commons.io.FileUtils;
 
 
 @WebServlet("/upload")
@@ -74,31 +74,35 @@ public class UploadServlet extends HttpServlet {
                     // gets file data
                     String fieldName = item.getFieldName();
                     String fileName = item.getName();
-                    String filePath = getServletContext().getInitParameter("file-upload"); 
+                    String filePath = Constants.FILE_UPLOAD_PATH;
                     String contentType = item.getContentType();
                     boolean isInMemory = item.isInMemory();
                     long sizeInBytes = item.getSize();
-                    
+
+                    // creates the save directory if it does not exists
+                    File fileSaveDir = new File(filePath);
+                    if (!fileSaveDir.exists()) {
+                        fileSaveDir.mkdir();
+                    }
+
+                    InputStream initialStream = item.getInputStream();
+                    File targetFile = new File(filePath+fileName);
+
+                    FileUtils.copyInputStreamToFile(initialStream, targetFile);
+
                     // writes data to indexHandler
-                    DocFile docFile  = new DocFile(fileName, fileName, "", filePath, false);
+                    DocFile docFile  = new DocFile(fileName, fileName, "", filePath+fileName, false);
                     IndexHandler indexHandler = new IndexHandler("");
                     indexHandler.addDoc(docFile);
-                    
-                    File file = new File(filePath + fileName);
-                    item.write(file);
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                    writer.close();
+
                     
                 }
-                
-                // writes file
-                //file = new File();
-                //item.write(file);
-                
             }   
         } catch(Exception e) {
             e.printStackTrace();
         }
+
+        resp.sendRedirect("upload.html");
         
     }
 
