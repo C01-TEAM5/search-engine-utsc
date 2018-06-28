@@ -1,12 +1,12 @@
 //TO DO
 var api = (function(){
     "use strict";
-    
+
     function send(method, url, data, callback){
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status !== 200) callback("[" + xhr.status + "] " + xhr.responseText, null);
-            else{ 
+            else{
                 try{
                     callback(null, JSON.parse(xhr.responseText));
                 }
@@ -22,12 +22,12 @@ var api = (function(){
             xhr.send(JSON.stringify(data));
         }
     }
-    
+
     var module = {};
-    
+
     module.search = function(query, filters, callback) {
         var queryString = buildQueryString(query, filters);
-        send("GET", "/search/?query=" + queryString, null, callback);
+        send("GET", "/search?query=" + queryString, null, callback);
     };
 
     function buildQueryString(query, filters) {
@@ -47,6 +47,6 @@ var api = (function(){
         console.log(result);
         return result;
     }
-    
+
     return module;
 })();
