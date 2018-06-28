@@ -60,9 +60,20 @@ public class IndexHandler {
         }
     }
 
+
     /**
      * Return the shared instance of this index handler.
      *
+     * @return a shared IndexHandler
+     */
+    public static IndexHandler getInstance() throws IOException {
+        return getInstance(false);
+    }
+
+    /**
+     * Return the shared instance of this index handler.
+     *
+     * @param useRamDir if true use a RAMDirectoriy instead of a FSDirectory
      * @return a shared IndexHandler
      */
     public static IndexHandler getInstance(boolean useRamDir) throws IOException {

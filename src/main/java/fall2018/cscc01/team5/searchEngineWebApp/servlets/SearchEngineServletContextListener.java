@@ -12,7 +12,7 @@ public class SearchEngineServletContextListener implements ServletContextListene
     public void contextDestroyed(ServletContextEvent event) {
         System.out.println("Closing index");
         try {
-            IndexHandler.getInstance(false).closeWriter();
+            IndexHandler.getInstance().closeWriter();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e);
@@ -24,7 +24,7 @@ public class SearchEngineServletContextListener implements ServletContextListene
         // use crawler here to build the index
         System.out.println("Creating new index");
         try {
-            IndexHandler.getInstance(false);
+            IndexHandler.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e);
