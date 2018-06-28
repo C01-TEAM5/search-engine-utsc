@@ -23,10 +23,7 @@ public class UploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private boolean isMultipart;
-    private int maxFileSize = 50 * 1024;
-    private int maxMemSize = 4 * 1024;
-    private File file ;
-    
+    private int maxSize = 25 * 1024 * 1024;    
     
     @Override
     public void init() throws ServletException {
@@ -55,9 +52,9 @@ public class UploadServlet extends HttpServlet {
         
         
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
+        //factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
         ServletFileUpload upload = new ServletFileUpload(factory);
-        upload.setSizeMax(maxFileSize); // maximum file size to be uploaded.
+        upload.setSizeMax(maxSize); // maximum file size to be uploaded.
         
         try {
             // parse multiple files   
