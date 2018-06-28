@@ -19,4 +19,10 @@
         <location>/404.html</location>
     </error-page>
 
+    <listener>
+        <listener-class>
+            fall2018.cscc01.team5.searchEngineWebApp.servlets.SearchEngineServletContextListener
+        </listener-class>
+    </listener>
+
 </web-app>
