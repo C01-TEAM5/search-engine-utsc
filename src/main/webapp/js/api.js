@@ -31,6 +31,9 @@ var api = (function(){
     };
 
     function buildQueryString(query, filters) {
+
+        var query = query.replace(" ","+");
+
         if (filters.length <= 0) return query;
 
         return query + "&filters=" + parseFilters(filters);
