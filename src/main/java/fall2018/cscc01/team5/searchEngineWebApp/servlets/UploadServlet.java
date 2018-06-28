@@ -12,6 +12,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
 public class UploadServlet extends HttpServlet {
     
@@ -36,8 +37,6 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, IOException {
         resp.setContentType("text/plain");
         resp.getWriter().write("Show search result.");   // delete
-        
-        
         
         // TODO: get query and filter
         // TODO: display result on web page, performSearch()
@@ -99,6 +98,13 @@ public class UploadServlet extends HttpServlet {
     public String performSearch (String queryString, String fileType, String uploader) {
         return null;
         //TODO
+    }
+    
+    private void storeToIndex(String filename, String title, String owner, String path, boolean isPublic) {
+        
+        docFile  = new DocFile("filename", "title", "owner", "path", true);
+        IndexHandler indexHandler = new IndexHandler("");
+        indexHandler.addDoc(docFile);        
     }
 
 }
