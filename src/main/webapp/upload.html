@@ -7,6 +7,8 @@
     <link rel= "stylesheet" href= "./css/header.css">
     <link rel= "stylesheet" href= "./css/searchBar.css">
     <link rel= "stylesheet" href= "./css/uploadFile.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type = "text/javascript"></script>
+    <script src = "./js/uploader.js" type = "text/javascript"></script>
 </head>
 
 <body>
@@ -47,21 +49,24 @@
 
     <section class= "uploadFile">
         <span>Upload File</span>
+
         <div class = "uploadSection">
             <form method="POST" action="upload" enctype = "multipart/form-data">
                 <div class = "uploadFilePath">
-                    <button class = "uploadButton">Add File</button>
-                    <input type = "file" name = "filePath">
+                    <!-- <button class = "uploadButton">Browse</button> -->
+                    <input type = "file" name = "filePath" multiple>
                 </div>
-                <div class = "uploadInput">
+                <!-- <div class = "uploadInput">
                     <label class = "FN">File Name:<br><input type = "text" name = "fileName"></label>
                     <label class = "FD">File Description:<br>
                         <textarea></textarea>
                     </label>
-                </div>
-                <button type = "submit" value = "AddFile">Upload</button>
+                </div> -->
+                <button type = "submit" value = "submitUpload">Upload</button>
             </form>
         </div>
     </section>
+
+    <!-- <button id = "AddFile">Add File</button> -->
 
 </body>
