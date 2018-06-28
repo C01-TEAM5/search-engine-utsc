@@ -7,6 +7,9 @@ public class Constants {
     public static final String FILETYPE_PDF = "pdf";
     public static final String FILETYPE_TXT = "txt";
 
+    public static final String INDEX_UPLOAD_DIRECTORY = "uploads";
+
+    
     public static final String INDEX_KEY_CONTENT = "Content";
     public static final String INDEX_KEY_FILENAME = "Filename";
     public static final String INDEX_KEY_OWNER = "Owner";
