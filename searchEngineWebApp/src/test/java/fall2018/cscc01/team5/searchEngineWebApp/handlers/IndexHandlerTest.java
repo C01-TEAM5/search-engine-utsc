@@ -47,7 +47,7 @@ public class IndexHandlerTest {
     private static DocFile docxFile = null;
     
     @Before
-    public void init() {
+    public void init() throws IOException {
         indexHandler = IndexHandler.getInstance();
         
         try {
@@ -66,6 +66,12 @@ public class IndexHandlerTest {
     
     @After
     public void cleanUp() {
+        indexHandler.removeDoc(file);
+        indexHandler.removeDoc(txtFile);
+        indexHandler.removeDoc(htmlFile);
+        indexHandler.removeDoc(pdfFile);
+        indexHandler.removeDoc(docxFile);
+
         indexHandler.closeWriter();
         removeFiles();
     }
@@ -324,6 +330,7 @@ public class IndexHandlerTest {
 	
 	@Test
 	public void testIndexHandlerRemoveEmpty() {
+        System.out.println(search("*").size() + " ====================");
     	indexHandler.removeDoc(txtFile);
     	
     	// should not be able to remove a document from an empty db
