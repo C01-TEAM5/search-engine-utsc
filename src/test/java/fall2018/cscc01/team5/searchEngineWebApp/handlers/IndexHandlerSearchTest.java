@@ -46,7 +46,7 @@ public class IndexHandlerSearchTest {
     @BeforeClass
     public static void indexSetup() throws IOException, DocumentException {
 
-        index = IndexHandler.getInstance();
+        index = IndexHandler.getInstance(true);
 
         generateTxtFiles();
         generateHtmlFiles();
@@ -417,7 +417,7 @@ public class IndexHandlerSearchTest {
         docx1.delete();
         
         File docx2 = new File("docx2.docx");
-        docx2.delete();     
+        docx2.delete();
         
     }
 

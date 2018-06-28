@@ -28,13 +28,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class IndexHandlerTest {
@@ -48,7 +45,7 @@ public class IndexHandlerTest {
     
     @Before
     public void init() throws IOException {
-        indexHandler = IndexHandler.getInstance();
+        indexHandler = IndexHandler.getInstance(true);
         
         try {
             generateTxt();
@@ -330,7 +327,6 @@ public class IndexHandlerTest {
 	
 	@Test
 	public void testIndexHandlerRemoveEmpty() {
-        System.out.println(search("*").size() + " ====================");
     	indexHandler.removeDoc(txtFile);
     	
     	// should not be able to remove a document from an empty db
@@ -359,7 +355,7 @@ public class IndexHandlerTest {
 			
 			// get search results
 	        int hitsPerPage = 10;
-	        IndexReader reader = DirectoryReader.open(indexHandler.getRamIndex());
+	        IndexReader reader = DirectoryReader.open(indexHandler.getIndexDir());
 	        IndexSearcher searcher = new IndexSearcher(reader);
 	        TopDocs docs = searcher.search(q, hitsPerPage);
 	        ScoreDoc[] hits = docs.scoreDocs;
