@@ -30,9 +30,9 @@
             if (searchDocx.checked) {filterList.push("sDocx")}
             api.search(searchQuery, filterList, function(error, result) {
                 if (result != null) {
-                    //Handle results
+                    alert(result);//Handle results
                 } else {
-                    //Handle errors
+                    alert("error");//Handle errors
                 }
             });
 
