@@ -25,7 +25,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 
 public class IndexHandlerSearchTest {
     
-    private static IndexHandler index = IndexHandler.getInstance();
+    private static IndexHandler index = null;
     private static ArrayList<DocFile> docFiles = new ArrayList<DocFile>();
     public static final int TXT1 = 0;
     public static final int TXT2 = 1;
@@ -45,7 +45,9 @@ public class IndexHandlerSearchTest {
      */
     @BeforeClass
     public static void indexSetup() throws IOException, DocumentException {
-        
+
+        index = IndexHandler.getInstance();
+
         generateTxtFiles();
         generateHtmlFiles();
         generatePdfFiles();
@@ -253,7 +255,10 @@ public class IndexHandlerSearchTest {
      */
     @AfterClass
     public static void cleanUp() {
-        
+        for (DocFile file: docFiles) {
+            index.removeDoc(file);
+        }
+
         index.closeWriter();
         removeFiles();
         

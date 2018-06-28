@@ -7,6 +7,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import javax.naming.NameNotFoundException;
@@ -28,6 +29,8 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.LockFactory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
@@ -45,9 +48,9 @@ public class IndexHandler {
      * Construct a new IndexHandler. This class represents the indexer for the
      * search engine. Index is stored in RAM.
      */
-    private IndexHandler () {
+    private IndexHandler () throws IOException {
         analyzer = new StandardAnalyzer();
-        ramIndex = new RAMDirectory();
+        ramIndex = FSDirectory.open(Paths.get(Constants.INDEX_DIRECTORY));
         //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
@@ -67,7 +70,7 @@ public class IndexHandler {
      *
      * @return a shared IndexHandler
      */
-    public static IndexHandler getInstance() {
+    public static IndexHandler getInstance() throws IOException {
         if (indexHandler == null) {
             indexHandler = new IndexHandler();
             return indexHandler;
@@ -217,6 +220,7 @@ public class IndexHandler {
     public void closeWriter() {
         try {
             writer.close();
+            ramIndex.close();
             indexHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
