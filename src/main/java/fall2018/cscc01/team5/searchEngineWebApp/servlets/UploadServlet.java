@@ -111,12 +111,11 @@ public class UploadServlet extends HttpServlet {
                   out.println("Uploaded Filename: " + fileName + "<br>");
                }
             }
-            out.println("</body>");
-            out.println("</html>");
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-         }
+        out.println("</body>");
+        out.println("</html>");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     
     
