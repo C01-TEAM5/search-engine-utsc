@@ -20,6 +20,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 
 @WebServlet("/upload")
@@ -61,6 +62,8 @@ public class UploadServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         upload.setSizeMax(maxSize); // maximum file size to be uploaded.
         
+        System.out.println(maxSize);
+        
         try {
             // parse multiple files   
             List items = upload.parseRequest(req);
@@ -72,23 +75,23 @@ public class UploadServlet extends HttpServlet {
                 if (!item.isFormField()) {
                     
                     // gets file data
-                    String fieldName = item.getFieldName();
                     String fileName = item.getName();
-                    String filePath = getServletContext().getInitParameter("file-upload"); 
-                    String contentType = item.getContentType();
-                    boolean isInMemory = item.isInMemory();
-                    long sizeInBytes = item.getSize();
+                    String filePath = getServletContext().getRealPath("/") + Constants.INDEX_UPLOAD_DIRECTORY + "/" + fileName; 
+                    
+
+                    System.out.println(fileName);
+                    System.out.println(filePath);
+                    
+                    // write file to server
+                    File file = new File(filePath);
+                    item.write(file);
+                    System.out.println("uploaded");
                     
                     // writes data to indexHandler
                     DocFile docFile  = new DocFile(fileName, fileName, "", filePath, false);
                     IndexHandler indexHandler = new IndexHandler("");
                     indexHandler.addDoc(docFile);
-                    
-                    File file = new File(filePath + fileName);
-                    item.write(file);
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                    writer.close();
-                    
+                    */
                 }
                 
                 // writes file
