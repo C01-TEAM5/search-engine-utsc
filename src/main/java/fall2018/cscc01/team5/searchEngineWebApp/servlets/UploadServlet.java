@@ -92,7 +92,7 @@ public class UploadServlet extends HttpServlet {
 
                     // writes data to indexHandler
                     DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
-                    IndexHandler indexHandler = new IndexHandler("");
+                    IndexHandler indexHandler = IndexHandler.getInstance();
                     indexHandler.addDoc(docFile);
 
                 }
