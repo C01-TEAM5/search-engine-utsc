@@ -27,7 +27,6 @@ public class UploadServlet extends HttpServlet {
     private int maxFileSize = 50 * 1024;
     private int maxMemSize = 4 * 1024;
     private File file ;
-    private DocFile docFile;
     
     
     @Override
@@ -70,57 +69,32 @@ public class UploadServlet extends HttpServlet {
             while (itemIterator.hasNext()) {
                 FileItem item = (FileItem) itemIterator.next();
                 
-                // gets file data
                 if (!item.isFormField()) {
                     
+                    // gets file data
+                    String fieldName = item.getFieldName();
+                    String fileName = item.getName();
+                    String filePath = getServletContext().getInitParameter("file-upload"); 
+                    String contentType = item.getContentType();
+                    boolean isInMemory = item.isInMemory();
+                    long sizeInBytes = item.getSize();
+                    
+                    // writes data to indexHandler
+                    DocFile docFile  = new DocFile(fileName, fileName, "", filePath, true);
+                    IndexHandler indexHandler = new IndexHandler("");
+                    indexHandler.addDoc(docFile);
+                    
                 }
+                
+                // writes file
+                //file = new File();
+                //item.write(file);
                 
             }   
         } catch(Exception e) {
             e.printStackTrace();
         }
         
-        
-        /*
-        try { 
-            // Parse the request to get file items.
-            List fileItems = upload.parseRequest(req);
-       
-            // Process the uploaded file items
-            Iterator i = fileItems.iterator();
-
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet upload</title>");  
-            out.println("</head>");
-            out.println("<body>");
-      
-            while ( i.hasNext () ) {
-               FileItem fi = (FileItem)i.next();
-               if ( !fi.isFormField () ) {
-                  // Get the uploaded file parameters
-                  String fieldName = fi.getFieldName();
-                  String fileName = fi.getName();
-                  String contentType = fi.getContentType();
-                  boolean isInMemory = fi.isInMemory();
-                  long sizeInBytes = fi.getSize();
-               
-                  // Write the file
-                  if( fileName.lastIndexOf("\\") >= 0 ) {
-                     file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
-                  } else {
-                     file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-                  }
-                  fi.write( file ) ;
-                  out.println("Uploaded Filename: " + fileName + "<br>");
-               }
-            }
-        out.println("</body>");
-        out.println("</html>");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        */
     }
     
     
@@ -138,11 +112,16 @@ public class UploadServlet extends HttpServlet {
         //TODO
     }
     
-    private void storeToIndex(String filename, String title, String owner, String path, boolean isPublic) {
-        
-        docFile  = new DocFile("filename", "title", "owner", "path", true);
-        IndexHandler indexHandler = new IndexHandler("");
-        indexHandler.addDoc(docFile);
+    /**
+     * makes a new docfile and stores it to the indexHandler 
+     * @param filename is the name of the file
+     * @param title is the title of the file
+     * @param owner is the owner of the file
+     * @param path is the file path
+     * @param isPublic is whether the file can be viewed
+     */
+    private static void storeToIndex(String filename, String title, String owner, String path, boolean isPublic) {
+
     }
 
 }
