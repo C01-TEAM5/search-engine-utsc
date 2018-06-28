@@ -6,3 +6,5 @@ target/
 bin/
 *.iml
 TestingClass.java
+index/
+file-upload*/

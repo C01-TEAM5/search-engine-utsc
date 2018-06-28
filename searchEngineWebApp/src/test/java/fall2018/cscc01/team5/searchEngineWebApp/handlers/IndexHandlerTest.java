@@ -28,13 +28,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class IndexHandlerTest {
@@ -47,8 +44,8 @@ public class IndexHandlerTest {
     private static DocFile docxFile = null;
     
     @Before
-    public void init() {
-        indexHandler = new IndexHandler("");
+    public void init() throws IOException {
+        indexHandler = IndexHandler.getInstance(true);
         
         try {
             generateTxt();
@@ -66,6 +63,12 @@ public class IndexHandlerTest {
     
     @After
     public void cleanUp() {
+        indexHandler.removeDoc(file);
+        indexHandler.removeDoc(txtFile);
+        indexHandler.removeDoc(htmlFile);
+        indexHandler.removeDoc(pdfFile);
+        indexHandler.removeDoc(docxFile);
+
         indexHandler.closeWriter();
         removeFiles();
     }
@@ -352,7 +355,7 @@ public class IndexHandlerTest {
 			
 			// get search results
 	        int hitsPerPage = 10;
-	        IndexReader reader = DirectoryReader.open(indexHandler.getRamIndex());
+	        IndexReader reader = DirectoryReader.open(indexHandler.getIndexDir());
 	        IndexSearcher searcher = new IndexSearcher(reader);
 	        TopDocs docs = searcher.search(q, hitsPerPage);
 	        ScoreDoc[] hits = docs.scoreDocs;
