@@ -18,34 +18,43 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SearchServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Current implementation:
+     * If there are no filters (no boxes checked), only content is searched with the appropriate query.
+     * If a document type has been checked, all content is searched as well as 
+     * all documents of the checked document type. (This will be changed down the road.)
+     * 
+     */
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         //Get query typed by user
         String query = req.getParameter("query");
-        
-        //Check if query is empty
         if (query.length()==0) {
-        	return;
+            return;
         }
+        String[] searchQuery = query.split(" ");
         
-        String[] filterList = req.getParameterValues("filters");
+        //Get parameters for search. If none, search all types of docs.
+        String filterParam = req.getParameter("filters");
+        if (filterParam==null) {
+            filterParam = "";
+        }        
+        String[] filterQuery = filterParam.split(",");
         
         Gson gson = new Gson();
         resp.setContentType("application/json");
-        
-        String[] searchQuery = {query};
-        String[] filterQuery = {};
-        IndexHandler handler = IndexHandler.getInstance();
+       
         try {
-			String searchResults = printResults(handler.search(searchQuery,filterQuery,true));
-	        String jsonResponse = gson.toJson(searchResults);
-	        
+            //Write the response
+	        String searchResults = performSearch(searchQuery,filterQuery);
+            String jsonResponse = gson.toJson(searchResults);
 	        PrintWriter output = resp.getWriter();
 	        output.print(jsonResponse);
 	        output.flush();
@@ -53,96 +62,101 @@ public class SearchServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-        //StringBuilder results;
-        
-        /*try {
-			results = performSearch(query, filterList);
-	        Gson gson = new Gson();
-	        resp.setContentType("application/json");
-	        String jsonResponse = gson.toJson(results);
-	        
-	        PrintWriter output = resp.getWriter();
-	        output.print(jsonResponse);
-	        output.flush();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
         
     }
     
+    /**
+     * Helper method to print the results of the search.
+     * Returns a string to be returned to the front end.
+     * 
+     * @param resultFiles the DocFile array of results
+     * @return String the String to be returned to the user
+     */
     private String printResults(DocFile[] resultFiles) {
 		
     	if (resultFiles.length==0) {
     		return "No results found.";
     	}
     	
-    	return null;
+    	StringBuilder results = new StringBuilder();
+    	
+    	if (resultFiles.length==1) {
+    	    results.append("1 result found.\n");
+    	} else {
+    	    results.append(resultFiles.length + " results found.\n");
+    	}
+    	
+    	for (DocFile result:resultFiles) {
+    	    results.append(result.toString()+"\n\n");
+    	}
+    	
+    	return results.toString();
     }
     
-    /* Perform searching, return search result (change void)
-     * If we want more info than just file name in the search result,
-     * then search result return in SearchResult type
-     *
-     * Assume the query and filter we get are all in string type for now
+    /**
+     * Helper method to perform the search. Takes in
+     * the array of queries passed in by the user and the raw filter array
+     * sent to the Servlet. Processes the raw filters, performs the search
+     * and returns the result in a String format.
+     * 
+     * @param queryString String array of queries sent by the user
+     * @param filterString Raw filter String array sent to the servlet
+     * @return String results to be sent to the user
+     * @throws ParseException
+     * @throws IOException
      */
-    public StringBuilder performSearch (String queryString, String[] filterString) throws ParseException {
+    public String performSearch (String[] queryString, String[] filterString) throws ParseException, IOException {
     	
     	ArrayList<String> searchFilters = new ArrayList<String>();
-    	ArrayList<String> searchQuery = new ArrayList<String>();
-    	searchQuery.add(queryString);
+    	ArrayList<String> searchQuery = new ArrayList<String>(Arrays.asList(queryString));
+    	
         filterDecoder(filterString, searchQuery, searchFilters);
         
         IndexHandler handler = IndexHandler.getInstance();
         String [] queryList = new String[searchQuery.size()];
         queryList = searchQuery.toArray(queryList);
         String [] filterList = new String[searchFilters.size()];
-        filterList = searchQuery.toArray(filterList);
+        filterList = searchFilters.toArray(filterList);        
         
-        DocFile[] docFileResults;
-		
-		docFileResults = handler.search(queryList, filterList, true);
-		
-        StringBuilder results = new StringBuilder("Found: ");
-        
-        for (DocFile result:docFileResults) {
-        	results.append(result);
-        }
+        DocFile[] docFileResults = handler.search(queryList, filterList, true);
+		handler.closeWriter();
+		String results = printResults(docFileResults);
         
 		return results;
     	
     }
-    	
-    private static void filterDecoder(String[] fString, ArrayList<String> searchFilters, ArrayList<String> sQuery) {
-    		
-       	searchFilters.add("Content");
-        	
-       	for (String filterType:fString) {
-       		if (filterType.equals("ePdf")) {
-       			sQuery.add(".pdf");
-       			if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) {
-       				searchFilters.add(Constants.INDEX_KEY_TYPE);
-       			}
-       		} else if (filterType.equals("eTxt")){
-       			sQuery.add(".txt");
-       			if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) {
-       				searchFilters.add(Constants.INDEX_KEY_TYPE);
-       			}
-       		} else if (filterType.equals("eHtml")) {
-       			sQuery.add(".html");
-       			if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) {
-       				searchFilters.add(Constants.INDEX_KEY_TYPE);
-       			}
-       		} else if (filterType.equals("eDocx")) {
-       			sQuery.add(".docx");
-       			if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) {
-       				searchFilters.add(Constants.INDEX_KEY_TYPE);
-       			}
-       		}
-       	}
-    	
-    	
+    
+    /**
+     * Helper function to decode the raw filter array and adjust the searchQuery as necessary.
+     * Current implementation:
+     * If there are no filters, only content is searched with the appropriate query.
+     * If a document type has been checked, all content is searched as well as 
+     * all documents of the checked document type. (This will be changed down the road.)
+     * 
+     * @param filterString the raw filter String array
+     * @param searchQuery search query sent by the user
+     * @param searchFilters the ArrayList that will hold the actual filters sent to search
+     */
+    private static void filterDecoder(String[] filterString, ArrayList<String> searchQuery, ArrayList<String> searchFilters) {
+
+        searchFilters.add("Content");
+        
+        for (String filter:filterString) {
+            if (filter.equals("ePdf")) {
+                searchQuery.add(".pdf");
+                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
+            } else if (filter.equals("eTxt")) {
+                searchQuery.add(".txt");
+                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
+            } else if (filter.equals("eHtml")) {
+                searchQuery.add(".html");
+                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
+            } else if (filter.equals("eDocx")) {
+                searchQuery.add(".docx");
+                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
+            }
+        }
+        
     }
 
 }
