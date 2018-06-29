@@ -122,7 +122,7 @@ public class IndexHandlerSearchTest {
      * 
      */
     @Test
-    public void testTypeSearch() throws ParseException {
+    public void testTypeSearch() throws ParseException, IOException {
         //Test searching an invalid type
         String[] query = {".hello"};
         String[] filter = {"Type"};
@@ -159,7 +159,7 @@ public class IndexHandlerSearchTest {
      * @throws ParseException 
      */
     @Test
-    public void testMultipleFilterSearch() throws ParseException {
+    public void testMultipleFilterSearch() throws ParseException, IOException {
         
         //Look for instances of baseball being in Content and Title fields
         String[] query = {"baseball"};
@@ -188,7 +188,7 @@ public class IndexHandlerSearchTest {
      * 
      */
     @Test
-    public void testExpandedSearch() throws ParseException {
+    public void testExpandedSearch() throws ParseException, IOException {
         //Look for instances of baseball being in Content or Title fields
         String[] query = {"baseball"};
         String[] filter = {"Content", "Title"};
@@ -231,7 +231,7 @@ public class IndexHandlerSearchTest {
      * 
      */
     @Test
-    public void testPathSearch() throws ParseException {
+    public void testPathSearch() throws ParseException, IOException {
         
         String[] query = {"*html2.html"};
         String[] filter = {"Path"};
