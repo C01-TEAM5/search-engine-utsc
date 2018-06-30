@@ -38,6 +38,7 @@ public class IndexHandler {
     private IndexWriter writer;           // Index Writer
     //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 10;
+    private boolean useRamDir;
     
     /**
      * Construct a new IndexHandler. This class represents the indexer for the
@@ -45,6 +46,7 @@ public class IndexHandler {
      */
     private IndexHandler (boolean useRamDir) throws IOException {
         analyzer = new StandardAnalyzer();
+        this.useRamDir = useRamDir;
         indexDir = useRamDir ? new RAMDirectory() : FSDirectory.open(Paths.get(Constants.INDEX_DIRECTORY));
         //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
@@ -242,7 +244,10 @@ public class IndexHandler {
      *                       filters will further narrow down a search
      * @return a list of DocFile that matches all queries and filters
      */
-    public DocFile[] search(String[] queries, String[] filters, boolean expandedSearch) throws ParseException {
+    public DocFile[] search(String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
+
+        // check if there are records in the index (write.lock is always present in the directory)
+        if (!useRamDir && indexDir.listAll().length < 2) return new DocFile[0];
 
         if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
         else return search(queries, filters, BooleanClause.Occur.MUST);

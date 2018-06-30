@@ -23,11 +23,10 @@
             const expandSearch = true;
             const searchQuery = search.value;
 
-            if (expandSearch) {filterList.push("eSrch")}
-            if (searchTxt.checked) {filterList.push("sTxt")}
-            if (searchPdf.checked) {filterList.push("sPdf")}
-            if (searchHtml.checked) {filterList.push("sHtml")}
-            if (searchDocx.checked) {filterList.push("sDocx")}
+            if (searchTxt.checked) {filterList.push("eTxt")}
+            if (searchPdf.checked) {filterList.push("ePdf")}
+            if (searchHtml.checked) {filterList.push("eHtml")}
+            if (searchDocx.checked) {filterList.push("eDocx")}
             api.search(searchQuery, filterList, function(error, result) {
                 if (result != null) {
                     alert(result);//Handle results
