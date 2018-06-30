@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset= "UTF-8">
+    <title>Upload page</title>
+    <!-- <link rel= "stylesheet" href= "./css/main.css"> -->
+    <link rel= "stylesheet" href= "./css/header.css">
+    <link rel= "stylesheet" href= "./css/searchBar.css">
+    <link rel= "stylesheet" href= "./css/uploadFile.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type = "text/javascript"></script>
+    <script src = "./js/uploader.js" type = "text/javascript"></script>
+</head>
+
+<body>
+    <header class= "header">
+        <img src= "./media/utscblue-300x132.png" />
+        <div class = "header-choices">
+            <a href = "main.html">Sign Out</a>
+        </div>
+    </header>
+
+    <section class = "searchBar">
+        <form>
+            <div id = "uploaderType">
+                <label class="A">
+                    <input type = "radio" name = "toggle" checked>
+                    <span>All</span>
+                </label>
+                <label class="A">
+                    <input type = "radio" name = "toggle">
+                    <span>Instructor</span>
+                </label>
+                <label class="A" id = "B">
+                    <input type = "radio" name = "toggle">
+                    <span>Student</span>
+                </label>
+            </div>
+            <input type = "text" placeholder = "What are you looking for?" name = "searchQry">
+            <button type = "submit" >Search</button>
+            <div class = "FileType">
+                <input type = "checkbox" name = "AllFile" checked> All File Type
+                <input type = "checkbox" name = "PDFFile"> PDF File
+                <input type = "checkbox" name = "HTMLFile"> HTML File
+                <input type = "checkbox" name = "TextFile"> Text File
+                <input type = "checkbox" name = "DocFile"> Doc File
+            </div>
+        </form>
+    </section>
+
+    <section class= "uploadFile">
+        <span>Upload File</span>
+
+        <div class = "uploadSection">
+            <form method="POST" action="upload" enctype = "multipart/form-data">
+                <div class = "uploadFilePath">
+                    <!-- <button class = "uploadButton">Browse</button> -->
+                    <input type = "file" name = "filePath" multiple required>
+                </div>
+                <!-- <div class = "uploadInput">
+                    <label class = "FN">File Name:<br><input type = "text" name = "fileName"></label>
+                    <label class = "FD">File Description:<br>
+                        <textarea></textarea>
+                    </label>
+                </div> -->
+                <button type = "submit" value = "submitUpload">Upload</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- <button id = "AddFile">Add File</button> -->
+
+</body>

@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="main.css" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>UTSC Document Search</title>
 </head>
 <body>
-    <h1>This will be the home page</h1>
-    <p>homepage</p>
+    <div id="search-background"></div>
+
+    <div class="header">
+        <img src="./media/utscblue-300x132.png" />
+        <div class= "header-choices">
+            <a href="">Sign In</a>
+            <a href="">Register</a>
+        </div>
+    </div>
+
+    <div class = "search-form">
+        <form>
+            <div class="uploader-filter">
+                <button type="button">All</button>
+                <button type="button">Instructor</button>
+                <button type="button">Student</button>
+            </div>
+            <input type="search" placeholder="Search a keyword" id="search">
+            <button type="submit" id="submit">Go</button>
+            <br>
+            <div class="search-check">
+                <input type="checkbox" id="searchTxt">
+                <label for="txt">.txt</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchPdf">
+                <label for="pdf">.pdf</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchHtml">
+                <label for="html">.html</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchDocx">
+                <label for="docx">.docx</label>
+            </div>
+        </form>
+    </div>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

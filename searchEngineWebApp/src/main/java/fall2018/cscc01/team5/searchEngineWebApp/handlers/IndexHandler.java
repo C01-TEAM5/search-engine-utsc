@@ -1,14 +1,13 @@
 package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
-
-import javax.naming.NameNotFoundException;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -22,30 +21,32 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.apache.lucene.search.*;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
 
+    private static IndexHandler indexHandler;
+
     private StandardAnalyzer analyzer;    // Use default setting
-    private Directory ramIndex;           // store index in RAM
+    private Directory indexDir;           // store index in Local dir
     private IndexWriterConfig config;     // Index Writer Configurations
     private IndexWriter writer;           // Index Writer
-    private String storePath;             // The path where the index will be stored
+    //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 10;
     
     /**
      * Construct a new IndexHandler. This class represents the indexer for the
      * search engine. Index is stored in RAM.
      */
-    public IndexHandler (String storedPath) {
+    private IndexHandler (boolean useRamDir) throws IOException {
         analyzer = new StandardAnalyzer();
-        ramIndex = new RAMDirectory();
-        storePath = storedPath;
+        indexDir = useRamDir ? new RAMDirectory() : FSDirectory.open(Paths.get(Constants.INDEX_DIRECTORY));
+        //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
         // write separate IndexWriter to RAM for each IndexHandler
@@ -53,13 +54,37 @@ public class IndexHandler {
         // see IndexWriter documentation for .close()
         // explaining continuous closing of IndexWriter is an expensive operation
         try {
-            writer = new IndexWriter(ramIndex, config);
+            writer = new IndexWriter(indexDir, config);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    
+
+
+    /**
+     * Return the shared instance of this index handler.
+     *
+     * @return a shared IndexHandler
+     */
+    public static IndexHandler getInstance() throws IOException {
+        return getInstance(false);
+    }
+
+    /**
+     * Return the shared instance of this index handler.
+     *
+     * @param useRamDir if true use a RAMDirectoriy instead of a FSDirectory
+     * @return a shared IndexHandler
+     */
+    public static IndexHandler getInstance(boolean useRamDir) throws IOException {
+        if (indexHandler == null) {
+            indexHandler = new IndexHandler(useRamDir);
+            return indexHandler;
+        }
+
+        return indexHandler;
+    }
+
     /**
      * Takes a DocFile as a parameter and adds the contents of the DocFile to the index. If an invalid document type is
      * passed in, nothing happens.
@@ -115,7 +140,7 @@ public class IndexHandler {
     public void updateDoc (DocFile updatefile) {
 
         // Check if the file extension is valid
-        if (!isValid(updatefile)) {
+        if (!isValid(updatefile) || !pathExists(updatefile.getPath())) {
             return;
         }
         
@@ -139,26 +164,17 @@ public class IndexHandler {
     	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
     	//System.out.println("delete file: " + term.field() + " " + term.text());
 
-        // this code is failing because searching for path is broken
-        //    	// Check if path exists
-        //    	if  (pathExists(deletefile.getPath())) {
-        //    		// remove doc if exits
-        //        	try {
-        //    			writer.deleteDocuments(term);
-        //    			writer.commit();
-        //    		} catch (IOException e) {
-        //    			e.printStackTrace();
-        //    		}
-        //    	}
-        //    	return;
-
-        // remove doc if exits
-        try {
-            writer.deleteDocuments(term);
-            writer.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Check if path exists
+        if  (pathExists(deletefile.getPath())) {
+            // remove doc if exits
+            try {
+                writer.deleteDocuments(term);
+                writer.commit();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return;
     }
     
     
@@ -170,17 +186,9 @@ public class IndexHandler {
      */
     public boolean pathExists(String path) {
 
-        String[] searchpath = {Constants.INDEX_KEY_PATH};
-        DocFile[] result = null;
-        String[] arg = {path};
+        File file = new File(path);
 
-        try {
-            result = search(arg, searchpath, true);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (result.length == 0) {
+        if (!file.exists()) {
             return false;
         }
         return true;
@@ -217,6 +225,8 @@ public class IndexHandler {
     public void closeWriter() {
         try {
             writer.close();
+            indexDir.close();
+            indexHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -253,11 +263,15 @@ public class IndexHandler {
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
         // loop through all queries
         for (String query: queries) {
+            if (query.equals("")) continue;
             // create a boolean query for the each query
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
             // loop through all filters
             for (String filter : filters) {
-                Query parsedQ = new QueryParser(filter, analyzer).parse(query);
+                if (filter.equals("")) continue;
+                QueryParser parser = new QueryParser(filter, analyzer);
+                parser.setAllowLeadingWildcard(true);
+                Query parsedQ = parser.parse(query);
                 queryBuilder.add(parsedQ, filterOccur);
             }
             masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
@@ -279,7 +293,7 @@ public class IndexHandler {
         ScoreDoc[] hits = null;
         
         try {
-            IndexReader reader = DirectoryReader.open(ramIndex);
+            IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, hitsPerPage);
             hits = docs.scoreDocs;
@@ -304,7 +318,7 @@ public class IndexHandler {
         DocFile[] result = new DocFile[results.length];
 
         try {
-            IndexReader reader = DirectoryReader.open(ramIndex);
+            IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
             
             for(int i = 0; i < results.length; i++) {
@@ -331,8 +345,8 @@ public class IndexHandler {
         return analyzer;
     }
     
-    public Directory getRamIndex() {
-        return ramIndex;
+    public Directory getIndexDir () {
+        return indexDir;
     }
     
     public IndexWriter getIndexWriter() {
