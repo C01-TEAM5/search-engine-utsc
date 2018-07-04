@@ -1,5 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.users;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
 
 public class User {
@@ -10,12 +13,12 @@ public class User {
 	private byte[] salt;
 	private String hash;
 	
-	public User(String username, String email, String name, String password) {
+	public User(String username, String email, String name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		this.username = username; 
 		this.email = email; 
 		this.name = name; 
 		this.salt = UserValidator.getSalt();
-		this.hash = UserValidator.get_PBKDF2_SecurePassword(password);
+		this.hash = UserValidator.getSaltedHash(password, this.salt);
 	}
 	
 	/**
