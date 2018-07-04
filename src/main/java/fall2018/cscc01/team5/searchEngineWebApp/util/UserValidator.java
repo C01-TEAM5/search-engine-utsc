@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.handlers;
+package fall2018.cscc01.team5.searchEngineWebApp.util;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
