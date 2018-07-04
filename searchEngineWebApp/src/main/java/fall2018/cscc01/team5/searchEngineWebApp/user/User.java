@@ -1,6 +1,6 @@
-package fall2018.cscc01.team5.searchEngineWebApp.util;
+package fall2018.cscc01.team5.searchEngineWebApp.user;
 
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.UserValidator;
+import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
 
 public class User {
  
@@ -15,7 +15,7 @@ public class User {
 		this.email = email; 
 		this.name = name; 
 		this.salt = UserValidator.getSalt();
-		this.hash = UserValidator.get_SHA_512_SecurePassword(password, null);
+		this.hash = UserValidator.get_PBKDF2_SecurePassword(password);
 	}
 	
 	/**
