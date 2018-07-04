@@ -32,14 +32,18 @@ public class UserValidator {
 	 * Generate a secure password/hash.
 	 * 
 	 * @param password the original password to hash
-	 * @param salt a random data that append to password before hash
 	 * @return a secure password/hash
 	 */
-	public static String getSecurePassword(String password, byte[] salt) {
+	public static String get_PBKDF2_SecurePassword(String password) {
 		//TODO
 		return null;
 	}
 
+	// Helper function in get_PBKDF2_SecurePassword(String password)
+	private String toHex(byte[] salt) {
+		//TODO
+		return null;
+	}
 	
 	/**
 	 * Validate the input password is correct.
