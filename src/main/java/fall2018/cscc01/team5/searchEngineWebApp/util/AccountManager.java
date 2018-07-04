@@ -3,6 +3,7 @@ package fall2018.cscc01.team5.searchEngineWebApp.util;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
+import fall2018.cscc01.team5.searchEngineWebApp.users.User;
 
 public class AccountManager {
 	
@@ -17,24 +18,24 @@ public class AccountManager {
 	 */
     
     /**
-     * Register a user in the database.
+     * Register a users in the database.
      * 
      * @param user - an instance of User with information to create a database record
      * @return true if registration is successful, false otherwise
      */
-    public static boolean register (Object user) {
+    public static boolean register (User user) {
     	
     	
     	return false;
     }
     
     /**
-     * Given a User check authenticate the user with the database
+     * Given a User check authenticate the users with the database
      * 
      * @param user - an instance of User with information to validate
-     * @return true if user matches database record
+     * @return true if users matches database record
      */
-    public static boolean login (Object user) {
+    public static boolean login (User user) {
     	
     	//
     	
@@ -47,10 +48,10 @@ public class AccountManager {
      * @param user - an instance of User with information to logout
      * @return true if logout was successful
      */
-    public static boolean logout (Object user) {
+    public static boolean logout (User user) {
     	
     	// we probably will not use this, 
-    	// logout will only be used if we want to record anything in the database when a user logs out
+    	// logout will only be used if we want to record anything in the database when a users logs out
     	// example: last active login 
     	
     	return false;
