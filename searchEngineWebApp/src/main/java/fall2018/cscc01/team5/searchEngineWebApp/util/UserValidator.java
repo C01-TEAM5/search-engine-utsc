@@ -49,7 +49,7 @@ public class UserValidator {
 		
 	    char[] passChar = password.toCharArray();
 	    
-	    //SHA-512 algorithm generates 512 bits/64 bytes of hash
+	    //SHA-256 algorithm generates 256 bits
 	    PBEKeySpec pbe = new PBEKeySpec(passChar, salt, HASH_ITERATIONS, 256);
 	    SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 	    byte[] saltedHash = keyFactory.generateSecret(pbe).getEncoded();	    
