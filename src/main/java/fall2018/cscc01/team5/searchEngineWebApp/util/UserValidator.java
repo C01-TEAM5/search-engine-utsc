@@ -47,7 +47,7 @@ public class UserValidator {
 	 */
 	public static String getSaltedHash(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
-	    char[] passChar = new char[password.length()];
+	    char[] passChar = password.toCharArray();
 	    
 	    //SHA-512 algorithm generates 512 bits/64 bytes of hash
 	    PBEKeySpec pbe = new PBEKeySpec(passChar, salt, HASH_ITERATIONS, 256);
@@ -70,9 +70,7 @@ public class UserValidator {
     public static boolean validatePassword(String enteredPassword, String storedPassword) throws DecoderException, NoSuchAlgorithmException, InvalidKeySpecException {
     	
         String[] seperatedPassword = storedPassword.split(":");
-        byte[] salt = Hex.decodeHex(seperatedPassword[0]);
-        String hexPassword = seperatedPassword[1];
-       
+        byte[] salt = Hex.decodeHex(seperatedPassword[0]);      
         String hashedEnteredPassword = getSaltedHash(enteredPassword, salt);
         
     	return hashedEnteredPassword.equals(storedPassword);
