@@ -15,7 +15,7 @@ public class User {
 		this.email = email; 
 		this.name = name; 
 		this.salt = UserValidator.getSalt();
-		this.hash = UserValidator.getSecurePassword(password, null);
+		this.hash = UserValidator.get_SHA_512_SecurePassword(password, null);
 	}
 	
 	/**
