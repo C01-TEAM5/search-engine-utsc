@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.user;
+package fall2018.cscc01.team5.searchEngineWebApp.users;
 
 import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
 
@@ -19,7 +19,7 @@ public class User {
 	}
 	
 	/**
-	 * Get user name
+	 * Get users name
 	 * @return  username
 	 */
 	public String getUsername() {
