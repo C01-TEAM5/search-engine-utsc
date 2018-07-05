@@ -113,13 +113,15 @@ public class IndexHandler {
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
         Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
-        
+        Field permissionField = new TextField(Constants.INDEX_KEY_PERMISSION, Integer.toString(newFile.getPermission()),Store.YES);
+
         newDocument.add(docIDField);
         newDocument.add(userIDField);
         newDocument.add(filenameField);
         newDocument.add(isPublicField);
         newDocument.add(titleField);
         newDocument.add(typeField);
+        newDocument.add(permissionField);
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
