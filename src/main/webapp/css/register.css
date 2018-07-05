@@ -12,7 +12,7 @@ article {
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: 65%;
   padding: 20px;
 }
 
@@ -20,26 +20,61 @@ article {
 .container {
   display: table;
   width: 100%;
+  height: 700px
 
 }
 
 .existingUser {
-  	position: absolute;
-  	left: 0px;
+	position: absolute;
+	left: 0px;
+	width: 49%;
+	height: 580px;
+}
+
+#reg-background{
   	background-image: url("../media/blur-book-stack-books-590493.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 45%;
-    height: 1500%;
+    width: 100%;
+    height: 100%;
     opacity: 0.5;
+    position: absolute;
     z-index: -1;
+	
 }
+
+.existingUser label {
+	position: absolute;
+    display:flex;
+    top: 60%;
+    right: 10%;
+    left: 10%;
+    justify-content:center;
+}
+
+.existingUser button {
+	background-color: #33A2FF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    display:flex;
+    justify-content:center;
+    
+    position:absolute;
+    top: 65%;
+    left: 37%;
+	
+}
+
 
 .newUser {
   position: absolute;
   right: 0px;
-  width: 50%;
+  width: 49%;
+  height: 580px;
 }
 
 .newUser label {
@@ -52,17 +87,32 @@ article {
     width: 95%;
     padding: 15px;
     display: inline-block;
-    border: none;
-    background: #f1f1f1;   
+    border: groove;
 }
 
-.cancelbtn, .registerbtn {
+.newUser button{
 	background-color: #33A2FF;
     color: white;
     padding: 10px 20px;
     margin: 10px 10px;
     border: none;
     cursor: pointer;
-    width: 15%;
-    float: right
+    width: 20%;
+    float: right;
+    display:flex;
+    justify-content:center;
+    
 }
+
+
+
+.userType button {
+	background-color: #f1f1f1;
+	color: black;
+    float:left;
+    width: 25%
+    
+}
+
+
+
