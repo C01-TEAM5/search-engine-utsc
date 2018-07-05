@@ -1,6 +1,11 @@
 package fall2018.cscc01.team5.searchEngineWebApp.docs;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+
+import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class DocFile {
 
@@ -10,6 +15,7 @@ public class DocFile {
     private String owner; //Uploader of the file
     private String path; //ID number of the file for updating/deletion
     private String title; //The title of the Document
+    private int permission;
 
     /**
      * A DocFile is an object representing a file in the system. DocFiles contain a filename, is uploaded by a user, can
@@ -23,6 +29,7 @@ public class DocFile {
         this.owner = owner;
         this.path = path;
         this.title = title;
+        permission = Constants.PERMISSION_ALL;
     }
 
     /**
@@ -97,6 +104,22 @@ public class DocFile {
      */
     public String getCourseCode () {
         return courseCode;
+    }
+
+    /**
+     * Return the permission attached to this User.
+     * @return a permission attached to this User
+     */
+    public int getPermission() {
+        return this.permission;
+    }
+
+    /**
+     * Replace this Users permission.
+     * @param perm - the replacement permission
+     */
+    public void setPermissions(int perm) {
+        this.permission = perm;
     }
 
     /**
