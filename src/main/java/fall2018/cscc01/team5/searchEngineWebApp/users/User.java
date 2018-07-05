@@ -10,15 +10,13 @@ public class User {
 	private String email; 
 	private String name; 
 	private String username;
-	private byte[] salt;
 	private String hash;
 	
 	public User(String username, String email, String name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		this.username = username; 
 		this.email = email; 
 		this.name = name; 
-		this.salt = UserValidator.getSalt();
-		this.hash = UserValidator.getSaltedHash(password, this.salt);
+		this.hash = UserValidator.getSaltedHash(password, UserValidator.getSalt());
 	}
 	
 	/**
@@ -45,16 +43,6 @@ public class User {
 	 */
 	public String getName() {
 		return this.name;
-	}
-	
-	
-	/**
-	 * get Salt, the random data that append to password before
-	 * obtaining hash.
-	 * @return salt
-	 */
-	public byte[] getSalt() {
-		return this.salt;
 	}
 	
 	
