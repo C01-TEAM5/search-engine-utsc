@@ -6,21 +6,19 @@ import java.security.spec.InvalidKeySpecException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
 
 public class User {
- 
-	private String email; 
-	private String name; 
+
+	private String email;
+	private String name;
 	private String username;
-	private byte[] salt;
 	private String hash;
-	
+
 	public User(String username, String email, String name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		this.username = username; 
-		this.email = email; 
-		this.name = name; 
-		this.salt = UserValidator.getSalt();
-		this.hash = UserValidator.getSaltedHash(password, this.salt);
+		this.username = username;
+		this.email = email;
+		this.name = name;
+		this.hash = UserValidator.getSaltedHash(password, UserValidator.getSalt());
 	}
-	
+
 	/**
 	 * Get users name
 	 * @return  username
@@ -28,8 +26,8 @@ public class User {
 	public String getUsername() {
 		return username;
 	}
-	
-	
+
+
 	/**
 	 * Get email
 	 * @return email
@@ -37,8 +35,8 @@ public class User {
 	public String getEmail() {
 		return this.email;
 	}
-	
-	
+
+
 	/**
 	 * get Name
 	 * @return name
@@ -46,18 +44,8 @@ public class User {
 	public String getName() {
 		return this.name;
 	}
-	
-	
-	/**
-	 * get Salt, the random data that append to password before
-	 * obtaining hash.
-	 * @return salt
-	 */
-	public byte[] getSalt() {
-		return this.salt;
-	}
-	
-	
+
+
 	/**
 	 * get secure password/hash
 	 * @return hash
@@ -65,5 +53,19 @@ public class User {
 	public String getHash() {
 		return this.hash;
 	}
-}
 
+
+	/**
+	 * Return a string representation of this user.
+	 *
+	 * @return a string representation of this user
+	 */
+	@Override
+	public String toString() {
+		String result = "User: [Username: " + username
+				+ " email: " + email
+				+ " name: " + name
+				+ " hashPassword: " + hash +  "]";
+		return result;
+	}
+}
