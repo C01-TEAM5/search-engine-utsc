@@ -24,4 +24,7 @@ public class Constants {
     public static final int SEARCH_HITS_PER_PAGE = 10;
 
     public static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
+    
+    public static final String CURRENT_USER = "currentUser";
+    
 }
