@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
     <link href="main.css" rel="stylesheet">
     <link rel= "stylesheet" href= "./css/login.css">
-=======
     <link href="./css/index.css" rel="stylesheet">
->>>>>>> TEAM5-13
     <meta charset="UTF-8">
     <title>UTSC Document Search</title>
 </head>
@@ -17,11 +14,15 @@
         <img src="./media/utscblue-300x132.png" />
         <div class= "header-choices">
 
-            <!-- sign in button -->
+            <!-- sign in & register button -->
             <div class = "header-choices">
                 <button class = "loginButton"
                 onclick="document.getElementById('SIB').style.display='block'">
                 Login</button>
+
+                <button class = "loginButton"
+                onclick="document.getElementById('RIB').style.display='block'">
+                Register</button>
             </div>
 
             <!-- the sign in pop up window -->
@@ -29,10 +30,13 @@
               <form class="login-content">
                 <div class="container">
                   <label for="uemail">User Email</label>
-                  <input type="text" placeholder="Enter Username" name="uemail" required>
+                  <input type="text" placeholder="Enter Email" name="loginuemail" required>
+
                   <label for="psw">Password</label>
-                  <input type="password" placeholder="Enter Password" name="psw" required>
+                  <input type="password" placeholder="Enter Password" name="loginpsw" required>
+
                   <button class = "loginButton" type="submit">Login</button>
+
                   <button type="button"
                   onclick="document.getElementById('SIB').style.display='none'"
                   class="cancelbtn">Cancel</button>
@@ -40,7 +44,30 @@
               </form>
             </div>
 
-            <a href="">Register</a>
+            <!-- the register pop up window -->
+            <div id="RIB" class="popup">
+              <form class="login-content">
+                <div class="container">
+                  <label for="uemail">User Email</label>
+                  <input type="text" placeholder="Enter Email" name="registeruemail" required>
+
+                  <label for="uname">name</label>
+                  <input type="text" placeholder="Enter name" name="registername" required>
+
+                  <label for="username">Username</label>
+                  <input type="text" placeholder="Enter username" name="registerusername" required>
+
+                  <label for="userpsw">Password</label>
+                  <input type="password" placeholder="Enter Password" name="registerpsw" required>
+
+                  <button class = "loginButton" type="submit">register</button>
+
+                  <button type="button"
+                  onclick="document.getElementById('SIB').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+                </div>
+              </form>
+            </div>
         </div>
     </div>
 
