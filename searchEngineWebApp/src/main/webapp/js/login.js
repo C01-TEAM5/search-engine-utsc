@@ -11,6 +11,7 @@ window.onclick = function(event) {
 var popupregister = document.getElementById('RIB');
 
 window.onclick = function(event) {
+
     if (event.target == popupregister) {
         popupregister.style.display = "none";
     }
@@ -25,17 +26,39 @@ document.getElementById("SIB").addEventListener("submit", function(e){
 
 
 document.getElementById("RC").addEventListener("click", function(){
+
     var username = document.getElementById("username").value;
     var name = document.getElementById("name").value;
     var email = document.getElementById("email").value;
     var password = document.getElementById("pwd1").value;
-    console.log("success", username, name, email, password);
+
+    document.getElementById("username").value = '';
+    document.getElementById("name").value = '';
+    document.getElementById("email").value = '';
+    document.getElementById("pwd1").value = '';
+    document.getElementById("pwd2").value = '';
+
     api.register(username, name, email, password, function(err, result) {
         if (err != null) {
             console.log(err);
         }
         else {
-            console.log(result);
+            alert(result);
         }
     });
+
+
+    document.getElementById('RIB').style.display='none';
 });
+
+var check = function() {
+    if (document.getElementById("pwd1").value == document.getElementById("pwd2").value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = 'matching';
+        document.getElementById('RC').disabled = false;
+    } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'Must match the previous entry';
+        document.getElementById('RC').disabled = true;
+    }
+}
