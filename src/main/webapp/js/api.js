@@ -30,6 +30,10 @@ var api = (function(){
         send("GET", "/search?query=" + queryString, null, callback);
     };
 
+    module.register = function(username, name, email, password, callback) {
+        send("POST", "/register", {"username":username, "name":name, "email":email, "password":password}, callback);
+    };
+
     function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");
