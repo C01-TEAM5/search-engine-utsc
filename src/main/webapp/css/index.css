@@ -64,7 +64,7 @@ body {
 
 .search-check input[type="checkbox"]{
     height: 20px;
-    width: 20px;  
+    width: 20px;
 }
 
 .search-check label{
@@ -96,7 +96,7 @@ body {
 }
 
 #search-background {
-    background-image: url("./media/priscilla-du-preez-293218-unsplash.jpg");
+    background-image: url("../media/priscilla-du-preez-293218-unsplash.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
