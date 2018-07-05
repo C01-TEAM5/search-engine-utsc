@@ -3,6 +3,7 @@ package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +21,11 @@ public class SignOutServlet extends HttpServlet {
         // TODO Auto-generated method stub
     }
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        Cookie cookie=new Cookie("userName","");
+        cookie.setMaxAge(0);
+        resp.addCookie(cookie);
     }
 
 }
