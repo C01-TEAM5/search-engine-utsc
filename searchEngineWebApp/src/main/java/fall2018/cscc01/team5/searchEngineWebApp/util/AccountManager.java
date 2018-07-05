@@ -77,7 +77,7 @@ public class AccountManager {
     	// logout will only be used if we want to record anything in the database when a users logs out
     	// example: last active login 
     	
-    	return false;
+    	return true;
     }
 
 }
