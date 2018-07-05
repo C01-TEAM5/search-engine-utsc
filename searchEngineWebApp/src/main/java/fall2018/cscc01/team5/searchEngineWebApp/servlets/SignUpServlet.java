@@ -37,12 +37,11 @@ public class SignUpServlet extends HttpServlet {
         // get data
         for (int i = 0; i < 4; i ++) {
             switch(i) {
-            case 0: data = req.getParameter("query");
-            case 1: data = req.getParameter("query");
-            case 2: data = req.getParameter("query");
-            case 3: data = req.getParameter("query");
+            case 0: data = req.getParameter("registerusername");
+            case 1: data = req.getParameter("registeruemail");
+            case 2: data = req.getParameter("registername");
+            case 3: data = req.getParameter("registerpsw");
             default: data = "";
-                
             }
             
             if (data.length()==0) {
@@ -71,9 +70,11 @@ public class SignUpServlet extends HttpServlet {
         // registration if not null
         try {
 		    if (user != null) {
-	            AccountManager.register(user);   
-	            Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
-	            resp.addCookie(cookie);
+	            boolean success = AccountManager.register(user);
+	            if (success) {    	                
+    	            Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
+    	            resp.addCookie(cookie);
+                }
 		    }  
 		} catch (Exception e) {
 		    e.printStackTrace();
