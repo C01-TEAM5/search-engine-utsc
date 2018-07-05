@@ -1,69 +1,78 @@
 <!DOCTYPE html>
-<html lang = "en">
+<html lang="en">
 <head>
-    <meta charset= "UTF-8">
-    <title>UTSC Search Engine</title>
-    <link rel= "stylesheet" href= "./css/header.css">
+    <link href="main.css" rel="stylesheet">
     <link rel= "stylesheet" href= "./css/login.css">
-    <link rel= "stylesheet" href= "./css/searchBar.css">
+    <meta charset="UTF-8">
+    <title>UTSC Document Search</title>
 </head>
-
 <body>
-    <header>
-        <!-- logo -->
-        <img src= "./media/utscblue-300x132.png" />
-        <!-- sign in button -->
-        <div class = "header-choices">
-            <button class = "loginButton"
-            onclick="document.getElementById('SIB').style.display='block'">
-            Login</button>
-        </div>
-        <!-- the sign in pop up window -->
-        <div id="SIB" class="popup">
-          <form class="login-content animate">
-            <div class="container">
-              <label for="uemail">User Email</label>
-              <input type="text" placeholder="Enter Username" name="uemail" required>
-              <label for="psw">Password</label>
-              <input type="password" placeholder="Enter Password" name="psw" required>
-              <button class = "loginButton" type="submit">Login</button>
-            </div>
-          </form>
-        </div>
-    </header>
+    <div id="search-background"></div>
 
-    <!-- search bar -->
-    <section class = "searchBar">
-        <form>
-            <div id = "uploaderType">
-                <label class="A">
-                    <input type = "radio" name = "toggle" checked>
-                    <span>All</span>
-                </label>
-                <label class="A">
-                    <input type = "radio" name = "toggle">
-                    <span>Instructor</span>
-                </label>
-                <label class="A" id = "B">
-                    <input type = "radio" name = "toggle">
-                    <span>Student</span>
-                </label>
+    <div class="header">
+        <img src="./media/utscblue-300x132.png" />
+        <div class= "header-choices">
+
+            <!-- sign in button -->
+            <div class = "header-choices">
+                <button class = "loginButton"
+                onclick="document.getElementById('SIB').style.display='block'">
+                Login</button>
             </div>
-            <input type = "text" placeholder = "What are you looking for?" name = "searchQry">
-            <button type = "submit" >Search</button>
-            <div class = "FileType">
-                <input type = "checkbox" name = "AllFile" checked> All File Type
-                <input type = "checkbox" name = "PDFFile"> PDF File
-                <input type = "checkbox" name = "HTMLFile"> HTML File
-                <input type = "checkbox" name = "TextFile"> Text File
-                <input type = "checkbox" name = "DocFile"> Doc File
+            <!-- the sign in pop up window -->
+            <div id="SIB" class="popup">
+              <form class="login-content animate">
+                <div class="container">
+                  <label for="uemail">User Email</label>
+                  <input type="text" placeholder="Enter Username" name="uemail" required>
+                  <label for="psw">Password</label>
+                  <input type="password" placeholder="Enter Password" name="psw" required>
+                  <button class = "loginButton" type="submit">Login</button>
+                  <button type="button"
+                  onclick="document.getElementById('SIB').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+            <a href="">Register</a>
+        </div>
+    </div>
+
+    <div class = "search-form">
+        <form>
+            <div class="uploader-filter">
+                <button type="button">All</button>
+                <button type="button">Instructor</button>
+                <button type="button">Student</button>
+            </div>
+            <input type="search" placeholder="Search a keyword" id="search">
+            <button type="submit" id="submit">Go</button>
+            <br>
+            <div class="search-check">
+                <input type="checkbox" id="searchTxt">
+                <label for="txt">.txt</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchPdf">
+                <label for="pdf">.pdf</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchHtml">
+                <label for="html">.html</label>
+            </div>
+
+            <div class="search-check">
+                <input type="checkbox" id="searchDocx">
+                <label for="docx">.docx</label>
             </div>
         </form>
-    </section>
+    </div>
 
-     <script src="./js/login.js"></script>
-     <script src="js/api.js"></script>
-     <script src="js/main.js"></script>
-     
+    <script src="./js/login.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
