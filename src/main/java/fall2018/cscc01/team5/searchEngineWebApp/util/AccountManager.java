@@ -1,5 +1,9 @@
 package fall2018.cscc01.team5.searchEngineWebApp.util;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import org.apache.commons.codec.DecoderException;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -48,12 +52,17 @@ public class AccountManager {
      * 
      * @param user - an instance of User with information to validate
      * @return true if users matches database record
+     * @throws DecoderException 
+     * @throws InvalidKeySpecException 
+     * @throws NoSuchAlgorithmException 
      */
-    public static boolean login (User user) {
+    public static boolean login (String username, String pass) throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException {
     	
+    	Document doc = usersCollection.find(Filters.eq("username", username)).first();
+    	if (doc == null) return false;
+    	if (!UserValidator.validatePassword(pass, doc.getString("hash"))) return false;    	
     	
-    	
-    	return false;
+    	return true;
     }
     
     /**
