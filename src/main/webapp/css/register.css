@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+}
+
+body {
+    font-family: "Times New Roman";
+    
+}
+
+article {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  padding: 20px;
+}
+
+
+.container {
+  display: table;
+  width: 100%;
+
+}
+
+.existingUser {
+  	position: absolute;
+  	left: 0px;
+  	background-image: url("../media/priscilla-du-preez-293218-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 45%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.newUser {
+  position: absolute;
+  right: 0px;
+  width: 50%;
+}
+
+.newUser label {
+	width: 100%;
+    display: inline-block;
+    border: none;
+}
+.newUser input[type=text], input[type=password] {
+    width: 95%;
+    padding: 15px;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;   
+}
+
+.cancelbtn, .registerbtn {
+	background-color: #33A2FF;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 10px;
+    border: none;
+    cursor: pointer;
+    width: 15%;
+    float: right
+}
