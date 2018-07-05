@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
+    <link href="main.css" rel="stylesheet">
+    <link rel= "stylesheet" href= "./css/login.css">
+=======
     <link href="./css/index.css" rel="stylesheet">
+>>>>>>> TEAM5-13
     <meta charset="UTF-8">
     <title>UTSC Document Search</title>
 </head>
@@ -11,7 +16,30 @@
     <div class="header">
         <img src="./media/utscblue-300x132.png" />
         <div class= "header-choices">
-            <a href="">Sign In</a>
+
+            <!-- sign in button -->
+            <div class = "header-choices">
+                <button class = "loginButton"
+                onclick="document.getElementById('SIB').style.display='block'">
+                Login</button>
+            </div>
+
+            <!-- the sign in pop up window -->
+            <div id="SIB" class="popup">
+              <form class="login-content">
+                <div class="container">
+                  <label for="uemail">User Email</label>
+                  <input type="text" placeholder="Enter Username" name="uemail" required>
+                  <label for="psw">Password</label>
+                  <input type="password" placeholder="Enter Password" name="psw" required>
+                  <button class = "loginButton" type="submit">Login</button>
+                  <button type="button"
+                  onclick="document.getElementById('SIB').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+                </div>
+              </form>
+            </div>
+
             <a href="">Register</a>
         </div>
     </div>
@@ -47,6 +75,8 @@
             </div>
         </form>
     </div>
+
+    <script src="./js/login.js"></script>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 </body>
