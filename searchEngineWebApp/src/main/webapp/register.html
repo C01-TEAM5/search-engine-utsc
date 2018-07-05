@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration Page</title>
+    <link rel= "stylesheet" href= "./css/header.css">
+    <link rel= "stylesheet" href= "./css/searchBar.css">
+    <link rel= "stylesheet" href= "./css/register.css">
+    
 </head>
 <body>
 
     <header class= "header">
         <img src= "./media/utscblue-300x132.png" />
     </header>
-    
-    <div id="search-background"></div>
     
     <section class = "searchBar">
     <form>
@@ -40,46 +42,42 @@
     </form>
     </section>
 
-	<section class = "existingUser">
-	
-    </section>
 
-	<section class = "registration">
-	<form action="action_page.php" style="border:1px solid #ccc">
-	  <div class="container">
-	    	
-	    <div id = "userType">
-            <label class="A">
-                <input type = "radio" name = "toggle" checked>
-                <span>Student</span>
-            </label>
-            <label class="A">
-                <input type = "radio" name = "toggle">
-                <span>Instructor</span>
-            </label>
-        </div>
-	
-		<label for="email"><b>Email</b></label>
-	    <input type="text" placeholder="Enter Email" name="email" required>
-	
-		<label for="first-name"><b>First Name</b></label>
-	    <input type="text" placeholder="Enter First Name" name="first-name" required>
-		
-		<label for="last-name"><b>Last Name</b></label>
-	    <input type="text" placeholder="Enter Last Name" name="last-name" required>
-	    
-	    <label for="password"><b>Password</b></label>
-	    <input type="password" placeholder="Enter Password" name="password" required>
-	
-	    <label for="confirm-password"><b>Confirm Password</b></label>
-	    <input type="password" placeholder="Confirm Password" name="confirm-password" required>
 
-	    <div class="clearfix">
-	      <button type="button" class="cancelbtn">Cancel</button>
-	      <button type="submit" class="registerbtn">Register</button>
-	    </div>
-	  </div>
-	</form>
+
+	<section class = "container">
+
+		<article>
+			<div class = "existingUser">
+				<div id="search-background"></div>		
+			</div>
+		</article>
+	
+
+		<article>
+			<div class = "newUser">
+				
+				<label for="email"><b>Email</b></label>
+				<input type="text" placeholder="Enter Email" name="email" required>
+				
+				<label for="first-name"><b>First Name</b></label>
+				<input type="text" placeholder="Enter First Name" name="first-name" required>
+				
+				<label for="last-name"><b>Last Name</b></label>
+				<input type="text" placeholder="Enter Last Name" name="last-name" required>
+				   
+				<label for="password"><b>Password</b></label>
+				<input type="password" placeholder="Enter Password" name="password" required>
+				
+				<label for="confirm-password"><b>Confirm Password</b></label>
+				<input type="password" placeholder="Confirm Password" name="confirm-password" required>
+				
+				<div class="clearfix">
+				<button type="button" class="cancelbtn">Cancel</button>
+				<button type="submit" class="registerbtn">Register</button>
+				</div>
+			</div>
+		</article>
 	</section>
 
 </body>
