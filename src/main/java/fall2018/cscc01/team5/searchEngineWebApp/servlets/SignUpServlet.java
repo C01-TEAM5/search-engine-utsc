@@ -8,11 +8,14 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fall2018.cscc01.team5.searchEngineWebApp.users.User;
+import fall2018.cscc01.team5.searchEngineWebApp.util.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class SignUpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -68,7 +71,9 @@ public class SignUpServlet extends HttpServlet {
         // registration if not null
         try {
 		    if (user != null) {
-	            register(user);   
+	            AccountManager.register(user);   
+	            Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
+	            resp.addCookie(cookie);
 		    }  
 		} catch (Exception e) {
 		    e.printStackTrace();
