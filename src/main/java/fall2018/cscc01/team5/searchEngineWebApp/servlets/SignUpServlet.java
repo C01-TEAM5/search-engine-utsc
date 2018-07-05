@@ -1,6 +1,11 @@
 package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 
+import java.util.List;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,14 +27,46 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		resp.getWriter().append("Served at: ").append(req.getContextPath());
+
+        List<String> userData = new ArrayList<String>();
+        String data;
+        
+        // get data
+        for (int i = 0; i < 4; i ++) {
+            switch(i) {
+            case 0: data = req.getParameter("query");
+            case 1: data = req.getParameter("query");
+            case 2: data = req.getParameter("query");
+            case 3: data = req.getParameter("query");
+            default: data = "";
+                
+            }
+            
+            if (data.length()==0) {
+                return;
+            } else {
+                userData.add(data);
+            }
+        }
+        
+        // makes new user assuming list order
+        // username, email, name, password
+        try {
+            user = new User(userData.get(0), userData.get(1),
+                    userData.get(2), userData.get(3));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
 	}
+    
 
 
     @Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
+		
+        // registration if not null
+        try {
 		    if (user != null) {
 	            register(user);   
 		    }  
