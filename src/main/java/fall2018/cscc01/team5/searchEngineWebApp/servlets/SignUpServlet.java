@@ -1,16 +1,11 @@
 package fall2018.cscc01.team5.searchEngineWebApp.servlets;
 
-import java.util.List;
 import java.util.Map;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import fall2018.cscc01.team5.searchEngineWebApp.users.User;
-import fall2018.cscc01.team5.searchEngineWebApp.util.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.handlers.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class SignUpServlet extends HttpServlet {

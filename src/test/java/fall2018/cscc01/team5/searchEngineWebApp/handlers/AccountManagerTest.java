@@ -1,10 +1,11 @@
-package fall2018.cscc01.team5.searchEngineWebApp.util;
+package fall2018.cscc01.team5.searchEngineWebApp.handlers;
 
 import static org.junit.Assert.fail;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import fall2018.cscc01.team5.searchEngineWebApp.handlers.AccountManager;
 import org.apache.commons.codec.DecoderException;
 import org.bson.Document;
 import org.junit.After;
@@ -56,7 +57,7 @@ public class AccountManagerTest {
 	@Test
 	public void testSuccessfulRegister() {
 		for (int i = 0; i < users.length; i++) {
-			Assert.assertTrue(AccountManager.register(users[i]));			
+			Assert.assertTrue(AccountManager.register(users[i]));
 		}
 	}
 	
