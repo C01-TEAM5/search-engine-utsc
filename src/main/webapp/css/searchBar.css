@@ -1,5 +1,11 @@
 .searchBar {
     display: block;
+    /* background-image: url("../media/priscilla-du-preez-293218-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%; */
     padding: 4% 10%;
     border-bottom: 1px dotted #234567;
 }
