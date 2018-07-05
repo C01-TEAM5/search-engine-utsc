@@ -1,8 +1,13 @@
 package fall2018.cscc01.team5.searchEngineWebApp.util;
 
+import org.bson.Document;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+
 import fall2018.cscc01.team5.searchEngineWebApp.users.User;
 
 public class AccountManager {
@@ -11,7 +16,8 @@ public class AccountManager {
 		    "mongodb+srv://user01:CWu73Dl13bTLZ5uD@search-engine-oslo6.mongodb.net/");
 
 	private static MongoClient mongoClient = new MongoClient(uri);
-    private static MongoDatabase database = mongoClient.getDatabase("users");
+    private static MongoDatabase database = mongoClient.getDatabase("search-engine");
+    private static MongoCollection<Document> usersCollection = database.getCollection("users");
     
 	/*
 	 * TO:DO replace Object with User 
@@ -25,8 +31,16 @@ public class AccountManager {
      */
     public static boolean register (User user) {
     	
+    	if (usersCollection.find(Filters.eq("username", user.getUsername())).first() != null) return false;
     	
-    	return false;
+    	Document doc = new Document("name", user.getName())
+    			.append("email", user.getEmail())
+    			.append("username", user.getUsername())
+    			.append("hash", user.getHash());
+    	
+    	usersCollection.insertOne(doc);
+    	
+    	return true;
     }
     
     /**
@@ -37,7 +51,7 @@ public class AccountManager {
      */
     public static boolean login (User user) {
     	
-    	//
+    	
     	
     	return false;
     }
