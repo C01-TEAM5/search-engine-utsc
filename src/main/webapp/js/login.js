@@ -1,8 +1,17 @@
 
-var popup = document.getElementById('SIB');
+var popuplogin = document.getElementById('SIB');
 
 window.onclick = function(event) {
-    if (event.target == popup) {
-        popup.style.display = "none";
+    if (event.target == popuplogin) {
+        popuplogin.style.display = "none";
+    }
+}
+
+
+var popupregister = document.getElementById('RIB');
+
+window.onclick = function(event) {
+    if (event.target == popupregister) {
+        popupregister.style.display = "none";
     }
 }
