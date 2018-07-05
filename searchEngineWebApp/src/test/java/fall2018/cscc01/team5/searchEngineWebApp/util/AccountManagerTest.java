@@ -2,6 +2,10 @@ package fall2018.cscc01.team5.searchEngineWebApp.util;
 
 import static org.junit.Assert.fail;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import org.apache.commons.codec.DecoderException;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Assert;
@@ -25,9 +29,7 @@ public class AccountManagerTest {
     private static MongoDatabase database = mongoClient.getDatabase("search-engine");
     private static MongoCollection<Document> usersCollection = database.getCollection("users");
     
-    private User[] users = new User[5];
-    private Document[] docs = new Document[5];
-	
+    private User[] users = new User[5];	
     
 
 	@Before
@@ -40,11 +42,8 @@ public class AccountManagerTest {
 		users[4] = new User("user4", "user4@gmail.com", "user4", "testpw");
 		
 		for (int i = 0; i < users.length; i++) {
-			docs[i] = new Document("name", users[i].getName())
-	    			.append("username", users[i].getUsername())
-	    			.append("hash", users[i].getHash());
-		}		
-		
+			usersCollection.deleteOne(Filters.eq("username", users[i].getUsername()));
+		}
 	}
 
 	@After
@@ -73,8 +72,15 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testLogin() {
-		fail("Not yet implemented");
+	public void testLogin() throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException {
+		for (int i = 0; i < users.length; i++) {
+			Assert.assertTrue(AccountManager.register(users[i]));			
+		}
+		
+		for (int i = 0; i < users.length; i++) {
+			Assert.assertFalse(AccountManager.login(users[i].getUsername(), "testp1w"));	
+			Assert.assertTrue(AccountManager.login(users[i].getUsername(), "testpw"));
+		}
 	}
 
 	@Test
