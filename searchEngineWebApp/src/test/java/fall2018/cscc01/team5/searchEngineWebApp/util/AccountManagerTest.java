@@ -82,10 +82,4 @@ public class AccountManagerTest {
 			Assert.assertTrue(AccountManager.login(users[i].getUsername(), "testpw"));
 		}
 	}
-
-	@Test
-	public void testLogout() {
-		fail("Not yet implemented");
-	}
-
 }
