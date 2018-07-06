@@ -44,11 +44,6 @@ public class SignUpServlet extends HttpServlet {
         
         Map<String, String> map = gson.fromJson(sb.toString(), new TypeToken<HashMap<String, String>>() {}.getType());
 
-        System.out.println(map.get("username"));
-        System.out.println(map.get("email"));
-        System.out.println(map.get("name"));
-        System.out.println(map.get("password"));
-        
         // makes new user assuming list order
         // username, email, name, password
         User user = null;
@@ -70,17 +65,17 @@ public class SignUpServlet extends HttpServlet {
                 if (success) {                      
                     Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
                     resp.addCookie(cookie);
+                    
+                    // successfully signed up
+                    PrintWriter output = resp.getWriter();
+                    output.print(gson.toJson("Success"));
+                    output.flush();
                 }
             }  
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        
-        // successfully signed up
-        PrintWriter output = resp.getWriter();
-        output.print(gson.toJson("Success"));
-        output.flush();
     }
 
 }
