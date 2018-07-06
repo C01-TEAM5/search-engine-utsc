@@ -66,4 +66,56 @@ public class UserValidatorTest {
         assertEquals(false,UserValidator.validatePassword("1tEst", hashedPassword));
         assertEquals(false,UserValidator.validatePassword("1tEs", hashedPassword));
     }
+    
+    /* Test that salted hash is different if the salt changes.
+     * 
+     */
+    @Test
+    public void testDifferentSalt() throws DecoderException, NoSuchAlgorithmException, InvalidKeySpecException {
+        
+        String salt = "123456789ABCDEF123456789ABCDEF";
+        String salt2 = "123456789ABDDEFA23456C8FABC9EF";
+        byte[] testSalt = Hex.decodeHex(salt.toCharArray());
+        byte[] testSalt2 = Hex.decodeHex(salt2.toCharArray());
+        String password = "password";
+        String hashedPassword = UserValidator.getSaltedHash(password, testSalt).split(":")[1];   
+        String hashedPassword2 = UserValidator.getSaltedHash(password, testSalt2).split(":")[1];   
+        
+        assertEquals(false,hashedPassword.equals(hashedPassword2));
+        
+        salt = "123456789ABCDEF123456789ABCDEF";
+        salt2 = "223456789ABCDEF123456789ABCDEF";
+        testSalt = Hex.decodeHex(salt.toCharArray());
+        testSalt2 = Hex.decodeHex(salt2.toCharArray());
+        password = "test123!";
+        hashedPassword = UserValidator.getSaltedHash(password, testSalt).split(":")[1];
+        hashedPassword2 = UserValidator.getSaltedHash(password, testSalt2).split(":")[1];
+        assertEquals(false,hashedPassword.equals(hashedPassword2));      
+    }
+    
+    /* Test that salted hash is same if the salt is the same.
+     * 
+     */
+    @Test
+    public void testSameSalt() throws DecoderException, NoSuchAlgorithmException, InvalidKeySpecException {
+        
+        String salt = "123456789ABCDEF123456789ABCDEF";
+        String salt2 = "123456789ABCDEF123456789ABCDEF";
+        byte[] testSalt = Hex.decodeHex(salt.toCharArray());
+        byte[] testSalt2 = Hex.decodeHex(salt2.toCharArray());
+        String password = "password";
+        String hashedPassword = UserValidator.getSaltedHash(password, testSalt).split(":")[1];   
+        String hashedPassword2 = UserValidator.getSaltedHash(password, testSalt2).split(":")[1];   
+        
+        assertEquals(true,hashedPassword.equals(hashedPassword2));
+        
+        salt = "123456789ABCDEF123456789ABCDEF";
+        salt2 = "123456789ABCDEF123456789ABCDEF";
+        testSalt = Hex.decodeHex(salt.toCharArray());
+        testSalt2 = Hex.decodeHex(salt2.toCharArray());
+        password = "test123!";
+        hashedPassword = UserValidator.getSaltedHash(password, testSalt).split(":")[1];
+        hashedPassword2 = UserValidator.getSaltedHash(password, testSalt2).split(":")[1];
+        assertEquals(true,hashedPassword.equals(hashedPassword2));      
+    }
 }
