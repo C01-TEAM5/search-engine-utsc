@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.servlets;
+package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import java.io.*;
 import java.util.Iterator;
@@ -15,8 +15,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 
 import org.apache.commons.io.FileUtils;
 

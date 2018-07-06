@@ -3,7 +3,7 @@
   <display-name>Search Engine Web App</display-name>
   <servlet>
     <servlet-name>SearchServlet</servlet-name>
-    <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.servlets.SearchServlet</servlet-class>
+    <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.document.SearchServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet>
@@ -12,7 +12,7 @@
   </servlet>
   <servlet>
     <servlet-name>SignUpServlet</servlet-name>
-    <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.servlets.SignUpServlet</servlet-class>
+    <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.register.SignUpServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>SearchServlet</servlet-name>
@@ -32,7 +32,7 @@
   </error-page>
   <listener>
     <listener-class>
-            fall2018.cscc01.team5.searchEngineWebApp.servlets.SearchEngineServletContextListener
-        </listener-class>
+        fall2018.cscc01.team5.searchEngineWebApp.server.SearchEngineServletContextListener
+    </listener-class>
   </listener>
 </web-app>

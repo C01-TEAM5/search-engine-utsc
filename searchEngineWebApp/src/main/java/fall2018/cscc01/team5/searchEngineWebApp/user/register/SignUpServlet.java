@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.servlets;
+package fall2018.cscc01.team5.searchEngineWebApp.user.register;
 
 import java.util.Map;
 import java.io.IOException;
@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import fall2018.cscc01.team5.searchEngineWebApp.users.User;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.User;
+import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
+import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 @WebServlet("/register")
@@ -61,15 +63,21 @@ public class SignUpServlet extends HttpServlet {
         // registration if not null
         try {
             if (user != null) {
-                boolean success = AccountManager.register(user);
-                if (success) {                      
+                try {
+                    AccountManager.register(user);
                     Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
                     resp.addCookie(cookie);
-                    
+
                     // successfully signed up
                     PrintWriter output = resp.getWriter();
                     output.print(gson.toJson("Success"));
                     output.flush();
+                }
+                catch (UsernameAlreadyExistsException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "username");
+                }
+                catch (EmailAlreadyExistsException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "email");
                 }
             }  
         } catch (Exception e) {
