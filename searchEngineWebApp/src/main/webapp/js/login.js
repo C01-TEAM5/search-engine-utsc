@@ -24,6 +24,28 @@ document.getElementById("SIB").addEventListener("submit", function(e){
     e.preventDefault();
 });
 
+document.getElementById("SC").addEventListener("click", function(){
+
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("pwd").value;
+
+    document.getElementById("email").value = '';
+    document.getElementById("pwd").value = '';
+    
+    api.signin(email, password, function(err, result) {
+        if (err != null) {
+            console.log(err);
+        }
+        else {
+            alert(result);
+        }
+    });
+
+
+    document.getElementById('RIB').style.display='none';
+});
+
+
 
 document.getElementById("RC").addEventListener("click", function(){
 
