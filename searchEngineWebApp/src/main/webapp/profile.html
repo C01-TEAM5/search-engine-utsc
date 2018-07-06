@@ -2,15 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--link rel="stylesheet" href="./css/main.css" type="text/css"-->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+    <link rel="stylesheet" href="./css/main.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
-    <title>UTSC Document Search</title>
+    <title>UTSC Document Search - Profile</title>
 </head>
 <body>
-    <div id="search-background"></div>
-
     <div class="header">
         <img src="./media/utscblue-300x132.png" />
         <div class= "header-choices">
@@ -76,43 +73,5 @@
             </div>
         </div>
     </div>
-
-    <div class = "search-form">
-        <form>
-            <div class="uploader-filter">
-                <button id="perm-all" type="button" class="active">All</button>
-                <button id="perm-instructor" type="button">Instructor</button>
-                <button id="perm-student" type="button">Student</button>
-            </div>
-            <input type="search" placeholder="Search a keyword" id="search">
-            <button type="submit" id="submit">Go</button>
-            <div class="search-filters">
-                <div class="search-check">
-                    <input type="checkbox" id="searchTxt">
-                    <label for="txt">.txt</label>
-                </div>
-
-                <div class="search-check">
-                    <input type="checkbox" id="searchPdf">
-                    <label for="pdf">.pdf</label>
-                </div>
-
-                <div class="search-check">
-                    <input type="checkbox" id="searchHtml">
-                    <label for="html">.html</label>
-                </div>
-
-                <div class="search-check">
-                    <input type="checkbox" id="searchDocx">
-                    <label for="docx">.docx</label>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="./js/login.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>
