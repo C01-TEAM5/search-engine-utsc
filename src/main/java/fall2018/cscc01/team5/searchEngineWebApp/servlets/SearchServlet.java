@@ -30,6 +30,8 @@ public class SearchServlet extends HttpServlet {
      * If a document type has been checked, all content is searched as well as 
      * all documents of the checked document type. (This will be changed down the road.)
      * 
+     * Any user can perform a search (even if they do not have an account)
+     * 
      */
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
