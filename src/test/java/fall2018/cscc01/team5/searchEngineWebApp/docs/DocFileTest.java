@@ -1,6 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.docs;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

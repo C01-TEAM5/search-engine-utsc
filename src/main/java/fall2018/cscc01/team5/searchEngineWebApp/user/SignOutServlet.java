@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.servlets;
+package fall2018.cscc01.team5.searchEngineWebApp.user;
 
 import java.io.IOException;
 

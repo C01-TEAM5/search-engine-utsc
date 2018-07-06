@@ -1,6 +1,6 @@
-package fall2018.cscc01.team5.searchEngineWebApp.servlets;
+package fall2018.cscc01.team5.searchEngineWebApp.server;
 
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

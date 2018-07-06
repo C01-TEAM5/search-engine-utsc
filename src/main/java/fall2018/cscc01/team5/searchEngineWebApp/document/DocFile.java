@@ -1,11 +1,8 @@
-package fall2018.cscc01.team5.searchEngineWebApp.docs;
+package fall2018.cscc01.team5.searchEngineWebApp.document;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
-import java.util.EnumSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class DocFile {
 
