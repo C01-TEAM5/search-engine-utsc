@@ -26,10 +26,10 @@ document.getElementById("SIB").addEventListener("submit", function(e){
 
 document.getElementById("SC").addEventListener("click", function(){
 
-    var email = document.getElementById("email").value;
+    var email = document.getElementById("username").value;
     var password = document.getElementById("pwd").value;
 
-    document.getElementById("email").value = '';
+    document.getElementById("username").value = '';
     document.getElementById("pwd").value = '';
     
     api.signin(email, password, function(err, result) {
