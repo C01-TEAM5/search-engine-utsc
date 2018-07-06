@@ -27,13 +27,13 @@
 
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup">
-              <form class="login-content">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
                   <label for="uemail">User Email</label>
-                  <input type="text" placeholder="Enter Email" name="loginuemail" required>
+                  <input id="email" type="text" placeholder="Enter Email" name="loginuemail" required>
 
                   <label for="psw">Password</label>
-                  <input type="password" placeholder="Enter Password" name="loginpsw" required>
+                  <input id="pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
                   <button class = "loginButton" type="submit">Login</button>
 
