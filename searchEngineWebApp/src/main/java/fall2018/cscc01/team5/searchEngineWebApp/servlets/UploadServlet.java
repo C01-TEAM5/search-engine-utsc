@@ -83,16 +83,18 @@ public class UploadServlet extends HttpServlet {
                         fileSaveDir.mkdir();
                     }
 
-                    InputStream initialStream = item.getInputStream();
+                    
                     File targetFile = new File(filePath + fileName);
+                    //Only upload the file if it does not exist already
+                    if (!targetFile.isFile()) {
+                        InputStream initialStream = item.getInputStream();
+                        FileUtils.copyInputStreamToFile(initialStream, targetFile);
 
-                    FileUtils.copyInputStreamToFile(initialStream, targetFile);
-
-                    // writes data to indexHandler
-                    DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
-                    IndexHandler indexHandler = IndexHandler.getInstance();
-                    indexHandler.addDoc(docFile);
-
+                        // writes data to indexHandler
+                        DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
+                        IndexHandler indexHandler = IndexHandler.getInstance();
+                        indexHandler.addDoc(docFile);
+                    }
                 }
             }
         } catch (Exception e) {
