@@ -47,7 +47,7 @@
 
             <!-- the register pop up window -->
             <div id="RIB" class="popup">
-              <form class="login-content">
+              <form class="login-content"method ="POST" enctype = "multipart/form-data">
                 <div class="container">
                   <label for="uemail">User Email</label>
                   <input id="email" type="text" placeholder="Enter Email" name="registeruemail" required>
@@ -64,7 +64,6 @@
                   <label for="confirmpsw">PasswordMatch</label>
                   <input id = "pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                   <span id = "message"></span><br>
-
 
                   <button id ="RC" class = "loginButton" type="submit" >register</button>
 
