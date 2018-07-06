@@ -40,6 +40,12 @@
 
         submit.addEventListener('click', submitter);
 
+        // uploader filter buttons
+        $(".uploader-filter button").click(function(){
+            $(".uploader-filter button").removeClass("active");
+            $(this).addClass("active");
+        });
+
     };
 
 }());
