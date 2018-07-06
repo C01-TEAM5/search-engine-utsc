@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import fall2018.cscc01.team5.searchEngineWebApp.user.UserValidator;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class UserValidatorTest {
         String salt = "123456789ABCDEF123456789ABCDEF";
         byte[] testSalt = Hex.decodeHex(salt.toCharArray());     
         String password = "password";
-        String hashedPassword = UserValidator.getSaltedHash(password, testSalt);        
+        String hashedPassword = UserValidator.getSaltedHash(password, testSalt);
         assertEquals(true,UserValidator.validatePassword("password", hashedPassword));
         
         salt = "123456789ABCDEF123456789123345";

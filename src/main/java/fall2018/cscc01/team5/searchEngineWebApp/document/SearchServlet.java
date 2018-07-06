@@ -1,8 +1,6 @@
-package fall2018.cscc01.team5.searchEngineWebApp.servlets;
+package fall2018.cscc01.team5.searchEngineWebApp.document;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +9,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.google.gson.Gson;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.IOException;
