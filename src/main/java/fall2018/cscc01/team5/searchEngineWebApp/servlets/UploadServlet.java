@@ -60,8 +60,6 @@ public class UploadServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-        System.out.println(maxSize);
-
         try {
             // parse multiple files   
             List items = upload.parseRequest(req);

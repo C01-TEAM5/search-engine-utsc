@@ -44,11 +44,6 @@ public class SignInServlet extends HttpServlet {
         
         Map<String, String> map = gson.fromJson(sb.toString(), new TypeToken<HashMap<String, String>>() {}.getType());
 
-        System.out.println(map.get("username"));
-        System.out.println(map.get("email"));
-        System.out.println(map.get("name"));
-        System.out.println(map.get("password"));
-        
         // registration if not null
         try {
             boolean success = AccountManager.login(map.get("username"), map.get("password"));
@@ -65,11 +60,7 @@ public class SignInServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        
-        
-        
+        } 
     }
-
 }
 
