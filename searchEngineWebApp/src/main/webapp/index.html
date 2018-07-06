@@ -27,15 +27,15 @@
 
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup">
-              <form class="login-content">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
-                  <label for="uemail">User Email</label>
-                  <input type="text" placeholder="Enter Email" name="loginuemail" required>
+                  <label for="username">Username</label>
+                  <input id="username" type="text" placeholder="Enter Username" name="loginuname" required>
 
                   <label for="psw">Password</label>
-                  <input type="password" placeholder="Enter Password" name="loginpsw" required>
+                  <input id="pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
-                  <button class = "loginButton" type="submit">Login</button>
+                  <button id = "SC" class = "loginButton" type="submit">Login</button>
 
                   <button type="button"
                   onclick="document.getElementById('SIB').style.display='none'"
@@ -59,7 +59,7 @@
                   <input id="username" type="text" placeholder="Enter username" name="registerusername" required>
 
                   <label for="userpsw">Password</label>
-                  <input id = "pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
+                  <input id = "pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
 
                   <label for="confirmpsw">PasswordMatch</label>
                   <input id = "pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
