@@ -1,3 +1,11 @@
+.loginButton#logoutHC {
+	display: none;
+}
+
+.loginButton#loginHC, .loginButton#registerHC { 
+	display: inline-block;
+}
+
 .loginButton, .cancelbtn  {
     background-color: #121e61;
     font-size: 15px;
