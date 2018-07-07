@@ -36,10 +36,20 @@ document.getElementById("SC").addEventListener("click", function(){
     document.getElementById("pwd").value = '';
     
     api.signin(email, password, function(err, result) {
-        if (err != null) {
+        if (err != null) {   //get error when login
+        	//display for register and login
+        	document.getElementById("loginHC").style.display = "inline-block";
+        	document.getElementById("RegisterHC").style.display = "inline-block";
+        	//display==none logout
+        	document.getElementById("logoutHC").style.display = "none";
             console.log(err);
         }
-        else {
+        else {  //success when login 
+        	//display==none for register and login
+        	document.getElementById("loginHC").style.display = "none";
+        	document.getElementById("RegisterHC").style.display = "none";
+        	//display logout
+        	document.getElementById("logoutHC").style.display = "inline-block";
             alert(result);
         }
     });
@@ -64,10 +74,20 @@ document.getElementById("RC").addEventListener("click", function(){
     document.getElementById("pwd2").value = '';
 
     api.register(username, name, email, password, function(err, result) {
-        if (err != null) {
+        if (err != null) {  //get error when register
+        	//display for register and login
+        	document.getElementById("loginHC").style.display = "inline-block";
+        	document.getElementById("RegisterHC").style.display = "inline-block";
+        	//display==none logout
+        	document.getElementById("logoutHC").style.display = "none";
             console.log(err);
         }
-        else {
+        else { //success register 
+        	//display==none for register and login
+        	document.getElementById("loginHC").style.display = "none";
+        	document.getElementById("RegisterHC").style.display = "none";
+        	//display logout
+        	document.getElementById("logoutHC").style.display = "inline-block";
             alert(result);
         }
     });
