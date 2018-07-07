@@ -15,15 +15,17 @@
         <img src="./media/utscblue-300x132.png" />
         <div class= "header-choices">
 
-            <!-- sign in & register button -->
+            <!-- sign in/out & register button -->
             <div class = "header-choices">
-                <button class = "loginButton"
+                <button class = "loginButton" id = "loginHC"
                 onclick="document.getElementById('SIB').style.display='block'">
                 Login</button>
 
-                <button class = "loginButton"
+                <button class = "loginButton"   id = "registerHC"
                 onclick="document.getElementById('RIB').style.display='block'">
                 Register</button>
+                
+                <button class = "loginButton" id = "logoutHC">Logout</button>
             </div>
 
             <!-- the sign in pop up window -->
@@ -48,7 +50,7 @@
 
             <!-- the register pop up window -->
             <div id="RIB" class="popup">
-              <form class="login-content"method ="POST" enctype = "multipart/form-data">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
                   <label for="uemail">User Email</label>
                   <input id="email" type="text" placeholder="Enter Email" name="registeruemail" required>
@@ -74,6 +76,7 @@
                 </div>
               </form>
             </div>
+            
         </div>
     </div>
 
