@@ -1,4 +1,4 @@
-.loginButton, .cancelbtn  {
+.btn, .cancelbtn  {
     background-color: #121e61;
     font-size: 15px;
     color: white;
@@ -9,7 +9,7 @@
     margin: 5px;
 }
 
-.loginButton:hover {
+.btn:hover {
     opacity: 0.8;
 }
 
