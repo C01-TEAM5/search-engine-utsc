@@ -10,12 +10,12 @@ window.onclick = function(event) {
 }
 
 // handle login and register buttons
-$(".registerButton").click(function(){
+$("#registerButton").click(function(){
     console.log(document.URL);
     showRegister();
 });
 
-$(".loginButton").click(function(){
+$("#loginButton").click(function(){
     console.log(document.URL);
     showLogin();
 });
