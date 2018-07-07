@@ -47,6 +47,10 @@
     width: 80%;
 }
 
+#logoutButton {
+    display: none;
+}
+
 #message {
     font-size: 20px;
 }
