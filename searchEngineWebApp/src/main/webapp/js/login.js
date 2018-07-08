@@ -1,8 +1,8 @@
 (function(){
     "use strict";
 
-    window.onload = function() {
-
+    var load = function() {
+        setNotSignedIn();
         if (api.getCurrentUser() == null || api.getCurrentUser() === "") {
             setNotSignedIn();
         }
@@ -169,5 +169,7 @@
             if (urlParts[1] === "register") showRegister();
         }
     }
+
+    load();
 
 }());
