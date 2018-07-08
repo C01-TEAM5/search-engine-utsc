@@ -29,6 +29,7 @@ public class SignOutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
         Cookie cookie=new Cookie(Constants.CURRENT_USER,"");
         cookie.setMaxAge(0);
         resp.addCookie(cookie);
