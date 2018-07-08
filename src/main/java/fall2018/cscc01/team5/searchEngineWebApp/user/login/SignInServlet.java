@@ -33,7 +33,8 @@ public class SignInServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
+        resp.setContentType("application/json");
         Gson gson = new Gson();
         
         StringBuilder sb = new StringBuilder();
