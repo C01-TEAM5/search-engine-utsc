@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +39,8 @@ public class UploadServlet extends HttpServlet {
     protected void doGet (HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         //throw new ServletException("GET method used with " + getClass().getName()+": POST method required.");
+        RequestDispatcher view = req.getRequestDispatcher("upload.html");
+        view.forward(req, resp);
     }
 
     @Override
