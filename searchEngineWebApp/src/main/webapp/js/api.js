@@ -39,6 +39,10 @@ var api = (function(){
         send("POST", "/register", {"username":username, "name":name, "email":email, "password":password}, callback);
     };
     
+    module.signout = function (callback) {
+    	send ("POST", "/signout", {}, callback);
+    }
+    
     
 
     function buildQueryString(query, filters) {

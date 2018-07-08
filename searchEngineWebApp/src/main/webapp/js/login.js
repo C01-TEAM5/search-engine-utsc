@@ -47,8 +47,7 @@ document.getElementById("SC").addEventListener("click", function(){
         	document.getElementById("registerButton").style.display = "none";
         	//display logout
         	document.getElementById("logoutButton").style.display = "inline-block";
-        	console.log(1);
-            alert(result);
+        	alert(result);
         }
     });
     
@@ -73,18 +72,18 @@ document.getElementById("RC").addEventListener("click", function(){
     api.register(username, name, email, password, function(err, result) {
         if (err != null) {  //get error when register
         	//display for register and login
-        	document.getElementById("loginHC").style.display = "inline-block";
-        	document.getElementById("RegisterHC").style.display = "inline-block";
+        	document.getElementById("loginButton").style.display = "inline-block";
+        	document.getElementById("RegisterButton").style.display = "inline-block";
         	//display==none logout
-        	document.getElementById("logoutHC").style.display = "none";
+        	document.getElementById("logoutButton").style.display = "none";
             console.log(err);
         }
         else { //success register 
         	//display==none for register and login
-        	document.getElementById("loginHC").style.display = "none";
-        	document.getElementById("RegisterHC").style.display = "none";
+        	document.getElementById("loginButton").style.display = "none";
+        	document.getElementById("RegisterButton").style.display = "none";
         	//display logout
-        	document.getElementById("logoutHC").style.display = "inline-block";
+        	document.getElementById("logoutButton").style.display = "inline-block";
             alert(result);
         }
     });
@@ -99,6 +98,16 @@ document.getElementById("RC").addEventListener("click", function(){
 
     document.getElementById('RIB').style.display='none';
 });
+
+document.getElementById("logoutButton").addEventListener("click", function(){
+	
+	console.log(1);
+	api.signout(function(err, result){	
+	});
+	console.log(2);
+});
+
+
 
 var check = function() {
     if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
