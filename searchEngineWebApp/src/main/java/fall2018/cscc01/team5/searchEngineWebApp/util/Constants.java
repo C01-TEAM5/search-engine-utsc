@@ -20,8 +20,16 @@ public class Constants {
     public static final String INDEX_KEY_STATUS = "Status";
     public static final String INDEX_KEY_TITLE = "Title";
     public static final String INDEX_KEY_TYPE = "Type";
+    public static final String INDEX_KEY_PERMISSION = "Permission";
 
     public static final int SEARCH_HITS_PER_PAGE = 10;
 
     public static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
+    
+    public static final String CURRENT_USER = "currentUser";
+
+    public static final int PERMISSION_ALL = 0;
+    public static final int PERMISSION_INSTRUCTOR = 1;
+    public static final int PERMISSION_STUDENT = 2;
+    public static final int PERMISSION_TA = 3;
 }

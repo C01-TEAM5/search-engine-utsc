@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="main.css" rel="stylesheet">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/main.css" type="text/css">
+    <link rel="stylesheet" href="./css/index.css" type="text/css">
+    <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <title>UTSC Document Search</title>
 </head>
 <body>
@@ -11,8 +13,66 @@
     <div class="header">
         <img src="./media/utscblue-300x132.png" />
         <div class= "header-choices">
-            <a href="">Sign In</a>
-            <a href="">Register</a>
+
+            <!-- sign in & register button -->
+            <div class = "header-choices">
+                <button class = "loginButton"
+                onclick="document.getElementById('SIB').style.display='block'">
+                Login</button>
+
+                <button class = "loginButton"
+                onclick="document.getElementById('RIB').style.display='block'">
+                Register</button>
+            </div>
+
+            <!-- the sign in pop up window -->
+            <div id="SIB" class="popup">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
+                <div class="container">
+                  <label for="username">Username</label>
+                  <input id="username" type="text" placeholder="Enter Username" name="loginuname" required>
+
+                  <label for="psw">Password</label>
+                  <input id="pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+
+                  <button id = "SC" class = "loginButton" type="submit">Login</button>
+
+                  <button type="button"
+                  onclick="document.getElementById('SIB').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+
+            <!-- the register pop up window -->
+            <div id="RIB" class="popup">
+              <form class="login-content"method ="POST" enctype = "multipart/form-data">
+                <div class="container">
+                  <label for="uemail">User Email</label>
+                  <input id="email" type="text" placeholder="Enter Email" name="registeruemail" required>
+
+                  <label for="uname">Name</label>
+                  <input id="name" type="text" placeholder="Enter name" name="registername" required>
+
+                  <label for="username">Username</label>
+                  <input id="username" type="text" placeholder="Enter username" name="registerusername" required>
+
+                  <label for="userpsw">Password</label>
+                  <input id = "pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+
+                  <label for="confirmpsw">Confirm Password</label>
+                  <input id = "pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                  <span id = "message"></span><br>
+
+                  <button id ="RC" class = "loginButton" type="submit" >Register</button>
+
+                  <button type="button"
+                  onclick="document.getElementById('RIB').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+                </div>
+              </form>
+            </div>
         </div>
     </div>
 
@@ -47,6 +107,8 @@
             </div>
         </form>
     </div>
+
+    <script src="./js/login.js"></script>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 </body>
