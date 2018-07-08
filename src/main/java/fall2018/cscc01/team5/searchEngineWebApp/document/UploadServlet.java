@@ -7,10 +7,12 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -47,65 +49,83 @@ public class UploadServlet extends HttpServlet {
     public void doPost (HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, java.io.IOException {
 
-        // check upload request
-        isMultipart = ServletFileUpload.isMultipartContent(req);
-        resp.setContentType("text/html");
-        java.io.PrintWriter out = resp.getWriter();
+        String currentUser = getCurrentUser(req.getCookies());
+        if (!currentUser.equals("")) {
+            // check upload request
+            isMultipart = ServletFileUpload.isMultipartContent(req);
+            resp.setContentType("text/html");
+            java.io.PrintWriter out = resp.getWriter();
 
-        // empty return
-        if (!isMultipart) {
-            return;
-        }
+            // empty return
+            if (!isMultipart) {
+                return;
+            }
 
 
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        //factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        upload.setSizeMax(maxSize); // maximum file size to be uploaded.
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            //factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-        try {
-            // parse multiple files   
-            List items = upload.parseRequest(req);
-            Iterator itemIterator = items.iterator();
+            try {
+                // parse multiple files
+                List items = upload.parseRequest(req);
+                Iterator itemIterator = items.iterator();
 
-            while (itemIterator.hasNext()) {
-                FileItem item = (FileItem) itemIterator.next();
+                while (itemIterator.hasNext()) {
+                    FileItem item = (FileItem) itemIterator.next();
 
-                if (!item.isFormField()) {
+                    if (!item.isFormField()) {
 
-                    // gets file data
-                    String fileName = item.getName();
-                    String filePath = Constants.FILE_UPLOAD_PATH;
-                    String contentType = item.getContentType();
-                    boolean isInMemory = item.isInMemory();
-                    long sizeInBytes = item.getSize();
+                        // gets file data
+                        String fileName = item.getName();
+                        String filePath = Constants.FILE_UPLOAD_PATH + currentUser + File.separator;
+                        String contentType = item.getContentType();
+                        boolean isInMemory = item.isInMemory();
+                        long sizeInBytes = item.getSize();
 
-                    // creates the save directory if it does not exists
-                    File fileSaveDir = new File(filePath);
-                    if (!fileSaveDir.exists()) {
-                        fileSaveDir.mkdir();
-                    }
+                        // creates the save directory if it does not exists
+                        File fileSaveDir = new File(filePath);
+                        if (!fileSaveDir.exists()) {
+                            fileSaveDir.mkdir();
+                        }
 
-                    
-                    File targetFile = new File(filePath + fileName);
-                    //Only upload the file if it does not exist already
-                    if (!targetFile.isFile()) {
-                        InputStream initialStream = item.getInputStream();
-                        FileUtils.copyInputStreamToFile(initialStream, targetFile);
 
-                        // writes data to indexHandler
-                        DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
-                        IndexHandler indexHandler = IndexHandler.getInstance();
-                        indexHandler.addDoc(docFile);
+                        File targetFile = new File(filePath + fileName);
+                        //Only upload the file if it does not exist already
+                        if (!targetFile.isFile()) {
+                            InputStream initialStream = item.getInputStream();
+                            FileUtils.copyInputStreamToFile(initialStream, targetFile);
+
+                            // writes data to indexHandler
+                            DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
+                            IndexHandler indexHandler = IndexHandler.getInstance();
+                            indexHandler.addDoc(docFile);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        resp.sendRedirect("upload.html");
+//            PrintWriter output = resp.getWriter();
+//            output.print(new Gson().toJson("Success"));
+//            output.flush();
+            resp.sendRedirect("/upload");
+        }
+        else {
+            resp.sendRedirect("/upload?error");
+        }
 
     }
 
+    private String getCurrentUser(Cookie[] cookies) {
+        String res = "";
+        if (cookies == null) return res;
+        for (Cookie cookie: cookies) {
+            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
+        }
+
+        return res;
+    }
 }
