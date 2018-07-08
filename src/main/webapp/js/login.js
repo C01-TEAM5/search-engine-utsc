@@ -29,11 +29,11 @@ document.getElementById("SIB").addEventListener("submit", function(e){
 
 document.getElementById("SC").addEventListener("click", function(){
 
-    var email = document.getElementById("username").value;
-    var password = document.getElementById("pwd").value;
+    var email = document.getElementById("s-username").value;
+    var password = document.getElementById("s-pwd").value;
 
-    document.getElementById("username").value = '';
-    document.getElementById("pwd").value = '';
+    document.getElementById("s-username").value = '';
+    document.getElementById("s-pwd").value = '';
     
     api.signin(email, password, function(err, result) {
         if (err != null) {   //get error when login
@@ -62,16 +62,16 @@ document.getElementById("SC").addEventListener("click", function(){
 
 document.getElementById("RC").addEventListener("click", function(){
 
-    var username = document.getElementById("username").value;
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("pwd1").value;
+    var username = document.getElementById("r-username").value;
+    var name = document.getElementById("r-name").value;
+    var email = document.getElementById("r-email").value;
+    var password = document.getElementById("r-pwd1").value;
 
-    document.getElementById("username").value = '';
-    document.getElementById("name").value = '';
-    document.getElementById("email").value = '';
-    document.getElementById("pwd1").value = '';
-    document.getElementById("pwd2").value = '';
+    document.getElementById("r-username").value = '';
+    document.getElementById("r-name").value = '';
+    document.getElementById("r-email").value = '';
+    document.getElementById("r-pwd1").value = '';
+    document.getElementById("r-pwd2").value = '';
 
     api.register(username, name, email, password, function(err, result) {
         if (err != null) {  //get error when register
@@ -97,9 +97,9 @@ document.getElementById("RC").addEventListener("click", function(){
 });
 
 var check = function() {
-    if (document.getElementById("pwd1").value == document.getElementById("pwd2").value) {
+    if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
         document.getElementById('message').style.color = 'green';
-        document.getElementById('message').innerHTML = 'passwords match';
+        document.getElementById('message').innerHTML = 'Passwords match';
         document.getElementById('RC').disabled = false;
     } else {
         document.getElementById('message').style.color = 'red';
