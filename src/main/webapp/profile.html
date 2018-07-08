@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <title>UTSC Document Search - Profile</title>
@@ -20,6 +21,7 @@
                 <button class = "btn notSignedIn registerButton">
                 Register</button>
                 
+                <a class="btn signedIn" id="uploadButton" href="/upload">Upload</a>
                 <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                 <button class="btn signedIn" id="logoutButton">Logout</button>
             </div>
@@ -49,7 +51,7 @@
             <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
                 <label for="uemail">User Email</label>
-                <input id="r-email" type="text" placeholder="Enter Email" name="registeruemail" required>
+                <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
 
                 <label for="uname">Name</label>
                 <input id="r-name" type="text" placeholder="Enter name" name="registername" required>

@@ -180,6 +180,13 @@ body {
     display: inline-block;
 }
 
+#uploadButton{
+    color: white;
+    display:flex;
+    flex-direction: row;
+    align-content: center;
+}
+
 #search-background {
     background-image: url("../media/priscilla-du-preez-293218-unsplash.jpg");
     background-position: center;
