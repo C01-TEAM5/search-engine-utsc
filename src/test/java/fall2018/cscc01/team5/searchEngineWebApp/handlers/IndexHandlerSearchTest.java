@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -20,8 +22,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.handlers.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 
 public class IndexHandlerSearchTest {
     

@@ -8,10 +8,11 @@ var api = (function(){
             if (xhr.status !== 200) callback("[" + xhr.status + "] " + xhr.responseText, null);
             else{
                 try{
-                    callback(null, JSON.parse(xhr.responseText));
+                    var x = JSON.parse(xhr.responseText);
+                    callback(null, x);
                 }
                 catch(err) {
-                    callback(null, "");
+                    callback(err, null);
                 }
             }
         };
@@ -24,6 +25,12 @@ var api = (function(){
     }
 
     var module = {};
+
+    module.getCurrentUser = function() {
+        var l = document.cookie.split("currentUser=");
+        if (l.length > 1) return l[1];
+        return null;
+    };
 
     module.search = function(query, filters, callback) {
         var queryString = buildQueryString(query, filters);
@@ -38,6 +45,10 @@ var api = (function(){
     module.register = function(username, name, email, password, callback) {
         send("POST", "/register", {"username":username, "name":name, "email":email, "password":password}, callback);
     };
+    
+    module.signout = function (callback) {
+    	send ("POST", "/signout", {}, callback);
+    }
     
     
 

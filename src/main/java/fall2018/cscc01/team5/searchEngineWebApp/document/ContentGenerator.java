@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.util;
+package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
@@ -15,13 +16,12 @@ import java.io.FileInputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 

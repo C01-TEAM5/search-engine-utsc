@@ -1,14 +1,9 @@
-package fall2018.cscc01.team5.searchEngineWebApp.users;
+package fall2018.cscc01.team5.searchEngineWebApp.user;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Set;
 
-import com.mongodb.BasicDBList;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
-import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
 
 public class User {
 
