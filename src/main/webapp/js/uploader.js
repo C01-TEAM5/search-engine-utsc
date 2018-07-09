@@ -1,12 +1,17 @@
 (function() {
-  "use strict";
+    "use strict";
 
-  window.onload = function() {
-    // add all the js code in here, this will make sure all code follws proper code format
-    // also it will synchrize the frontend, html files
+    var parseURL = function() {
+        var urlParts = document.URL.split("?");
+        if(urlParts.length > 1) {
+            if (urlParts[1] === "error") swal({
+                title: "Error!",
+                text: "Please login to Upload!",
+                icon: "error",
+              });
+        }
+    }
 
-    // use this file for the controls of the uploader, buttons api calls, redirects, etc.
-
-  };
+    parseURL();
 
 })();
