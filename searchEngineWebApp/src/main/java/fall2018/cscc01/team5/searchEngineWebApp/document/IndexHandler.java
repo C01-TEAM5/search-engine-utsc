@@ -1,8 +1,6 @@
-package fall2018.cscc01.team5.searchEngineWebApp.handlers;
+package fall2018.cscc01.team5.searchEngineWebApp.document;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
-import fall2018.cscc01.team5.searchEngineWebApp.util.ContentGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +8,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
@@ -113,7 +108,7 @@ public class IndexHandler {
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
         Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
-        Field permissionField = new TextField(Constants.INDEX_KEY_PERMISSION, Integer.toString(newFile.getPermission()),Store.YES);
+        Field permissionField = new IntPoint(Constants.INDEX_KEY_PERMISSION, newFile.getPermission());
 
         newDocument.add(docIDField);
         newDocument.add(userIDField);

@@ -1,10 +1,11 @@
-package fall2018.cscc01.team5.searchEngineWebApp.handlers;
+package fall2018.cscc01.team5.searchEngineWebApp.user;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Set;
 
-import fall2018.cscc01.team5.searchEngineWebApp.util.UserValidator;
+import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
+import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
+import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 import org.apache.commons.codec.DecoderException;
 import org.bson.Document;
 
@@ -13,8 +14,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-
-import fall2018.cscc01.team5.searchEngineWebApp.users.User;
 
 public class AccountManager {
 
@@ -33,11 +32,13 @@ public class AccountManager {
      * Register a users in the database.
      *
      * @param user - an instance of User with information to create a database record
-     * @return true if registration is successful, false otherwise
      */
-    public static boolean register (User user) {
+    public static void register (User user) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
 
-        if (usersCollection.find(Filters.eq("username", user.getUsername())).first() != null) return false;
+        if (usersCollection.find(Filters.eq("username", user.getUsername())).first() != null)
+            throw new UsernameAlreadyExistsException();
+        if (usersCollection.find(Filters.eq("email", user.getEmail())).first() != null)
+            throw new EmailAlreadyExistsException();
 
         Document doc = new Document("name", user.getName())
                 .append("email", user.getEmail())
@@ -46,8 +47,6 @@ public class AccountManager {
                 .append("permission", user.getPermission());
 
         usersCollection.insertOne(doc);
-
-        return true;
     }
 
     /**
@@ -60,10 +59,10 @@ public class AccountManager {
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      */
-    public static boolean login (String username, String pass) throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException {
+    public static boolean login (String username, String pass) throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException, InvalidUsernameException {
 
         Document doc = usersCollection.find(Filters.eq("username", username)).first();
-        if (doc == null) return false;
+        if (doc == null) throw new InvalidUsernameException();
         if (!UserValidator.validatePassword(pass, doc.getString("hash"))) return false;
 
         return true;
@@ -74,23 +73,19 @@ public class AccountManager {
     }
 
     /**
-     * Update an exsisting users's data with
+     * Update an exsisting users's data with new data
      * @param username
      * @param user
-     * @return
      */
-    public static boolean updateUser (String username, User user) {
-
-        if (usersCollection.find(Filters.eq("username", user.getUsername())).first() == null) return false;
+    public static void updateUser (String username, User user) throws InvalidUsernameException, EmailAlreadyExistsException, UsernameAlreadyExistsException {
 
         Document doc = new Document("name", user.getName())
                 .append("email", user.getEmail())
                 .append("username", user.getUsername())
                 .append("hash", user.getHash())
-                .append("permissions", user.getPermission());
+                .append("permission", user.getPermission());
 
         usersCollection.updateOne(Filters.eq("username", username), new Document("$set", doc));
-        return true;
     }
 
 

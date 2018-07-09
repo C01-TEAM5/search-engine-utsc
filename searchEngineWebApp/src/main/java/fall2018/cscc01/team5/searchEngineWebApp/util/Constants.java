@@ -29,7 +29,7 @@ public class Constants {
     public static final String CURRENT_USER = "currentUser";
 
     public static final int PERMISSION_ALL = 0;
-    public static final int PERMISSION_INSTRUCTOR = 1;
+    public static final int PERMISSION_INSTRUCTOR = 3;
     public static final int PERMISSION_STUDENT = 2;
-    public static final int PERMISSION_TA = 3;
+    public static final int PERMISSION_TA = 1;
 }

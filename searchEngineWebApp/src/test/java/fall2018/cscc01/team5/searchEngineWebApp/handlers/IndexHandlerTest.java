@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -31,12 +32,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fall2018.cscc01.team5.searchEngineWebApp.docs.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class IndexHandlerTest {
 	
-    private static IndexHandler indexHandler = null; 
+    private static IndexHandler indexHandler = null;
     private static DocFile file = null;
     private static DocFile txtFile = null;
     private static DocFile htmlFile = null;
