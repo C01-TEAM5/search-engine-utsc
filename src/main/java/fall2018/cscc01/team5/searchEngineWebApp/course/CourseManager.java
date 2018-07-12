@@ -23,86 +23,29 @@ public class CourseManager {
 
     private static MongoClient mongoClient = new MongoClient(uri);
     private static MongoDatabase database = mongoClient.getDatabase("search-engine");
-    private static MongoCollection<Document> usersCollection = database.getCollection("courses");
+    private static MongoCollection<Document> coursesCollection = database.getCollection("courses");
 
     /*
      * TO:DO replace Object with User
      */
 
     /**
-     * Register a users in the database.
+     * Add a given course to the database.
      *
-     * @param user - an instance of User with information to create a database record
+     * @param course - a course to add to the database
      */
-    public static void register (User user) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public static void addCourse (Object course) throws CourseAlreadyExistsException {
 
-        if (usersCollection.find(Filters.eq("username", user.getUsername())).first() != null)
-            throw new UsernameAlreadyExistsException();
-        if (usersCollection.find(Filters.eq("email", user.getEmail())).first() != null)
-            throw new EmailAlreadyExistsException();
+        Document doc = coursesCollection.find(Filters.eq("courseId", course.getId())).first();
+        if (doc == null) throw new CourseAlreadyExistsException();
 
-        Document doc = new Document("name", user.getName())
+        doc = new Document("name", user.getName())
                 .append("email", user.getEmail())
                 .append("username", user.getUsername())
                 .append("hash", user.getHash())
+                .append("courses", user.getCourses())
                 .append("permission", user.getPermission());
 
-        usersCollection.insertOne(doc);
+        coursesCollection.insertOne(doc);
     }
-
-    /**
-     * Given a User check authenticate the users with the database
-     *
-     * @param username - the username of the user
-     * @param pass - the password of the user
-     * @return true if users matches database record
-     * @throws DecoderException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchAlgorithmException
-     */
-    public static boolean login (String username, String pass) throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException, InvalidUsernameException {
-
-        Document doc = usersCollection.find(Filters.eq("username", username)).first();
-        if (doc == null) throw new InvalidUsernameException();
-        if (!UserValidator.validatePassword(pass, doc.getString("hash"))) return false;
-
-        return true;
-    }
-
-    public static int getPermission(String username) {
-        return (int) usersCollection.find(Filters.eq("username", username)).first().get("permission");
-    }
-
-    /**
-     * Update an exsisting users's data with new data
-     * @param username
-     * @param user
-     */
-    public static void updateUser (String username, User user) throws InvalidUsernameException, EmailAlreadyExistsException, UsernameAlreadyExistsException {
-
-        Document doc = new Document("name", user.getName())
-                .append("email", user.getEmail())
-                .append("username", user.getUsername())
-                .append("hash", user.getHash())
-                .append("permission", user.getPermission());
-
-        usersCollection.updateOne(Filters.eq("username", username), new Document("$set", doc));
-    }
-
-
-    /**
-     * Given a User, authenticate and create a login entry
-     *
-     * @param user - an instance of User with information to logout
-     * @return true if logout was successful
-     */
-    public static boolean logout (User user) {
-
-        // we probably will not use this,
-        // logout will only be used if we want to record anything in the database when a users logs out
-        // example: last active login
-
-        return true;
-    }
-
 }
