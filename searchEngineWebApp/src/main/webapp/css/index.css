@@ -187,6 +187,10 @@ body {
     align-content: center;
 }
 
+.header-info {
+    padding-right: 25px;
+}
+
 #search-background {
     background-image: url("../media/priscilla-du-preez-293218-unsplash.jpg");
     background-position: center;
