@@ -50,7 +50,9 @@ var api = (function(){
     	send ("POST", "/signout", {}, callback);
     }
     
-    
+    module.addStudent = function(courseID, username, callback) {
+        send("POST", "/add-student", {"courseID":courseID, "username":username}, callback);
+    }
 
     function buildQueryString(query, filters) {
 

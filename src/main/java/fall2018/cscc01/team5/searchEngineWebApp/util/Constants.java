@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Constants {
 
+    public static final String SERVLET_PARAMETER_COURSE_ID = "id";
+
     public static final String FILETYPE_DOCX = "docx";
     public static final String FILETYPE_HTML = "html";
     public static final String FILETYPE_PDF = "pdf";
