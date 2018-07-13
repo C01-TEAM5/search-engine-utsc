@@ -30,22 +30,58 @@ public class CourseManager {
      */
 
     /**
-     * Add a given course to the database.
+     * Add a given Course to the database.
      *
-     * @param course - a course to add to the database
+     * @param course - a Course to add to the database
      */
-    public static void addCourse (Object course) throws CourseAlreadyExistsException {
+    public static void addCourse (Course course) throws CourseAlreadyExistsException {
 
-        Document doc = coursesCollection.find(Filters.eq("courseId", course.getId())).first();
-        if (doc == null) throw new CourseAlreadyExistsException();
+        Document doc = coursesCollection.find(Filters.eq("code", course.getCode())).first();
+        if (doc != null) throw new CourseAlreadyExistsException();
 
-        doc = new Document("name", user.getName())
-                .append("email", user.getEmail())
-                .append("username", user.getUsername())
-                .append("hash", user.getHash())
-                .append("courses", user.getCourses())
-                .append("permission", user.getPermission());
+        doc = new Document("code", course.getCode())
+                .append("name", course.getName())
+                .append("description", course.getDescription())
+                .append("size", course.getSize())
+                .append("instructors", course.getAllInstructors())
+                .append("files", course.getAllFiles())
+                .append("students", course.getAllStudents())
+                .append("teachingAssistants", course.getAllTAs());
+
 
         coursesCollection.insertOne(doc);
+    }
+
+    /**
+     * Update a course in the database with new data.
+     *
+     * @param code the old code of the course
+     * @param course the new course data
+     */
+    public static void updateCourse (String code, Course course) throws CourseDoesNotExistException {
+        Document doc = coursesCollection.find(Filters.eq("code", code)).first();
+        if (doc == null) throw new CourseDoesNotExistException();
+
+        doc = new Document("code", course.getCode())
+                .append("name", course.getName())
+                .append("description", course.getDescription())
+                .append("size", course.getSize())
+                .append("instructors", course.getAllInstructors())
+                .append("files", course.getAllFiles())
+                .append("students", course.getAllStudents())
+                .append("teachingAssistants", course.getAllTAs());
+
+        coursesCollection.updateOne(Filters.eq("code", code), new Document("$set", doc));
+    }
+
+    /**
+     * Return a course given a course code
+     * @param code the code of the course
+     */
+    public static Course getCourse(String code) throws CourseDoesNotExistException {
+        Document doc = coursesCollection.find(Filters.eq("code", code)).first();
+        if (doc == null) throw new CourseDoesNotExistException();
+
+
     }
 }

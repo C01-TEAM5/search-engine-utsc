@@ -8,7 +8,7 @@ public class DocFile {
 
     private String filename; //Name of the file
     private boolean isPublic; //Whether the document can be accessed publicly
-    private String courseCode; //Optional course code association
+    private String courseCode; //Optional Course code association
     private String owner; //Uploader of the file
     private String path; //ID number of the file for updating/deletion
     private String title; //The title of the Document
@@ -95,9 +95,9 @@ public class DocFile {
     }
 
     /**
-     * Return the course code of this DocFile
+     * Return the Course code of this DocFile
      *
-     * @return the course code of this DocFile
+     * @return the Course code of this DocFile
      */
     public String getCourseCode () {
         return courseCode;
@@ -165,7 +165,7 @@ public class DocFile {
                 ", owner: " + owner +
                 ", title: " + title +
                 ", path: " + path +
-                ", course code: " + courseCode +
+                ", Course code: " + courseCode +
                 ", public status: " + isPublic +
                 "]";
 
