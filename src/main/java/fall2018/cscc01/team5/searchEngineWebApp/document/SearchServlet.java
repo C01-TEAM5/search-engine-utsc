@@ -56,7 +56,6 @@ public class SearchServlet extends HttpServlet {
         if (query.length()==0) {
             return;
         }
-        String[] searchQuery = query.split(" ");
         
         //Get parameters for search. If none, search all types of docs.
         String filterParam = req.getParameter("filters");
@@ -65,9 +64,10 @@ public class SearchServlet extends HttpServlet {
         }        
         String[] filterQuery = filterParam.split(",");
         
+        
         //Perform search, only send the results we want shown on page to jsp
         try {
-            DocFile[] searchResults = performSearch(searchQuery,filterQuery);
+            DocFile[] searchResults = performSearch(query,filterQuery);
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil(totalResults/resultsPerPage);
             
@@ -163,58 +163,16 @@ public class SearchServlet extends HttpServlet {
      * @throws ParseException
      * @throws IOException
      */
-    public DocFile[] performSearch (String[] queryString, String[] filterString) throws ParseException, IOException {
+    public DocFile[] performSearch (String queryString, String[] filterString) throws ParseException, IOException {
     	
-    	ArrayList<String> searchFilters = new ArrayList<String>();
-    	ArrayList<String> searchQuery = new ArrayList<String>(Arrays.asList(queryString));
-    	
-        filterDecoder(filterString, searchQuery, searchFilters);
         
-        IndexHandler handler = IndexHandler.getInstance();
-        String [] queryList = new String[searchQuery.size()];
-        queryList = searchQuery.toArray(queryList);
-        String [] filterList = new String[searchFilters.size()];
-        filterList = searchFilters.toArray(filterList);        
-        
-        DocFile[] docFileResults = handler.search(queryList, filterList, true);
+        IndexHandler handler = IndexHandler.getInstance();          
+        DocFile[] docFileResults = handler.search(queryString, 0, filterString);
 		handler.closeWriter();
-		//String results = printResults(docFileResults);
-        
+
 		return docFileResults;
     	
     }
     
-    /**
-     * Helper function to decode the raw filter array and adjust the searchQuery as necessary.
-     * Current implementation:
-     * If there are no filters, only content is searched with the appropriate query.
-     * If a document type has been checked, all content is searched as well as 
-     * all documents of the checked document type. (This will be changed down the road.)
-     * 
-     * @param filterString the raw filter String array
-     * @param searchQuery search query sent by the user
-     * @param searchFilters the ArrayList that will hold the actual filters sent to search
-     */
-    private static void filterDecoder(String[] filterString, ArrayList<String> searchQuery, ArrayList<String> searchFilters) {
-
-        searchFilters.add("Content");
-        
-        for (String filter:filterString) {
-            if (filter.equals("ePdf")) {
-                searchQuery.add(".pdf");
-                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
-            } else if (filter.equals("eTxt")) {
-                searchQuery.add(".txt");
-                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
-            } else if (filter.equals("eHtml")) {
-                searchQuery.add(".html");
-                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
-            } else if (filter.equals("eDocx")) {
-                searchQuery.add(".docx");
-                if (!searchFilters.contains(Constants.INDEX_KEY_TYPE)) searchFilters.add(Constants.INDEX_KEY_TYPE);
-            }
-        }
-        
-    }
 
 }
