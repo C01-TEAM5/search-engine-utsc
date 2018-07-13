@@ -113,6 +113,15 @@ public class AccountManager {
 
         return user;
     }
+    
+    /**
+     * Check if a user exists
+     * @param username the username to check
+     * @return true if username exists in the database otherwise, false
+     */
+    public static boolean exists(String username) {
+        return usersCollection.find(Filters.eq("username", username)).first() != null;
+    }
 
     /**
      * Given a User, authenticate and create a login entry
