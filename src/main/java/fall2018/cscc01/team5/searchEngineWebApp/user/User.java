@@ -83,9 +83,9 @@ public class User {
     }
 
     /**
-     * Enroll this user in a given course.
+     * Enroll this user in a given Course.
      *
-     * @param course a course to enroll the user in
+     * @param course a Course to enroll the user in
      */
     public void enrollInCourse(String course) {
         this.courses.add(course);
@@ -94,8 +94,8 @@ public class User {
     /**
      * Check if this user is enrooled in a given user
      *
-     * @param course the course to check if this user is enrolled in
-     * @return true if this user is enrolled in the given course
+     * @param course the Course to check if this user is enrolled in
+     * @return true if this user is enrolled in the given Course
      */
     public boolean isEnrolledIn(String course) {
         return this.courses.contains(course);
@@ -118,9 +118,9 @@ public class User {
     }
 
     /**
-     * Romove a given course from this users enrolled coursed
+     * Romove a given Course from this users enrolled coursed
      *
-     * @param course remove this course from the users enrolled course
+     * @param course remove this Course from the users enrolled Course
      * @return true if removing is successful
      */
     public boolean removeCourse(String course) {
