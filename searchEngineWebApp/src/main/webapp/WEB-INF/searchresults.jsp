@@ -109,7 +109,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <button class="page-move-btn">Previous</button></a></td>
               </c:if>
               <!-- page number -->
-              <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay+1}" var="index">
+              <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
                   <c:choose>
                       <c:when test="${currentPage eq index}">
                           <td class="page-num" id="active-page">${index}</td>
@@ -120,7 +120,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                   </c:choose>
               </c:forEach>
               <!-- next link -->
-              <c:if test="${currentPage - 1 != totalPages}">
+              <c:if test="${currentPage != totalPages}">
                   <td><a href="${noPageUri}page=${currentPage + 1}">
                     <button class="page-move-btn">Next</button></a><td>
               </c:if>

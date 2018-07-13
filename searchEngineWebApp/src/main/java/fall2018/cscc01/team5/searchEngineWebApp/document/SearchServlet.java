@@ -69,8 +69,8 @@ public class SearchServlet extends HttpServlet {
         try {
             DocFile[] searchResults = performSearch(query,filterQuery);
             totalResults = searchResults.length;
-            pagesRequired = (int) Math.ceil(totalResults/resultsPerPage);
-            
+            pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
+
             //Set the start index we want to show, if an invalid page was
             //entered into the URL, just go to the first one
             int startIndex = (currentPage-1)*resultsPerPage;          
@@ -86,13 +86,14 @@ public class SearchServlet extends HttpServlet {
             
             DocFile[] pageResults = Arrays.copyOfRange(searchResults, 
                     startIndex, endIndex);
+            req.setAttribute("minPageDisplay", pageDisplay(currentPage, pagesRequired)[0]);
+            req.setAttribute("maxPageDisplay", pageDisplay(currentPage, pagesRequired)[1]);
             req.setAttribute("searchResults", pageResults);
             req.setAttribute("totalResults", totalResults);
+            if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noPageUri", noPageUri);
-            req.setAttribute("minPageDisplay", pageDisplay(currentPage, pagesRequired)[0]);
-            req.setAttribute("maxPageDisplay", pageDisplay(currentPage, pagesRequired)[1]);
         } catch (ParseException e) {
             e.printStackTrace();
         }
