@@ -3,9 +3,11 @@ package fall2018.cscc01.team5.searchEngineWebApp.document;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class DocFile {
 
+    private String id;
     private String filename; //Name of the file
     private boolean isPublic; //Whether the document can be accessed publicly
     private String courseCode; //Optional Course code association
@@ -20,9 +22,10 @@ public class DocFile {
      */
     public DocFile (String filename, String title, String owner, String path, boolean isPublic) {
 
+        this.id = UUID.randomUUID().toString();
         this.filename = filename;
         this.isPublic = isPublic;
-        this.courseCode = "None";
+        this.courseCode = "";
         this.owner = owner;
         this.path = path;
         this.title = title;
@@ -143,6 +146,23 @@ public class DocFile {
     }
 
     /**
+     * Get the id of this file
+     * 
+     * @return the id of this file
+     */
+    public String getId() {
+        return this.id;
+    }
+    
+    /**
+     * Set the id of this file
+     * @param id the new id of this file
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    /**
      * Return an integer representation of this DocFile
      *
      * @return an integer representation of this DocFile
@@ -167,6 +187,7 @@ public class DocFile {
                 ", path: " + path +
                 ", Course code: " + courseCode +
                 ", public status: " + isPublic +
+                ", Permission: " + permission + 
                 "]";
 
         return result;

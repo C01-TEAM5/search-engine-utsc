@@ -1,5 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.course;
 
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import javax.servlet.RequestDispatcher;
@@ -18,14 +19,61 @@ public class CourseServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID); 
+        String addStudent = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_STUDENT);
+        String removeStudent = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_STUDENT);
+        String addInstructor = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_INSTRUCTOR);
+        String removeInstructor = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_INSTRUCTOR);
+        String addFile = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_FILE);
+        String removeFile = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_FILE);
 
+
+        if (courseID == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        else {
+            try {
+                Course c = CourseManager.getCourse(courseID);
+                if (addStudent != null) {
+                    if (AccountManager.exists(addStudent)) {
+                        c.addStudent(addStudent);
+                    }
+                    else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    }
+                }
+                
+                if (removeStudent != null) {
+                    if (AccountManager.exists(removeFile)) {
+                        c.removeStudent(removeStudent);
+                    }
+                    else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    }
+                }
+                
+                if (addInstructor != null) {
+                    if (AccountManager.exists(addInstructor)) {
+                        c.addInstructor(addInstructor);
+                    }
+                    else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    }
+                }
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+            
+        }
+        
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //throw new ServletException("GET method used with " + getClass().getName()+": POST method required.");
-        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID);
+        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID); 
 
         if (courseID == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -34,15 +82,20 @@ public class CourseServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         else {
-            req.setAttribute("courseID", courseID.toUpperCase());
-            req.setAttribute("instID", getCurrentUser(req.getCookies()));
-            req.setAttribute("courseName", "Computer Science I");
-            req.setAttribute("courseDesc", "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).");
-            req.setAttribute("courseInstructor", "Crazy Bob");
-            req.setAttribute("numStudentsEnrolled", "485");
-            RequestDispatcher view = req.getRequestDispatcher("templates/Course.jsp");
-            view.forward(req, resp);
+            try {
+                Course course = CourseManager.getCourse(courseID.toLowerCase());
+                req.setAttribute("courseID", courseID.toUpperCase());
+                req.setAttribute("courseName", course.getName());
+                req.setAttribute("courseDesc", course.getDescription());
+                req.setAttribute("numStudentsEnrolled", Integer.toString(course.getSize()));
+                RequestDispatcher view = req.getRequestDispatcher("templates/course.jsp");
+                view.forward(req, resp);
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
         }
+        
+        
     }
 
     private String getCurrentUser(Cookie[] cookies) {

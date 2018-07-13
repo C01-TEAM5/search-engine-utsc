@@ -297,4 +297,13 @@ public class Course {
     public void setTAs(List<String> instructors) {
         this.code = code;
     }
+    
+    @Override
+    public String toString() {
+      return "Course: [ Code:" + code + ", Name: " + name + ", Description: " + description +
+          ", Size: " + size + ", Instructors: " + instructors.toString() + ", Files: " + files.toString() +
+          ", Students: " + students.toString() + ", TAs: " + teachingAssistants.toString() + "]";
+          
+    }
+    
 }

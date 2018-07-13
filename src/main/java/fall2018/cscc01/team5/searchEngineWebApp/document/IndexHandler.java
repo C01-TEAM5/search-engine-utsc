@@ -102,7 +102,8 @@ public class IndexHandler {
         // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
 
-        Field docIDField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
+        Field docIDField = new StringField(Constants.INDEX_KEY_ID, newFile.getId(), Store.YES);
+        Field docPathField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field filenameField = new TextField(Constants.INDEX_KEY_FILENAME, newFile.getFilename(), Store.YES);
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
@@ -111,6 +112,7 @@ public class IndexHandler {
         Field permissionField = new IntPoint(Constants.INDEX_KEY_PERMISSION, newFile.getPermission());
 
         newDocument.add(docIDField);
+        newDocument.add(docPathField);
         newDocument.add(userIDField);
         newDocument.add(filenameField);
         newDocument.add(isPublicField);
@@ -191,6 +193,16 @@ public class IndexHandler {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Check if a file exists in the index using the file's id
+     * @param id
+     * @return
+     * @throws ParseException
+     */
+    public boolean fileExists(String id) throws ParseException {
+        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id))).length > 0;
     }
     
     /**
