@@ -109,7 +109,8 @@ public class IndexHandler {
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
         Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
         Field permissionField = new IntPoint(Constants.INDEX_KEY_PERMISSION, newFile.getPermission());
-
+       
+        
         newDocument.add(docIDField);
         newDocument.add(userIDField);
         newDocument.add(filenameField);
@@ -117,6 +118,14 @@ public class IndexHandler {
         newDocument.add(titleField);
         newDocument.add(typeField);
         newDocument.add(permissionField);
+        
+        
+        // course code is optional
+        if (newFile.getCourseCode() != null) {
+            Field courseField = new TextField(Constants.INDEX_KEY_COURSE, newFile.getCourseCode(), Store.YES);
+            newDocument.add(courseField);
+        }
+        
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
