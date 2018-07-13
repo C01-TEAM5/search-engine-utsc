@@ -57,60 +57,60 @@ public class course {
 	 * Add a student in the course.
 	 * 
 	 * @param studentName 
-	 * @param studentEmail 
+	 * @param username
 	 * @return True if the student is added or student is already in course record. otherwise false.
 	 */
-	public Boolean addStudent(String studentName, String studentEmail) {
+	public Boolean addStudent(String studentName, String username) {
 		return false;
 	}
 	
 	/**
 	 * Remove a student in the course.
 	 * 
-	 * @param studentEmail since student email is unique, we only need student email to remove student.
+	 * @param username
 	 * @return true if remove success. otherwise false.
 	 */
-	public Boolean removeStudent(String studentEmail) {
+	public Boolean removeStudent(String username) {
 		return false;
 	}
 	
 	/**
 	 * Check if the student is in the course. 
 	 * 
-	 * @param studentEmail
+	 * @param username
 	 * @return true if student in the course. otherwise false.
 	 */
-	public Boolean studentInCourse(String studentEmail) {
+	public Boolean studentInCourse(String username) {
 		return false;
 	}
 	
 	/**
 	 * Add a TA in the course.
 	 * @param TAname
-	 * @param TAEmail
+	 * @param username
 	 * @return return true if TA is added to course, or TA is already in course. Otherwise false.
 	 */
-	public Boolean addTA(String TAname, String TAEmail) {
+	public Boolean addTA(String TAname, String username) {
 		return false;
 	}
 	
 	/**
 	 * Remove a TA from the course.
 	 * 
-	 * @param TAEmail
+	 * @param username
 	 * @return true if the TA is removed. Otherwise false.
 	 */
-	public Boolean removeTA(String TAEmail) {
+	public Boolean removeTA(String username) {
 		return false;
 	}
 	
 	/**
 	 * Check if TA is in the course.
 	 * 
-	 * @param TAEmail
+	 * @param username
 	 * @return True if TA is in the course. Otherwise false. 
 	 */
-	public Boolean TAinCourse(String TAEmail) {
+	public Boolean TAinCourse(String username) {
 		return false;
 	}
 	
@@ -118,30 +118,30 @@ public class course {
 	 * Add an instructor in the course. 
 	 * 
 	 * @param instructorName
-	 * @param instructorEmail
+	 * @param username
 	 * @return true if the instructor is added, or instructor is already in course list. otherwise false.
 	 */
-	public Boolean addInstructor(String instructorName, String instructorEmail) {
+	public Boolean addInstructor(String instructorName, String username) {
 		return false;
 	}
 	
 	/**
 	 * Remove instructor from the course. 
 	 * 
-	 * @param instrucotorEmail
+	 * @param username
 	 * @return true if the instructor is removed. otherwise false.
 	 */
-	public Boolean removeInstructor(String instrucotorEmail) {
+	public Boolean removeInstructor(String username) {
 		return false;
 	}
 	
 	/**
 	 * Check if the instructor is in course. 
 	 * 
-	 * @param instructorEmail
+	 * @param username
 	 * @return true if instructor is in course. Otherwise false.
 	 */
-	public Boolean InstructorInCourse(String instructorEmail) {
+	public Boolean InstructorInCourse(String username) {
 		return false;
 	}
 	
