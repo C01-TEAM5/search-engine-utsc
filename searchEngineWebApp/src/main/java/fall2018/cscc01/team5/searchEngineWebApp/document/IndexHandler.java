@@ -370,7 +370,6 @@ public class IndexHandler {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
                 
-                //System.out.println(document.get(Constants.INDEX_KEY_TITLE));
                 DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
