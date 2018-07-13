@@ -86,10 +86,6 @@ public class UploadServlet extends HttpServlet {
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
 
-                    System.out.println(item.toString());
-                    System.out.println(item.isFormField());
-                    System.out.println(courseCode);
-                    
                     if (!item.isFormField()) {
 
                         // gets file data
@@ -114,6 +110,9 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
+                            if (courseCode != "") {
+                              docFile.setCourseCode(courseCode);  
+                            }
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
