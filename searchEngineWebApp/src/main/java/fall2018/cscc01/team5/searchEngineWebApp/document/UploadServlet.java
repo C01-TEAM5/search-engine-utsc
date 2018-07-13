@@ -67,15 +67,28 @@ public class UploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-            try {
+            try {              
+              
                 // parse multiple files
                 List items = upload.parseRequest(req);
                 Iterator itemIterator = items.iterator();
-
+                
+                // get course code as the last element of list
+                String courseCode = "";
+                if (items.size()> 0) {
+                  FileItem lastItem = (FileItem) items.get(items.size() - 1);
+                  if (lastItem.isFormField()) {
+                    courseCode = lastItem.getString();
+                  }
+                }
+                
+                // iteratively adds the upload items found
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
 
                     System.out.println(item.toString());
+                    System.out.println(item.isFormField());
+                    System.out.println(courseCode);
                     
                     if (!item.isFormField()) {
 
