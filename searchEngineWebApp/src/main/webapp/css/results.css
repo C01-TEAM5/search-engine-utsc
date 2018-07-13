@@ -1,0 +1,48 @@
+.search-results {
+    text-align: center;
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.904);
+    margin: 2%;
+}
+
+.results-table {
+    text-align: left;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-move-btn {
+    transition-duration: 0.15s;
+    height: 25px;
+    width: 80px;
+    background: #33A2FF;
+    border: 2px;
+    border-radius: 2px;
+    color: white;
+    font-size: 15px;
+}
+
+.page-num {
+
+    padding-left: 8px;
+    padding-right: 8px;
+
+}
+
+a {
+  text-decoration: none;
+}
+
+td {
+
+  padding-bottom: 1em;
+
+}
