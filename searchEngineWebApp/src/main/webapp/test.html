@@ -1,8 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!--  learned pagination from:
-https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,48 +80,58 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     </div>
   </div>
     <!-- search results -->
-  <div class=search-results>
-      ${totalResults} results found.
+  <div class="search-results">
+      5 results found.
       <table class="results-table">
-          <c:forEach var="result" items="${searchResults}">
               <tr>
                   <td>
-                      Title: <c:out value="${result.title}"/><br>
-                      Owner: <c:out value="${result.owner}"/><br>
-                      Course Code: <c:out value="${result.courseCode}"/><br>
-                      File Type: <c:out value="${result.fileType}"/><br>
+                      Title: Story<br>
+                      Owner: Me<br>
+                      Course Code: CSCC01<br>
+                      File Type: PDF<br>
                   </td>
               </tr>
-          </c:forEach>
+              <tr>
+                  <td>
+                      Title: Story<br>
+                      Owner: Me<br>
+                      Course Code: CSCC01<br>
+                      File Type: PDF<br>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      Title: Story<br>
+                      Owner: Me<br>
+                      Course Code: CSCC01<br>
+                      File Type: PDF<br>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      Title: Story<br>
+                      Owner: Me<br>
+                      Course Code: CSCC01<br>
+                      File Type: PDF<br>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      Title: Story<br>
+                      Owner: Me<br>
+                      Course Code: CSCC01<br>
+                      File Type: PDF<br>
+                  </td>
+              </tr>
       </table>
-
-      <!-- page number -->
       <table>
-          <tr>
-              <!-- previous link -->
-              <c:if test="${currentPage != 1}">
-                  <td><a href="${noPageUri}page=${currentPage - 1}">
-                    <button class="page-move-btn">Previous</button></a></td>
-              </c:if>
-              <!-- page number -->
-              <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay+1}" var="index">
-                  <c:choose>
-                      <c:when test="${currentPage eq index}">
-                          <td class="page-num" id="active-page">${index}</td>
-                      </c:when>
-                      <c:otherwise>
-                          <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                      </c:otherwise>
-                  </c:choose>
-              </c:forEach>
-              <!-- next link -->
-              <c:if test="${currentPage - 1 != totalPages}">
-                  <td><a href="${noPageUri}page=${currentPage + 1}">
-                    <button class="page-move-btn">Next</button></a><td>
-              </c:if>
-          </tr>
+      <tr>
+          <td><a href="www.google.com"><button class="page-move-btn">Previous</button></a></td>
+          <td class="page-num">1</td> <td class="page-num" id="active-page">2</td> <td class="page-num">3</td> <td class="page-num">4</td> <td class="page-num">5</td>
+          <td class="page-num">6</td>
+          <td><a href="www.next.com"><button class="page-move-btn">Next</button></a><td>
+      <tr>
       </table>
-
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
