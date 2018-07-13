@@ -120,6 +120,13 @@ public class DocFile {
     }
 
     /**
+     * Assigns a course code
+     */
+    public void setCourseCode (String courseCode) {
+        this.courseCode = courseCode;
+    }
+    
+    /**
      * Check whether an object is equivalent to this DocFile
      *
      * @param obj object to compare with this DocFile
