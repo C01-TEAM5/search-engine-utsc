@@ -30,6 +30,13 @@
     font-size: 15px;
 }
 
+#active-page {
+
+    color: #33A2FF;
+    font-weight: bold;
+
+}
+
 .page-num {
 
     padding-left: 8px;
@@ -43,6 +50,6 @@ a {
 
 td {
 
-  padding-bottom: 1em;
+  padding-bottom: 1.5em;
 
 }
