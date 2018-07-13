@@ -15,6 +15,7 @@ import org.bson.Document;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 public class CourseManager {
 
@@ -82,6 +83,13 @@ public class CourseManager {
         Document doc = coursesCollection.find(Filters.eq("code", code)).first();
         if (doc == null) throw new CourseDoesNotExistException();
 
-
+        Course result = new Course(doc.getString("name"), code, doc.getInteger("size"), new String[] {});
+        result.setDescription(doc.getString("description"));
+        result.setInstructors((List<String>) doc.get("instructors"));
+        result.setFiles((List<String>) doc.get("files"));
+        result.setStudents((List<String>) doc.get("students"));
+        result.setTAs((List<String>) doc.get("teachingAssistants"));
+        
+        return result;
     }
 }
