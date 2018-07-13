@@ -27,13 +27,8 @@
             if (searchPdf.checked) {filterList.push("ePdf")}
             if (searchHtml.checked) {filterList.push("eHtml")}
             if (searchDocx.checked) {filterList.push("eDocx")}
-            api.search(searchQuery, filterList, function(error, result) {
-                if (result != null) {
-                    alert(result);//Handle results
-                } else {
-                    alert("error");//Handle errors
-                }
-            });
+            var queryString = api.buildQuery(searchQuery,filterList);
+            document.location.href="/search?query="+queryString;
 
 
         }
