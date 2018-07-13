@@ -52,7 +52,7 @@ var api = (function(){
     
     
 
-    function buildQueryString(query, filters) {
+    module.buildQuery = function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");
 
