@@ -1,5 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,9 +33,23 @@ public class SearchServlet extends HttpServlet {
      * 
      * Any user can perform a search (even if they do not have an account)
      * 
+     * Learned pagination from: https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp
+     * 
      */
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        int currentPage = 1; //current page we are on
+        int resultsPerPage = 4; //number of results to be shown per page
+        int totalResults; //total search results on all pages
+        int pagesRequired; //pages required to display total search results
+        
+        String noPageUri = removePageQuery(req.getQueryString());
+        
+        //adjust current page if not on page 1
+        if(req.getParameter("page") != null) {
+            currentPage = Integer.parseInt(req.getParameter("page"));
+        }
         
         //Get query typed by user
         String query = req.getParameter("query");
@@ -48,49 +65,90 @@ public class SearchServlet extends HttpServlet {
         }        
         String[] filterQuery = filterParam.split(",");
         
-        Gson gson = new Gson();
-        resp.setContentType("application/json");
-       
+        //Perform search, only send the results we want shown on page to jsp
         try {
-            //Write the response
-	        String searchResults = performSearch(searchQuery,filterQuery);
-            String jsonResponse = gson.toJson(searchResults);
-	        PrintWriter output = resp.getWriter();
-	        output.print(jsonResponse);
-	        output.flush();
+            DocFile[] searchResults = performSearch(searchQuery,filterQuery);
+            totalResults = searchResults.length;
+            pagesRequired = (int) Math.ceil(totalResults/resultsPerPage);
+            
+            //Set the start index we want to show, if an invalid page was
+            //entered into the URL, just go to the first one
+            int startIndex = (currentPage-1)*resultsPerPage;          
+            if (startIndex > totalResults) {
+                startIndex = 0;
+            }
+            
+            //Only show up to the number of results we have
+            int endIndex = startIndex+resultsPerPage;
+            if (endIndex > totalResults) {
+                endIndex = totalResults;
+            }
+            
+            DocFile[] pageResults = Arrays.copyOfRange(searchResults, 
+                    startIndex, endIndex);
+            req.setAttribute("searchResults", pageResults);
+            req.setAttribute("totalResults", totalResults);
+            req.setAttribute("totalPages", pagesRequired);
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("noPageUri", noPageUri);
+            req.setAttribute("minPageDisplay", pageDisplay(currentPage, pagesRequired)[0]);
+            req.setAttribute("maxPageDisplay", pageDisplay(currentPage, pagesRequired)[1]);
         } catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        }
+    
+        RequestDispatcher viewResults = req.getRequestDispatcher("/WEB-INF/searchresults.jsp");
+        viewResults.forward(req, resp);
         
     }
     
     /**
-     * Helper method to print the results of the search.
-     * Returns a string to be returned to the front end.
+     * Calculates the minimum page number to display at the bottom
+     * of the jsp page.
      * 
-     * @param resultFiles the DocFile array of results
-     * @return String the String to be returned to the user
+     * @param currentPage
+     * @return
      */
-    private String printResults(DocFile[] resultFiles) {
-		
-    	if (resultFiles.length==0) {
-    		return "No results found.";
-    	}
-    	
-    	StringBuilder results = new StringBuilder();
-    	
-    	if (resultFiles.length==1) {
-    	    results.append("1 result found.\n");
-    	} else {
-    	    results.append(resultFiles.length + " results found.\n");
-    	}
-    	
-    	for (DocFile result:resultFiles) {
-    	    results.append(result.toString()+"\n\n");
-    	}
-    	
-    	return results.toString();
+    private int[] pageDisplay(int currentPage, int pagesRequired) {
+        
+        int pageOnEachSide = 3;
+        int minPage = currentPage - pageOnEachSide;
+        int maxPage = currentPage + pageOnEachSide;
+        
+        if (minPage < 1) {
+            maxPage += Math.abs(minPage-1);
+            minPage = 1;
+        }
+               
+        if (maxPage > pagesRequired) {
+            maxPage = pagesRequired;
+        }
+        
+        int[] returnArray = {minPage, maxPage};
+        
+        return returnArray;
+        
+    }
+    
+    /**
+     * Helper function to remove the page parameter from the URI.
+     * 
+     * @param query
+     * @return
+     */
+    private String removePageQuery(String query) {
+        
+        String[] queryArray = query.split("&");
+        StringBuilder returnUri = new StringBuilder("/search?");
+        
+        for(String param:queryArray) {
+            if (!param.contains("page=")) {
+                returnUri.append(param+"&");
+            }
+        }
+                
+        return returnUri.toString();
+        
     }
     
     /**
@@ -105,7 +163,7 @@ public class SearchServlet extends HttpServlet {
      * @throws ParseException
      * @throws IOException
      */
-    public String performSearch (String[] queryString, String[] filterString) throws ParseException, IOException {
+    public DocFile[] performSearch (String[] queryString, String[] filterString) throws ParseException, IOException {
     	
     	ArrayList<String> searchFilters = new ArrayList<String>();
     	ArrayList<String> searchQuery = new ArrayList<String>(Arrays.asList(queryString));
@@ -120,9 +178,9 @@ public class SearchServlet extends HttpServlet {
         
         DocFile[] docFileResults = handler.search(queryList, filterList, true);
 		handler.closeWriter();
-		String results = printResults(docFileResults);
+		//String results = printResults(docFileResults);
         
-		return results;
+		return docFileResults;
     	
     }
     
