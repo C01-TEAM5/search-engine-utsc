@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.handlers;
+package fall2018.cscc01.team5.searchEngineWebApp.user;
 
 import static org.junit.Assert.fail;
 

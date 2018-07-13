@@ -17,7 +17,6 @@
             if (event.target == popuplogin || event.target == popupregister) {
                 popupregister.style.display = "none";
                 popuplogin.style.display = "none";
-                history.pushState(null, '', '/');
             }
         }
 
@@ -43,7 +42,12 @@
 
             var email = document.getElementById("s-username").value;
             var password = document.getElementById("s-pwd").value;
-            
+            swal({
+                title: "Processing!",
+                text: "Please wait.",
+                icon: "../media/icons/loading.gif",
+                buttons: false
+            });
             api.signin(email, password, function(err, result) {
                 if (err != null) {   //get error when login
                     //display for register and login
@@ -53,6 +57,7 @@
                     // document.getElementById("logoutButton").style.display = "none";
                     setNotSignedIn();
                     console.log(err);
+                    swal.close();
                 }
                 else {  //success when login 
                     //display==none for register and login
@@ -64,14 +69,13 @@
                     document.getElementById("s-username").value = "";
                     document.getElementById("s-pwd").value = "";
                     document.getElementById("SIB").style.display = "none";
-                    history.pushState(null, '', '/');
+                    swal.close();
+                    location.reload(); 
                 }
             });
             
             // clears entries after
         });
-
-
 
         document.getElementById("RC").addEventListener("click", function(){
 
@@ -80,6 +84,12 @@
             var email = document.getElementById("r-email").value;
             var password = document.getElementById("r-pwd1").value;
 
+            swal({
+                title: "Processing!",
+                text: "Please wait.",
+                icon: "../media/icons/loading.gif",
+                buttons: false
+            });
             api.register(username, name, email, password, function(err, result) {
                 if (err != null) {  //get error when register
                     //display for register and login
@@ -97,6 +107,8 @@
                     // //display logout
                     // document.getElementById("logoutButton").style.display = "inline-block";
                     setSignedIn();
+                    swal.close();
+                    location.reload(); 
                 }
             });
             
@@ -109,7 +121,6 @@
 
 
             document.getElementById('RIB').style.display='none';
-            history.pushState(null, '', '/');
         });
 
         document.getElementById("logoutButton").addEventListener("click", function(){
@@ -121,6 +132,7 @@
                 }
                 else {
                     setNotSignedIn();
+                    location.reload(); 
                 }
             });
             console.log(2);
@@ -143,22 +155,22 @@
     }
 
     var setSignedIn = function() {
+        $(".user").html(api.getCurrentUser());
         $(".signedIn").css("display", "inline-block");
         $(".notSignedIn").css("display", "none");
     }
 
     var setNotSignedIn = function() {
+        $(".user").html("");
         $(".notSignedIn").css("display", "inline-block");
         $(".signedIn").css("display", "none");
     }
 
     var showLogin = function() {
-        history.pushState(null, '', '?login');
         document.getElementById('SIB').style.display='block';
     }
 
     var showRegister = function() {
-        history.pushState(null, '', '?register');
         document.getElementById('RIB').style.display='block';
     }
 
