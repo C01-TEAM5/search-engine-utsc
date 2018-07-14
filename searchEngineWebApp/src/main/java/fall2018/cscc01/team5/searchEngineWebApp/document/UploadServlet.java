@@ -82,6 +82,7 @@ public class UploadServlet extends HttpServlet {
                   }
                 }
                 
+                
                 // iteratively adds the upload items found
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
@@ -95,6 +96,7 @@ public class UploadServlet extends HttpServlet {
                         boolean isInMemory = item.isInMemory();
                         long sizeInBytes = item.getSize();
 
+                        
                         // creates the save directory if it does not exists
                         File fileSaveDir = new File(filePath);
                         if (!fileSaveDir.exists()) {
@@ -110,8 +112,9 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
+                            
                             if (courseCode != "") {
-                              docFile.setCourseCode(courseCode);  
+                              docFile.setCourseCode(courseCode);
                             }
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
