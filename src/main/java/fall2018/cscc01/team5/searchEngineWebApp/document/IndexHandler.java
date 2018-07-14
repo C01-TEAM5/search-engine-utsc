@@ -343,6 +343,8 @@ public class IndexHandler {
                         document.get(Constants.INDEX_KEY_OWNER),
                         document.get(Constants.INDEX_KEY_PATH),
                         document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
+                
+                result[i].setCourseCode(document.get(Constants.INDEX_KEY_COURSE));
             }
         } catch(Exception e) {
             e.printStackTrace();
