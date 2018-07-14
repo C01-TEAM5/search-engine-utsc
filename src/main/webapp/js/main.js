@@ -16,24 +16,29 @@
         const searchDocx = document.getElementById("searchDocx");
 
         function submitter (event) {
-
+        	
             event.preventDefault();
 
             var filterList = [];
             const expandSearch = true;
             const searchQuery = search.value;
+            
+            if (search.value=="") return;
+          
+            if (!searchTxt.checked && !searchPdf.checked &&
+            		!searchHtml.checked && !searchDocx.checked){
+            	filterList.push(".txt");
+            	filterList.push(".pdf");
+            	filterList.push(".html");
+            	filterList.push(".docx");
+            }
+            if (searchTxt.checked) {filterList.push(".txt")}
+            if (searchPdf.checked) {filterList.push(".pdf")}
+            if (searchHtml.checked) {filterList.push(".html")}
+            if (searchDocx.checked) {filterList.push(".docx")}
 
-            if (searchTxt.checked) {filterList.push("eTxt")}
-            if (searchPdf.checked) {filterList.push("ePdf")}
-            if (searchHtml.checked) {filterList.push("eHtml")}
-            if (searchDocx.checked) {filterList.push("eDocx")}
-            api.search(searchQuery, filterList, function(error, result) {
-                if (result != null) {
-                    alert(result);//Handle results
-                } else {
-                    alert("error");//Handle errors
-                }
-            });
+            var queryString = api.buildQuery(searchQuery,filterList);
+            document.location.href="/search?query="+queryString;
 
 
         }
