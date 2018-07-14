@@ -1,4 +1,3 @@
-i//TO DO
 var api = (function(){
     "use strict";
 

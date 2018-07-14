@@ -2,6 +2,15 @@
 
     "use strict";
 
+    $(".bar-item").click(function() {
+        $(".bar-item").removeClass("bar-active");
+        $(this).addClass("bar-active");
+        $(".content-info-item").removeClass("content-info-item-active");
+        $("#" + $(this).attr('id') + "-info").addClass("content-info-item-active");
+    });
+
+    $(".course-content .user").html("");
+
     $("#showFiles").click(function() {
         $(".course-content-item").removeClass("item-active");
         $("#file-list").addClass("item-active");
@@ -49,6 +58,6 @@
         }
     }
 
-    init();
+    //init();
 
 }());
