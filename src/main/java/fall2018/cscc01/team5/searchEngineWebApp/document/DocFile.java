@@ -161,6 +161,14 @@ public class DocFile {
     public void setId(String id) {
         this.id = id;
     }
+
+    /**
+     * Change the course code this file belongs to.
+     * @param code the new course code
+     */
+    public void setCourseCode(String code) {
+        this.courseCode = code;
+    }
     
     /**
      * Return an integer representation of this DocFile

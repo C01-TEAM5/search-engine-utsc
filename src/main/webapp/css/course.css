@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding-top: 0px;
 }
 
 .content-info {
@@ -114,6 +115,11 @@
     height: 48% !important;
 }
 
+.custom-list .ui.raised.segment:hover {
+    cursor: pointer;
+    background: rgb(224, 229, 255) !important;
+}
+
 .custom-list {
     width: 100% !important;
     max-height: 80% !important;
@@ -145,16 +151,61 @@
     margin: 0 !important;
     padding: 10px !important;
     width: 100px !important;
+    border: 1px solid #999 !important;
 }
 
 .content-info-item-active {
     display: flex;
 }
 
-.content span {
+.course-content span {
     padding-left: 5px;
 }
 
 #tas-list {
     display: block;
+}
+
+#course-students-info .ui.raised.segment, #course-files-info .ui.raised.segment {
+    height: 100% !important;
+}
+
+#course-config-info .ui.raised.segment{
+    width: auto !important;
+    height: auto !important;
+}
+
+#course-config-info .ui.stacked.segment{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.ui.action.input {
+    margin-top: 10px !important;
+    width: 500px !important;
+    height: 50px !important;
+}
+
+#course-config-info .ui.stacked.segment .ui.action.input{
+    width: 98% !important;
+    height: auto !important;
+    margin: 10px !important;
+}
+
+.bar-item .label {
+    transition-duration: 0.5s;
+    left: 50px;
+    display: none;
+    filter: invert(100%);
+    color: black;
+    z-index: 100;
+}
+
+.bar-item i {
+    position: fixed;
+}
+
+.bar-item:hover .label {
+    position: fixed;
+    display: inline;
 }

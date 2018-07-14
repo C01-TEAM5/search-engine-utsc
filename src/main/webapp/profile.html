@@ -29,27 +29,29 @@
             </div>
 
             <!-- the sign in pop up window -->
-            <div id="SIB" class="popup">
+            <div id="SIB" class="popup-login">
             <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
-                <label for="username">Username</label>
-                <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                    <label for="username">Username</label>
+                    <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
 
-                <label for="psw">Password</label>
-                <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                    <label for="psw">Password</label>
+                    <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
-                <button id = "SC" class = "loginButton" type="submit">Login</button>
+                    <div class="btn-container">
+                        <button id = "SC" class = "loginButton" type="submit">Login</button>
 
-                <button type="button"
-                onclick="document.getElementById('SIB').style.display='none'"
-                class="cancelbtn">Cancel</button>
+                        <button type="button"
+                        onclick="document.getElementById('SIB').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                    </div>
                 </div>
             </form>
             </div>
 
 
             <!-- the register pop up window -->
-            <div id="RIB" class="popup">
+            <div id="RIB" class="popup-login">
             <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container">
                 <label for="uemail">User Email</label>
@@ -68,11 +70,13 @@
                 <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                 <span id = "message"></span><br>
 
-                <button id ="RC" class = "loginButton" type="submit" >Register</button>
+                <div class="btn-container">
+                    <button id ="RC" class = "loginButton" type="submit" >Register</button>
 
-                <button type="button"
-                onclick="document.getElementById('RIB').style.display='none'"
-                class="cancelbtn">Cancel</button>
+                    <button type="button"
+                    onclick="document.getElementById('RIB').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+                </div>
                 </div>
             </form>
             </div>
