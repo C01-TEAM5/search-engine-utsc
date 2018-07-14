@@ -103,6 +103,7 @@ public class UploadServlet extends HttpServlet {
                             if (courseId != null && CourseManager.courseExists(courseId)) {
                                 docFile.setCourseCode(courseId);
                             }
+
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
