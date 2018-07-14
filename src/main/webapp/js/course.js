@@ -2,6 +2,8 @@
 
     "use strict";
 
+    $(".course-content .user").html("");
+
     $(".bar-item").click(function() {
         $(".bar-item").removeClass("bar-active");
         $(this).addClass("bar-active");
@@ -9,55 +11,53 @@
         $("#" + $(this).attr('id') + "-info").addClass("content-info-item-active");
     });
 
-    $(".course-content .user").html("");
-
-    $("#showFiles").click(function() {
-        $(".course-content-item").removeClass("item-active");
-        $("#file-list").addClass("item-active");
+    $("#courses-upload-text").val("");
+    $('#courses-upload').change(function(e){
+        var fileName = e.target.files[0].name;
+        $("#courses-upload-text").val(fileName);
     });
 
-    $("#showStudents").click(function() {
-        $(".course-content-item").removeClass("item-active");
-        $("#student-list").addClass("item-active");
-    });
+    $("#courses-upload-btn").click(function() {
+        if ($("#courses-upload-text").val() !== "") {
+            var data = new FormData();
+            $.each($('#courses-upload')[0].files, function(i, file) {
+                data.append('file-'+i, file);
+            });
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/upload?id=" + $("#courseID").html(),
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
 
-    $("#addStudent").click(function() {
-        var username = $("#studentUsername").val();
-        var courseID = $("#courseID").html();
-        swal({
-            title: "Processing!",
-            text: "Please wait.",
-            icon: "../media/icons/loading.gif",
-            buttons: false
-        });
-        api.addStudent(courseID, username, function(err, result) {
-            if (err != null) {
-                // error occured
-                swal.close();
-                swal("Error!", 
-                    "Failed to add student. Please make sure to enter a valid username.", 
-                    "error");
-            }
-            else {
+                    $("#courses-upload-text").val("");
+                    console.log("SUCCESS : ", data);
+                    swal("Success!", "File uploaded successfully", "success");
+                },
+                error: function (e) {
 
-                swal.close();
-                swal("Success!", 
-                    "Student added.", 
-                    "success");
-            }
-        });
-        $("#studentUsername").val("");
-    });
-
-    function init() {
-        var instID = $("#instID").html();
-        var user = api.getCurrentUser();
-
-        if (user != null && instID === user) {
-            $(".instructorOnly").css("display", "flex");
+                    $("#courses-upload-text").val("");
+                    console.log("ERROR : ", e);
+                    swal("Error!", "Cannot upload file: " + e, "error");
+                }
+            });
         }
-    }
+    });
 
-    //init();
+    $("#course-save-info").click(function() {
+        alert("not yet implemented");
+    });
+
+    $("#course-add-instructor").click(function() {
+        alert("not yet implemented");
+    });
+
+    $("#course-add-student").click(function() {
+        alert("not yet implemented");
+    });
 
 }());

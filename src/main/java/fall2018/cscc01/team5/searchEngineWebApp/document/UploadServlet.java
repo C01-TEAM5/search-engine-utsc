@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -47,6 +48,7 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
 
         String currentUser = getCurrentUser(req.getCookies());
+        String courseId = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID);
         if (!currentUser.equals("")) {
             // check upload request
             isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -55,6 +57,7 @@ public class UploadServlet extends HttpServlet {
 
             // empty return
             if (!isMultipart) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
@@ -68,12 +71,13 @@ public class UploadServlet extends HttpServlet {
                 // parse multiple files
                 List items = upload.parseRequest(req);
                 Iterator itemIterator = items.iterator();
-
+                if (!itemIterator.hasNext()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
-
                     if (!item.isFormField()) {
-
                         // gets file data
                         String fileName = item.getName();
                         String filePath = Constants.FILE_UPLOAD_PATH + currentUser + File.separator;
@@ -95,7 +99,10 @@ public class UploadServlet extends HttpServlet {
                             FileUtils.copyInputStreamToFile(initialStream, targetFile);
 
                             // writes data to indexHandler
-                            DocFile docFile = new DocFile(fileName, fileName, "", filePath + fileName, false);
+                            DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
+                            if (courseId != null && CourseManager.courseExists(courseId)) {
+                                docFile.setCourseCode(courseId);
+                            }
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
@@ -103,14 +110,18 @@ public class UploadServlet extends HttpServlet {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(e);
             }
-
 //            PrintWriter output = resp.getWriter();
 //            output.print(new Gson().toJson("Success"));
 //            output.flush();
             resp.sendRedirect("/upload");
         }
         else {
+            if (courseId != null) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             resp.sendRedirect("/upload?error");
         }
 

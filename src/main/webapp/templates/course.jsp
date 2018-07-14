@@ -31,27 +31,29 @@
                 </div>
 
                 <!-- the sign in pop up window -->
-                <div id="SIB" class="popup">
+                <div id="SIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
                     <div class="container">
-                    <label for="username">Username</label>
-                    <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                        <label for="username">Username</label>
+                        <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
 
-                    <label for="psw">Password</label>
-                    <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                        <label for="psw">Password</label>
+                        <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
-                    <button id = "SC" class = "loginButton" type="submit">Login</button>
-
-                    <button type="button"
-                    onclick="document.getElementById('SIB').style.display='none'"
-                    class="cancelbtn">Cancel</button>
+                        <div class="btn-container">
+                            <button id = "SC" class = "loginButton" type="submit">Login</button>
+    
+                            <button type="button"
+                            onclick="document.getElementById('SIB').style.display='none'"
+                            class="cancelbtn">Cancel</button>
+                        </div>
                     </div>
                 </form>
                 </div>
 
 
                 <!-- the register pop up window -->
-                <div id="RIB" class="popup">
+                <div id="RIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
                     <div class="container">
                     <label for="uemail">User Email</label>
@@ -70,11 +72,13 @@
                     <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                     <span id = "message"></span><br>
 
-                    <button id ="RC" class = "loginButton" type="submit" >Register</button>
+                    <div class="btn-container">
+                        <button id ="RC" class = "loginButton" type="submit" >Register</button>
 
-                    <button type="button"
-                    onclick="document.getElementById('RIB').style.display='none'"
-                    class="cancelbtn">Cancel</button>
+                        <button type="button"
+                        onclick="document.getElementById('RIB').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                    </div>
                     </div>
                 </form>
                 </div>
@@ -116,10 +120,16 @@
         </div> -->
         <div class="course-content">
             <div class="icon-bar">
-                <div class="bar-item bar-active" id="course-home"><i class="home icon"></i></div>
-                <div class="bar-item" id="course-students"><i class="users icon"></i></div>
-                <div class="bar-item" id="course-files"><i class="file alternate icon"></i></div>
-                <div class="bar-item" id="course-config"><i class="cog icon"></i></div>
+                <div class="bar-item filler"></div>
+                <div class="bar-item bar-active" id="course-home"><i class="home icon"></i>
+                    <div class="ui left pointing label"> Course Home </div>
+                </div>
+                <div class="bar-item" id="course-students"><i class="users icon"></i>
+                    <div class="ui left pointing label"> Course Students </div></div>
+                <div class="bar-item" id="course-files"><i class="file alternate icon"></i>
+                    <div class="ui left pointing label"> Course files </div></div>
+                <div class="bar-item" id="course-config"><i class="cog icon"></i>
+                    <div class="ui left pointing label"> Configure course </div></div>
             </div>
             <div class="content-info">
                 <h1 class="ui header segment">
@@ -144,7 +154,7 @@
                             <hr>
                             <div class="custom-list">
                                 
-                                <div class="ui raised segment">
+                                <!-- <div class="ui raised segment">
                                     <div class="ui list">
                                         <div class="item">
                                             <i class="user icon"></i>
@@ -154,7 +164,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 
                             </div>
                         </div>
@@ -164,7 +174,7 @@
                             <hr>
                             <div class="custom-list">
 
-                                <div class="ui raised segment">
+                                <!-- <div class="ui raised segment">
                                     <div class="ui list">
                                         <div class="item">
                                             <i class="user icon"></i>
@@ -174,34 +184,133 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="content-info-item" id="course-students-info">
-                    <div class="content-info-segment">
-            
+                    <div class="ui content-info-segment">
+                        <div class="ui raised segment" id="students-list">
+                            <h3 class="">Students</h3>
+                            <hr>
+                            <div class="custom-list">
+                                                                
+                            </div>
+                        </div>
                     </div>
                     <div class="content-info-segment">
-    
+                        <div class="ui raised segment segment-info">
+                            <h3 class="student-name">Crazy Bob</h3>
+                            <hr>
+                            <div class="custom-list">
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="content-info-item" id="course-files-info">
                     <div class="content-info-segment">
-        
+                        <h3 class="ui header segment">
+                            <i class="file icon"></i>
+                            <span class="courseID"></span>Number of Files: <span class="courseSize"> ${numStudentsEnrolled}</span>
+                        </h3>
                     </div>
-                    <div class="content-info-segment">
-
+                    <div class="ui content-info-segment">
+                        <div class="ui raised segment" id="students-list">
+                            <h3 class="">Files</h3>
+                            <hr>
+                            <div class="custom-list">
+                                
+                                <!-- <div class="ui raised segment">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <i class="file icon"></i>
+                                            <div class="content">
+                                                <a href="/file?id=bob">Crazy Bob</a>
+                                                <button class="ui button">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="content-info-item" id="course-config-info">
                     <div class="content-info-segment">
-        
+                        <div class="ui raised segment">
+                            <h3>Add Instructor</h3>
+                            <hr>
+                            <div class="ui action input">
+                                <input placeholder="Username..." type="text">
+                                <button class="ui button" id="course-add-instructor">Add Instructor</button>
+                            </div>
+                        </div>
+                        <div class="ui raised segment">
+                            <h3>Add Student</h3>
+                            <hr>
+                            <div class="ui action input">
+                                <input placeholder="Username..." type="text">
+                                <button class="ui button" id="course-add-Student">Add Student</button>
+                            </div>
+                        </div>
+                        <div class="ui raised segment">
+                            <h3>Upload file</h3>
+                            <hr>
+                            <div class="ui action input">
+
+                                <label for="courses-upload" class="ui icon button">
+                                    <i class="file icon"></i>
+                                    Open File
+                                </label>
+                                <form class="" enctype = "multipart/form-data" id="couse-file-upload-form">
+                                    <input type="file" id="courses-upload" style="display:none">
+                                </form>
+                                <input placeholder="a" type="text" id="courses-upload-text" disabled multiple>
+                                <button class="ui button" id="courses-upload-btn">Upload</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="content-info-segment">
-    
+                        <div class="ui stacked segment">
+                            <h3>Course Information</h3>
+                            <hr>
+                            <div class="ui raised segment">
+                                <div class="ui action input">
+                                    <div class="ui blue right pointing label">
+                                        Course code
+                                    </div>
+                                    <input placeholder="${courseID}" type="text" value="${courseID}" required>
+                                </div>
+                                <div class="ui action input">
+                                    <div class="ui blue right pointing label">
+                                        Course name
+                                    </div>
+                                    <input placeholder="${courseName}" type="text" value="${courseName}" required>
+                                </div>
+                                <div class="ui form segment">
+                                    <div class="field">
+                                        <div class="ui blue ribbon label">
+                                            Course Description
+                                        </div>
+                                        <textarea placeholder="${courseDesc}" type="number" required>${courseDesc}</textarea>
+                                    </div>
+                                </div>
+                                <div class="ui action input">
+                                    <div class="ui blue right pointing label">
+                                        Enrollment size
+                                    </div>
+                                    <input placeholder="${numStudentsEnrolled}" type="text" value="${numStudentsEnrolled}" required>
+                                </div>
+                                <h4 class="ui horizontal divider header">
+                                    <i class="save icon"></i>
+                                </h4>
+                                <button class="fluid blue ui button" id="course-save-info">Save</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
