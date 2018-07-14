@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fall2018.cscc01.team5.searchEngineWebApp.user.User;
-
-
 public class Course {
 
     private String name;
@@ -20,7 +17,7 @@ public class Course {
 
     public Course(String courseName, String courseCode, int courseSize, String[] instructors) {
         this.name = courseName;
-        this.code = courseCode;
+        this.code = courseCode.toLowerCase();
         this.size = courseSize;
         this.instructors = Arrays.asList(instructors);
         this.description = "";

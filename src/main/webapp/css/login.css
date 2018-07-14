@@ -1,4 +1,5 @@
 .btn, .loginButton, .cancelbtn  {
+    font-family: 'Open Sans', sans-serif !important;
     width: auto;
     background-color: #121e61;
     font-size: 15px;

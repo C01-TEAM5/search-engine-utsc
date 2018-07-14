@@ -22,7 +22,7 @@ public class DocFile {
      */
     public DocFile (String filename, String title, String owner, String path, boolean isPublic) {
 
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString().replaceAll("-", "");
         this.filename = filename;
         this.isPublic = isPublic;
         this.courseCode = "";
