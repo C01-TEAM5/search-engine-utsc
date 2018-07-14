@@ -35,52 +35,56 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         </div>
 
         <!-- the sign in pop up window -->
-        <div id="SIB" class="popup">
-          <form class="login-content" method ="POST" enctype = "multipart/form-data">
+        <div id="SIB" class="popup-login">
+            <form class="login-content" method ="POST" enctype = "multipart/form-data">
             <div class="container">
-              <label for="username">Username</label>
-              <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                <label for="username">Username</label>
+                <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
 
-              <label for="psw">Password</label>
-              <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                <label for="psw">Password</label>
+                <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
-              <button id = "SC" class = "loginButton" type="submit">Login</button>
+                <div class="btn-container">
+                    <button id = "SC" class = "loginButton" type="submit">Login</button>
 
-              <button type="button"
-              onclick="document.getElementById('SIB').style.display='none'"
-              class="cancelbtn">Cancel</button>
+                    <button type="button"
+                    onclick="document.getElementById('SIB').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+                </div>
             </div>
-          </form>
+            </form>
         </div>
 
 
         <!-- the register pop up window -->
-        <div id="RIB" class="popup">
-          <form class="login-content" method ="POST" enctype = "multipart/form-data">
+        <div id="RIB" class="popup-login">
+            <form class="login-content" method ="POST" enctype = "multipart/form-data">
             <div class="container">
-              <label for="uemail">User Email</label>
-              <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
+                <label for="uemail">User Email</label>
+                <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
 
-              <label for="uname">Name</label>
-              <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
+                <label for="uname">Name</label>
+                <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
 
-              <label for="username">Username</label>
-              <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
+                <label for="username">Username</label>
+                <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
 
-              <label for="userpsw">Password</label>
-              <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+                <label for="userpsw">Password</label>
+                <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
 
-              <label for="confirmpsw">Confirm Password</label>
-              <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
-              <span id = "message"></span><br>
+                <label for="confirmpsw">Confirm Password</label>
+                <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                <span id = "message"></span><br>
 
-              <button id ="RC" class = "loginButton" type="submit" >Register</button>
+                <div class="btn-container">
+                    <button id ="RC" class = "loginButton" type="submit" >Register</button>
 
-              <button type="button"
-              onclick="document.getElementById('RIB').style.display='none'"
-              class="cancelbtn">Cancel</button>
+                    <button type="button"
+                    onclick="document.getElementById('RIB').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+                </div>
             </div>
-          </form>
+            </form>
         </div>
     </div>
   </div>
