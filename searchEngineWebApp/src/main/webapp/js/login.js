@@ -167,11 +167,11 @@
     }
 
     var showLogin = function() {
-        document.getElementById('SIB').style.display='block';
+        document.getElementById('SIB').style.display='flex';
     }
 
     var showRegister = function() {
-        document.getElementById('RIB').style.display='block';
+        document.getElementById('RIB').style.display='flex';
     }
 
     var parseURL =  function() {

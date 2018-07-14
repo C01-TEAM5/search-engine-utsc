@@ -92,4 +92,9 @@ public class CourseManager {
         
         return result;
     }
+
+    public static boolean courseExists(String code) {
+        return coursesCollection.find(Filters.eq("code", code)).first() != null;
+    }
+
 }
