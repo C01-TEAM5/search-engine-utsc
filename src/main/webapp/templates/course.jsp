@@ -5,6 +5,7 @@
         <title>Course page: ${courseID}</title>
         <!-- <link rel= "stylesheet" href= "./css/main.css"> -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+        <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
         <link rel="stylesheet" href="../css/index.css" type="text/css">
         <link rel= "stylesheet" href= "../css/login.css" type="text/css">
         <link rel= "stylesheet" href= "../css/course.css" type="text/css">
@@ -79,14 +80,13 @@
                 </div>
             </div>
         </div>
-        <span id="instID" class="hide">${instID}</span>
-        <div class="content">
+        <!-- <div class="content">
             <div class="course-info">
                 <div class="text-item">Course ID: <span id="courseID">${courseID}</span></div>
                 <div class="text-item">${courseName}</div>
                 <div class="text-desc">${courseDesc}</div>
                 <div class="separator"></div>
-                <div class="text-item">Instructor: <a href="/profile?id=${instID}">${courseInstructor}</a></div>
+                <div class="text-item">Instructors: <span id="instructors"></div>
                 <div class="text-item">Enrollment number: ${numStudentsEnrolled}</div>
                 <div class="separator"></div>
                 <button class="btn" id="showStudents">Show Students</button>
@@ -113,10 +113,103 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+        <div class="course-content">
+            <div class="icon-bar">
+                <div class="bar-item bar-active" id="course-home"><i class="home icon"></i></div>
+                <div class="bar-item" id="course-students"><i class="users icon"></i></div>
+                <div class="bar-item" id="course-files"><i class="file alternate icon"></i></div>
+                <div class="bar-item" id="course-config"><i class="cog icon"></i></div>
+            </div>
+            <div class="content-info">
+                <h1 class="ui header segment">
+                    <i class="book icon"></i><span class="courseID">${courseID}</span> : <span class="courseName">${courseName}</span>
+                </h1>
+                
+                
+                <div class="content-info-item content-info-item-active" id="course-home-info">
+                    <div class="content-info-segment">
+                        <div class="ui raised segment" >
+                            <h3 class="">Description</h3>
+                            <p>${courseDesc}</p>
+                        </div>
+                        <h3 class="ui header segment">
+                            <i class="user circle icon"></i>
+                            <span class="courseID"></span>Enrollment Size: <span class="courseSize"> ${numStudentsEnrolled}</span>
+                        </h3>
+                    </div>
+                    <div class="ui content-info-segment">
+                        <div class="ui raised segment" id="instructors-list">
+                            <h3 class="">Instructors</h3>
+                            <hr>
+                            <div class="custom-list">
+                                
+                                <div class="ui raised segment">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <i class="user icon"></i>
+                                            <div class="content">
+                                                <a href="/profile?id=bob">Crazy Bob</a>
+                                                <button class="ui button">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="ui raised segment" id="tas-list">
+                            <h3 class="">Teaching Assistants</h3>
+                            <hr>
+                            <div class="custom-list">
+
+                                <div class="ui raised segment">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <i class="user icon"></i>
+                                            <div class="content">
+                                                <a href="/profile?id=bob">Crazy Bob</a>
+                                                <button class="ui button">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-info-item" id="course-students-info">
+                    <div class="content-info-segment">
+            
+                    </div>
+                    <div class="content-info-segment">
+    
+                    </div>
+                </div>
+                <div class="content-info-item" id="course-files-info">
+                    <div class="content-info-segment">
+        
+                    </div>
+                    <div class="content-info-segment">
+
+                    </div>
+                </div>
+                <div class="content-info-item" id="course-config-info">
+                    <div class="content-info-segment">
+        
+                    </div>
+                    <div class="content-info-segment">
+    
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="../lib/semantic/semantic.min.js"></script>
         <script src="../js/api.js"></script>
         <script src="../js/login.js"></script>
         <script src="../js/course.js"></script>

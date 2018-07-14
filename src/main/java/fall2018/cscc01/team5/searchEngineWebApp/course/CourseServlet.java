@@ -1,7 +1,9 @@
 package fall2018.cscc01.team5.searchEngineWebApp.course;
 
+import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,15 +44,14 @@ public class CourseServlet extends HttpServlet {
                     }
                     else {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
                     }
                 }
                 
                 if (removeStudent != null) {
-                    if (AccountManager.exists(removeFile)) {
-                        c.removeStudent(removeStudent);
-                    }
-                    else {
+                    if (!c.removeStudent(removeStudent)) {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
                     }
                 }
                 
@@ -60,12 +61,41 @@ public class CourseServlet extends HttpServlet {
                     }
                     else {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                }
+
+                if (removeInstructor != null) {
+                    if (!c.removeInstructor(removeInstructor)) {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                }
+
+                if (addFile != null) {
+                    if (IndexHandler.getInstance().fileExists(addFile)) {
+                        c.addFile(addFile);
+                    }
+                    else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                }
+
+                if (removeFile != null) {
+                    if (!c.removeFile(removeFile)) {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
                     }
                 }
             } catch (CourseDoesNotExistException e) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            } catch (ParseException e) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
-            
+
         }
         
     }
