@@ -264,9 +264,6 @@ public class IndexHandler {
     }
 
     /**
-<<<<<<< HEAD
-     * Accept a list of queries and filters and return a list of DocFile that matches
-=======
      * Given a query, permission level and filetypes, return a list of matching DocFiles
      *
      * @param query a string of words
@@ -308,7 +305,6 @@ public class IndexHandler {
     /**
      * Accept a list of queries and filters and return a list of DocFile that
      * matches
->>>>>>> TEAM5-77
      *
      * @param queries     a list of String queries
      * @param filters     a list of String filters (list of Contants.INDEX_KEY*)
@@ -381,8 +377,6 @@ public class IndexHandler {
             for (int i = 0; i < results.length; i++) {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
-
-                //System.out.println(document.get(Constants.INDEX_KEY_TITLE));
                 DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
