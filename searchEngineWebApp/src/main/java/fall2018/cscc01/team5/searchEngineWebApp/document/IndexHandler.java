@@ -95,7 +95,7 @@ public class IndexHandler {
     public void addDoc (DocFile newFile) {
 
         // Check if the file extension is valid
-        if (!isValid(newFile)) {
+        if (!isValid(newFile) ) {
             return;
         }
         
@@ -117,6 +117,7 @@ public class IndexHandler {
         newDocument.add(titleField);
         newDocument.add(typeField);
         newDocument.add(permissionField);
+        newDocument.add(new StoredField(Constants.INDEX_KEY_PERMISSION, newFile.getPermission()));
 
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
@@ -203,7 +204,10 @@ public class IndexHandler {
     private boolean isValid (DocFile file) {
         return file!= null && Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
     }
-    
+
+    private boolean fileExists(DocFile file) {
+        return new File(file.getPath()).exists();
+    }
     
     /**
      * Commits the changes to a local copy from the RAM without shutting down the
@@ -248,6 +252,45 @@ public class IndexHandler {
 
         if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
         else return search(queries, filters, BooleanClause.Occur.MUST);
+    }
+
+    /**
+     * Given a query, permission level and filetypes, return a list of matching DocFiles
+     *
+     * @param query a string of words
+     * @param permissionLevel the permission level of the files to filter
+     * @param fileTypes a list of file types, ex: [".html", ".pdf"]
+     * @return a list of DocFiles matching the given params
+     * @throws ParseException
+     */
+    public DocFile[] search(String query, int permissionLevel, String[] fileTypes) throws ParseException {
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // check content
+        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+        QueryParser parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        // check title
+        parser = new QueryParser(Constants.INDEX_KEY_TITLE, analyzer);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.MUST);
+        if (permissionLevel > Constants.PERMISSION_ALL)
+                masterQueryBuilder.add(IntPoint.newExactQuery(Constants.INDEX_KEY_PERMISSION, permissionLevel),
+                        BooleanClause.Occur.MUST);
+
+        String filterString = fileTypes[0];
+        for (String fileType : fileTypes) {
+            filterString += " OR " + fileType;
+        }
+        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
+                BooleanClause.Occur.MUST);
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery));
     }
 
     /**
@@ -327,13 +370,14 @@ public class IndexHandler {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
                 
-                //System.out.println(document.get(Constants.INDEX_KEY_TITLE));
-                result[i] = new DocFile(
+                DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
                         document.get(Constants.INDEX_KEY_OWNER),
                         document.get(Constants.INDEX_KEY_PATH),
                         document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
+                toAdd.setPermissions(Integer.parseInt(document.get(Constants.INDEX_KEY_PERMISSION)));
+                result[i] = toAdd;
             }
         } catch(Exception e) {
             e.printStackTrace();

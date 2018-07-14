@@ -12,6 +12,7 @@ public class DocFile {
     private String owner; //Uploader of the file
     private String path; //ID number of the file for updating/deletion
     private String title; //The title of the Document
+    private String fileType;
     private int permission;
 
     /**
@@ -26,6 +27,7 @@ public class DocFile {
         this.owner = owner;
         this.path = path;
         this.title = title;
+        this.fileType = getFileType();
         permission = Constants.PERMISSION_ALL;
     }
 
