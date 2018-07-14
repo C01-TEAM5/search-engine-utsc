@@ -53,7 +53,7 @@ var api = (function(){
         send("POST", "/add-student", {"courseID":courseID, "username":username}, callback);
     }
 
-    function buildQueryString(query, filters) {
+    module.buildQuery = function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");
 
