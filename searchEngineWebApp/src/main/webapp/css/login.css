@@ -1,4 +1,4 @@
-.btn, .loginButton, .cancelbtn  {
+.btn, .loginButton, .cancelbtn {
     font-family: 'Open Sans', sans-serif !important;
     width: auto;
     background-color: #121e61;
@@ -13,13 +13,32 @@
     text-align: center;
 }
 
+.registertypebutton  {
+    font-family: 'Open Sans', sans-serif !important;
+    width: 97%;
+    background-color: #f5f5f9;
+    font-size: 15px;
+    color: #0e0e0e;
+    padding: 9px 12px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.registertypebutton:focus {
+    background-color: #121e61;
+    color: white;
+}
 
 .btn:hover {
     opacity: 0.8;
 }
 
 .login-content input[type=text], input[type=password], input[type=email] {
-    font-size: 18px;
+    font-size: 15px;
     width: 100%;
     padding: 9px 7px;
     margin: 8px 0;
@@ -38,9 +57,9 @@
     align-items: flex-start;
 }
 
-.container * {
+/* .container * {
     padding-top: 15px;
-}
+} */
 
 .button-container {
     width: 100%;
@@ -70,13 +89,23 @@
 .login-content {
     background-color: #fefefe;
     border: 1px solid #888;
-    width: 60%;
+    width: 85%;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
+.typeinfo {
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    height: 80%;
+    padding: 16%;
+    background-color: #f1e9e9;
+}
+
 
 #profileButton{
     color: white;
