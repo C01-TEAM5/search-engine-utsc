@@ -1,5 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.course;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mongodb.client.result.UpdateResult;
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
@@ -12,6 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CourseServlet extends HttpServlet {
 
@@ -23,21 +29,43 @@ public class CourseServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
-        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID); 
-        String addStudent = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_STUDENT);
-        String removeStudent = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_STUDENT);
-        String addInstructor = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_INSTRUCTOR);
-        String removeInstructor = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_INSTRUCTOR);
-        String addFile = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ADD_FILE);
-        String removeFile = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_REMOVE_FILE);
-
+        String currentUser = getCurrentUser(req.getCookies());
+        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_ID);
 
         if (courseID == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
         else {
+            Gson gson = new Gson();
+
+            StringBuilder sb = new StringBuilder();
+            String s;
+            while ((s = req.getReader().readLine()) != null) {
+                sb.append(s);
+            }
+
+            Map<String, String> map = gson.fromJson(sb.toString(), new TypeToken<HashMap<String, String>>() {}.getType());
+            String addStudent = map.get("addStudnet");
+            String addInstructor = map.get("addInstructor");
+            String addFile = map.get("addFile");
+            String removeStudent = map.get("removeStudent");
+            String removeInstructor = map.get("removeInstructor");
+            String removeFile = map.get("removeFile");
+            String newCode = map.get("courseCode");
+            String newName = map.get("courseName");
+            String newDesc = map.get("courseDesc");
+            String newSize = map.get("courseSize");
+
             try {
+                courseID = courseID.toLowerCase();
                 Course c = CourseManager.getCourse(courseID);
+
+                if (currentUser == null || !c.getAllInstructors().contains(currentUser)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+
                 if (addStudent != null) {
                     if (AccountManager.exists(addStudent)) {
                         c.addStudent(addStudent);
@@ -47,14 +75,14 @@ public class CourseServlet extends HttpServlet {
                         return;
                     }
                 }
-                
+
                 if (removeStudent != null) {
                     if (!c.removeStudent(removeStudent)) {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                         return;
                     }
                 }
-                
+
                 if (addInstructor != null) {
                     if (AccountManager.exists(addInstructor)) {
                         c.addInstructor(addInstructor);
@@ -88,11 +116,43 @@ public class CourseServlet extends HttpServlet {
                         return;
                     }
                 }
+
+                if (newCode != null) {
+                    c.setCode(newCode);
+                }
+
+                if (newName != null) {
+                    c.setName(newName);
+                }
+
+                if (newDesc != null) {
+                    c.setDescription(newDesc);
+                }
+
+                if (newSize != null) {
+                    c.setSize(Integer.parseInt(newSize));
+                }
+
+                UpdateResult res = CourseManager.updateCourse(courseID, c);
+                if (res != null) {
+                    PrintWriter output = resp.getWriter();
+                    output.print(new Gson().toJson(c));
+                    output.flush();
+                    return;
+                }
+                else {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
             } catch (CourseDoesNotExistException e) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             } catch (ParseException e) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            catch (NumberFormatException  e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
@@ -102,18 +162,58 @@ public class CourseServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
         //throw new ServletException("GET method used with " + getClass().getName()+": POST method required.");
-        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID); 
+        String courseID = req.getParameter(Constants.SERVLET_PARAMETER_ID);
+        boolean getStudents = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_COURSE_GET_STUDENT);
+        boolean getInstructorus = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_COURSE_GET_INSTRUCTORS);
+        boolean getFiles = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_COURSE_GET_FILES);
+        boolean getTAs = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_COURSE_GET_TAS);
+        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
 
         if (courseID == null) {
+            System.out.println("course ID is null: " + courseID);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         else if (courseID.equals("")) {
+            System.out.println("course ID is empty: " + courseID);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         else {
             try {
                 Course course = CourseManager.getCourse(courseID.toLowerCase());
+                PrintWriter output = resp.getWriter();
+
+                if (getStudents) {
+                    output.print(new Gson().toJson(course.getAllStudents()));
+                    output.flush();
+                    return;
+                }
+
+                if (getInstructorus) {
+                    output.print(new Gson().toJson(course.getAllInstructors()));
+                    output.flush();
+                    return;
+                }
+
+                if (getFiles) {
+                    output.print(new Gson().toJson(course.getAllFiles()));
+                    output.flush();
+                    return;
+                }
+
+                if (getTAs) {
+                    output.print(new Gson().toJson(course.getAllTAs()));
+                    output.flush();
+                    return;
+                }
+
+                if (get) {
+                    output.print(new Gson().toJson(course));
+                    output.flush();
+                    return;
+                }
+
                 req.setAttribute("courseID", courseID.toUpperCase());
                 req.setAttribute("courseName", course.getName());
                 req.setAttribute("courseDesc", course.getDescription());
@@ -121,6 +221,7 @@ public class CourseServlet extends HttpServlet {
                 RequestDispatcher view = req.getRequestDispatcher("templates/course.jsp");
                 view.forward(req, resp);
             } catch (CourseDoesNotExistException e) {
+                System.out.println("course does not exist: " + courseID);
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         }

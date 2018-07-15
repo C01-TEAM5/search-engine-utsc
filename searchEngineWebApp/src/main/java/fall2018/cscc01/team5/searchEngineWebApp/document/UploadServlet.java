@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
@@ -48,7 +49,7 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
 
         String currentUser = getCurrentUser(req.getCookies());
-        String courseId = req.getParameter(Constants.SERVLET_PARAMETER_COURSE_ID);
+        String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         if (!currentUser.equals("")) {
             // check upload request
             isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -133,6 +134,18 @@ public class UploadServlet extends HttpServlet {
 //            PrintWriter output = resp.getWriter();
 //            output.print(new Gson().toJson("Success"));
 //            output.flush();
+            if (courseId != null && CourseManager.courseExists(courseId)) {
+                PrintWriter output = resp.getWriter();
+                try {
+                    output.print(new Gson().toJson(CourseManager.getCourse(courseId).getAllFiles()));
+                } catch (CourseDoesNotExistException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    output.flush();
+                    return;
+                }
+                output.flush();
+                return;
+            }
             resp.sendRedirect("/upload");
         }
         else {

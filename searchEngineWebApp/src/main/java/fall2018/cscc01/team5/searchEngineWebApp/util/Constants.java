@@ -26,13 +26,14 @@ public class Constants {
     
     public static final int SEARCH_HITS_PER_PAGE = 10;
     
-    public static final String SERVLET_PARAMETER_COURSE_ID = "id";
-    public static final String SERVLET_PARAMETER_COURSE_REMOVE_STUDENT = "removeStudent";
-    public static final String SERVLET_PARAMETER_COURSE_ADD_STUDENT = "addStudent";
-    public static final String SERVLET_PARAMETER_COURSE_ADD_INSTRUCTOR = "addInstructor";
-    public static final String SERVLET_PARAMETER_COURSE_REMOVE_INSTRUCTOR = "removeInstructor";
-    public static final String SERVLET_PARAMETER_COURSE_ADD_FILE = "addFile";
-    public static final String SERVLET_PARAMETER_COURSE_REMOVE_FILE = "removeFile";
+    public static final String SERVLET_PARAMETER_ID = "id";
+    public static final String SERVLET_PARAMETER_GET = "get";
+
+    public static final String SERVLET_PARAMETER_COURSE_GET_STUDENT = "getStudents";
+    public static final String SERVLET_PARAMETER_COURSE_GET_INSTRUCTORS = "getInstructors";
+    public static final String SERVLET_PARAMETER_COURSE_GET_FILES = "getFiles";
+    public static final String SERVLET_PARAMETER_COURSE_GET_TAS = "getTAs";
+
 
     public static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
     
