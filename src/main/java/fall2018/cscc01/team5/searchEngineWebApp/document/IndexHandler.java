@@ -108,7 +108,7 @@ public class IndexHandler {
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(), Store.YES);
         Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(), Store.YES);
-        Field permissionField = new IntPoint(Constants.INDEX_KEY_PERMISSION, newFile.getPermission());
+        Field permissionField = new TextField(Constants.INDEX_KEY_PERMISSION, Integer.toString(newFile.getPermission()), Store.YES);
         Field courseField = new TextField(Constants.INDEX_KEY_COURSE, newFile.getCourseCode(), Store.YES);
        
         
@@ -120,7 +120,6 @@ public class IndexHandler {
         newDocument.add(titleField);
         newDocument.add(typeField);
         newDocument.add(permissionField);
-        newDocument.add(new StoredField(Constants.INDEX_KEY_PERMISSION, newFile.getPermission()));
         newDocument.add(courseField);
         
         //Call Content Generator to add in the ContentField
@@ -209,7 +208,15 @@ public class IndexHandler {
         return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id))).length > 0;
     }
 
-    public DocFile[] s(String id) throws ParseException {
+    /**
+     * Search for DocFile by id
+     *
+     * @param id the id to search
+     * @return a list if docfiles containing this id
+     * @throws ParseException
+     */
+    public DocFile[] searchById(String id) throws ParseException, IOException {
+        if (indexDir.listAll().length < 2) return new DocFile[0];
         return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
     }
 

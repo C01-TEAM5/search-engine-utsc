@@ -5,6 +5,7 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.UpdateResult;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.user.UserValidator;
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
@@ -59,7 +60,7 @@ public class CourseManager {
      * @param code the old code of the course
      * @param course the new course data
      */
-    public static void updateCourse (String code, Course course) throws CourseDoesNotExistException {
+    public static UpdateResult updateCourse (String code, Course course) throws CourseDoesNotExistException {
         Document doc = coursesCollection.find(Filters.eq("code", code)).first();
         if (doc == null) throw new CourseDoesNotExistException();
 
@@ -72,7 +73,7 @@ public class CourseManager {
                 .append("students", course.getAllStudents())
                 .append("teachingAssistants", course.getAllTAs());
 
-        coursesCollection.updateOne(Filters.eq("code", code), new Document("$set", doc));
+        return coursesCollection.updateOne(Filters.eq("code", code), new Document("$set", doc));
     }
 
     /**

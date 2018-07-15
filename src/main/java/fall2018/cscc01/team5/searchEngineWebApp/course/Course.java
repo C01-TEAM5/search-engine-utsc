@@ -2,6 +2,7 @@ package fall2018.cscc01.team5.searchEngineWebApp.course;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Course {
@@ -80,7 +81,9 @@ public class Course {
      */
     public boolean addStudent(String username) {
         if (this.students.contains(username)) return true;
-        return this.students.add(username);
+        boolean res =  this.students.add(username);
+        Collections.sort(this.students);
+        return res;
     }
 
     /**
@@ -111,7 +114,9 @@ public class Course {
      */
     public boolean addTA(String username) {
         if (this.teachingAssistants.contains(username)) return true;
-        return this.teachingAssistants.add(username);
+        boolean res =  this.teachingAssistants.add(username);
+        Collections.sort(this.teachingAssistants);
+        return res;
     }
 
     /**
@@ -142,7 +147,9 @@ public class Course {
      */
     public boolean addInstructor(String username) {
         if (this.instructors.contains(username)) return true;
-        return this.instructors.add(username);
+        boolean res =  this.instructors.add(username);
+        Collections.sort(this.instructors);
+        return res;
     }
 
     /**
@@ -173,7 +180,9 @@ public class Course {
      */
     public boolean addFile(String id) {
         if (this.files.contains(id)) return false;
-        return this.files.add(id);
+        boolean res =  this.files.add(id);
+        Collections.sort(this.files);
+        return res;
     }
 
     /**
@@ -262,10 +271,10 @@ public class Course {
     /**
      * Change the list of files of this course
      *
-     * @param code the new code of this course
+     * @param files the new files of this course
      */
-    public void setFiles(List<String> instructors) {
-        this.code = code;
+    public void setFiles(List<String> files) {
+        this.files = files;
     }
 
     /**
@@ -280,19 +289,19 @@ public class Course {
     /**
      * Change the code of this course
      *
-     * @param code the new code of this course
+     * @param students the new students of this course
      */
-    public void setStudents(List<String> instructors) {
-        this.code = code;
+    public void setStudents(List<String> students) {
+        this.students = students;
     }
 
     /**
      * Change the code of this course
      *
-     * @param code the new code of this course
+     * @param tas the new TAs of this course
      */
-    public void setTAs(List<String> instructors) {
-        this.code = code;
+    public void setTAs(List<String> tas) {
+        this.teachingAssistants = tas;
     }
     
     @Override

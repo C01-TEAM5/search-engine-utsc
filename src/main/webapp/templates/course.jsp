@@ -218,7 +218,7 @@
                         </h3>
                     </div>
                     <div class="ui content-info-segment">
-                        <div class="ui raised segment" id="students-list">
+                        <div class="ui raised segment" id="files-list">
                             <h3 class="">Files</h3>
                             <hr>
                             <div class="custom-list">
@@ -229,7 +229,7 @@
                                             <i class="file icon"></i>
                                             <div class="content">
                                                 <a href="/file?id=bob">Crazy Bob</a>
-                                                <button class="ui button">Remove</button>
+                                                <button class="ui button remove-file-button">Remove</button>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@
                             <h3>Add Instructor</h3>
                             <hr>
                             <div class="ui action input">
-                                <input placeholder="Username..." type="text">
+                                <input placeholder="Username..." type="text" id="course-add-instructor-input">
                                 <button class="ui button" id="course-add-instructor">Add Instructor</button>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                             <h3>Add Student</h3>
                             <hr>
                             <div class="ui action input">
-                                <input placeholder="Username..." type="text">
+                                <input placeholder="Username..." type="text" id="course-add-Student-input">
                                 <button class="ui button" id="course-add-Student">Add Student</button>
                             </div>
                         </div>
