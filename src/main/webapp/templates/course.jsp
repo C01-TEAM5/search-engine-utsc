@@ -201,13 +201,13 @@
                         </div>
                     </div>
                     <div class="content-info-segment">
-                        <div class="ui raised segment segment-info">
+                        <!-- <div class="ui raised segment segment-info">
                             <h3 class="student-name">Crazy Bob</h3>
                             <hr>
                             <div class="custom-list">
                                 
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="content-info-item" id="course-files-info">
@@ -253,8 +253,8 @@
                             <h3>Add Student</h3>
                             <hr>
                             <div class="ui action input">
-                                <input placeholder="Username..." type="text" id="course-add-Student-input">
-                                <button class="ui button" id="course-add-Student">Add Student</button>
+                                <input placeholder="Username..." type="text" id="course-add-student-input">
+                                <button class="ui button" id="course-add-student">Add Student</button>
                             </div>
                         </div>
                         <div class="ui raised segment">
