@@ -123,7 +123,7 @@ public class DocFile {
     public void setPermissions(int perm) {
         this.permission = perm;
     }
-
+    
     /**
      * Check whether an object is equivalent to this DocFile
      *

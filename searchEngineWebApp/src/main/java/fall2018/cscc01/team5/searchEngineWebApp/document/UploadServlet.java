@@ -67,14 +67,26 @@ public class UploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-            try {
+            try {              
+              
                 // parse multiple files
                 List items = upload.parseRequest(req);
                 Iterator itemIterator = items.iterator();
+
                 if (!itemIterator.hasNext()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
+                
+                // get course code as the last element of list
+                String courseCode = "";
+                if (items.size()> 0) {
+                  FileItem lastItem = (FileItem) items.get(items.size() - 1);
+                  if (lastItem.isFormField()) {
+                    courseCode = lastItem.getString();
+                  }
+                }
+
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
                     if (!item.isFormField()) {
@@ -85,6 +97,7 @@ public class UploadServlet extends HttpServlet {
                         boolean isInMemory = item.isInMemory();
                         long sizeInBytes = item.getSize();
 
+                        
                         // creates the save directory if it does not exists
                         File fileSaveDir = new File(filePath);
                         if (!fileSaveDir.exists()) {
@@ -104,6 +117,10 @@ public class UploadServlet extends HttpServlet {
                                 docFile.setCourseCode(courseId);
                             }
 
+                            if (courseCode != "") {
+                              docFile.setCourseCode(courseCode);
+                            }
+                            
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
@@ -120,7 +137,7 @@ public class UploadServlet extends HttpServlet {
         }
         else {
             if (courseId != null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
             resp.sendRedirect("/upload?error");
