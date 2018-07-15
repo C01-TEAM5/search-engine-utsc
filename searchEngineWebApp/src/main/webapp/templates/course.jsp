@@ -278,7 +278,7 @@
                         <div class="ui stacked segment">
                             <h3>Course Information</h3>
                             <hr>
-                            <div class="ui raised segment">
+                            <div class="ui raised segment course-config-segment">
                                 <div class="ui action input">
                                     <div class="ui blue right pointing label">
                                         Course code
