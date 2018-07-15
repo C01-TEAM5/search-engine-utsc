@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
@@ -68,7 +69,7 @@ public class UploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-            try {              
+            try {
               
                 // parse multiple files
                 List items = upload.parseRequest(req);
@@ -114,12 +115,21 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
-                            if (courseId != null && CourseManager.courseExists(courseId)) {
+
+                            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
+                                courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
+                                Course c = CourseManager.getCourse(courseId);
+                                c.addFile(docFile.getId());
+                                CourseManager.updateCourse(courseId, c);
+                                System.out.println("Updating course files");
                             }
 
-                            if (courseCode != "") {
-                              docFile.setCourseCode(courseCode);
+                            if (courseCode != "" && CourseManager.courseExists(courseId)) {
+                                docFile.setCourseCode(courseCode);
+                                Course c = CourseManager.getCourse(courseCode);
+                                c.addFile(docFile.getId());
+                                CourseManager.updateCourse(courseCode, c);
                             }
                             
                             IndexHandler indexHandler = IndexHandler.getInstance();
@@ -127,14 +137,21 @@ public class UploadServlet extends HttpServlet {
                         }
                     }
                 }
+
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                System.out.println("adding course failed");
+                return;
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e);
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
             }
 //            PrintWriter output = resp.getWriter();
 //            output.print(new Gson().toJson("Success"));
 //            output.flush();
-            if (courseId != null && CourseManager.courseExists(courseId)) {
+            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                 PrintWriter output = resp.getWriter();
                 try {
                     output.print(new Gson().toJson(CourseManager.getCourse(courseId).getAllFiles()));
