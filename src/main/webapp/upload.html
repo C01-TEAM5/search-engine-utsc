@@ -117,9 +117,13 @@
 
     <section class= "uploadFile">
         <span>Upload File</span>
+		
+
 
         <div class = "uploadSection">
             <form method="POST" action="upload" enctype = "multipart/form-data">
+             	 <br />
+            
                 <div class = "uploadFilePath">
                     <!-- <button class = "uploadButton">Browse</button> -->
                     <input type = "file" name = "filePath" multiple required>
@@ -130,6 +134,13 @@
                         <textarea></textarea>
                     </label>
                 </div> -->
+                
+                <br />
+                <label for="courseCode">Course Code</label>
+                <input id="courseCode" type="text" placeholder="" name="courseCode">
+                <br />
+                <br />
+                
                 <button type = "submit" value = "submitUpload">Upload</button>
             </form>
         </div>
