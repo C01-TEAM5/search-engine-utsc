@@ -21,7 +21,10 @@ public class Constants {
     public static final String INDEX_KEY_TITLE = "Title";
     public static final String INDEX_KEY_TYPE = "Type";
     public static final String INDEX_KEY_PERMISSION = "Permission";
+    public static final String INDEX_KEY_COURSE = "Course";
 
+    
+    
     public static final int SEARCH_HITS_PER_PAGE = 10;
 
     public static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};

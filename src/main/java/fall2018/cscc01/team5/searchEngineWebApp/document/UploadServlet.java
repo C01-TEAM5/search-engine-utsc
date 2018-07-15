@@ -67,11 +67,23 @@ public class UploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-            try {
+            try {              
+              
                 // parse multiple files
                 List items = upload.parseRequest(req);
                 Iterator itemIterator = items.iterator();
-
+                
+                // get course code as the last element of list
+                String courseCode = "";
+                if (items.size()> 0) {
+                  FileItem lastItem = (FileItem) items.get(items.size() - 1);
+                  if (lastItem.isFormField()) {
+                    courseCode = lastItem.getString();
+                  }
+                }
+                
+                
+                // iteratively adds the upload items found
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
 
@@ -84,6 +96,7 @@ public class UploadServlet extends HttpServlet {
                         boolean isInMemory = item.isInMemory();
                         long sizeInBytes = item.getSize();
 
+                        
                         // creates the save directory if it does not exists
                         File fileSaveDir = new File(filePath);
                         if (!fileSaveDir.exists()) {
@@ -99,6 +112,9 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
+                            if (courseCode != "") {
+                              docFile.setCourseCode(courseCode);
+                            }
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
