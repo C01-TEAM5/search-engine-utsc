@@ -9,7 +9,7 @@ pipelines:
   default:
     - step:
         name: Deploy to Heroku
-        deployment: test   # set to test, staging or production
+        deployment: staging   # set to test, staging or production
         caches:
           - maven
         script: # Modify the commands below to build your repository.
