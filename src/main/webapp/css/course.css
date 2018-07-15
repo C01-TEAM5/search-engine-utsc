@@ -170,6 +170,21 @@
     height: 100% !important;
 }
 
+#course-config-info .ui.raised.segment, #course-config-info .ui.raised.segment {
+    overflow: hidden !important;
+    overflow-y: auto !important;
+}
+
+#course-config-info .course-config-segment{
+    width: auto !important;
+    height: 85% !important;
+    max-height: 90% !important;
+    padding-bottom: 80px !important;
+    margin-bottom: 80px !important;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+}
+
 #course-config-info .ui.raised.segment{
     width: auto !important;
     height: auto !important;
@@ -178,6 +193,10 @@
 #course-config-info .ui.stacked.segment{
     width: 100% !important;
     height: 100% !important;
+}
+
+#course-save-info {
+    margin-bottom: 20px;
 }
 
 .ui.action.input {
