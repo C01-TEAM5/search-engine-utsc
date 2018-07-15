@@ -65,6 +65,7 @@ public class SignInServlet extends HttpServlet {
         }
         catch (Exception e) {
             e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

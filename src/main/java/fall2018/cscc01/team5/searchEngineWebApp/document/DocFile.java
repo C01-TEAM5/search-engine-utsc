@@ -1,7 +1,9 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import org.apache.lucene.queryparser.classic.ParseException;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +26,16 @@ public class DocFile {
     public DocFile (String filename, String title, String owner, String path, boolean isPublic) {
 
         this.id = UUID.randomUUID().toString().replaceAll("-", "");
+
+        try {
+            while (IndexHandler.getInstance().searchById(this.id).length > 0 || IndexHandler.getInstance(true).searchById(this.id).length > 0) {
+                this.id = UUID.randomUUID().toString().replaceAll("-", "");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Id may not be unique.");
+        }
+
         this.filename = filename;
         this.isPublic = isPublic;
         this.courseCode = "";
