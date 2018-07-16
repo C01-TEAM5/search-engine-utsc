@@ -41,8 +41,8 @@ var api = (function(){
         send("POST", "/signin", {"username":username, "password":password}, callback);
     };
     
-    module.register = function(username, name, email, password, callback) {
-        send("POST", "/register", {"username":username, "name":name, "email":email, "password":password}, callback);
+    module.register = function(username, name, email, password, permission, callback) {
+        send("POST", "/register", {"username":username, "name":name, "email":email, "password":password, "permission":permission}, callback);
     };
     
     module.signout = function (callback) {
