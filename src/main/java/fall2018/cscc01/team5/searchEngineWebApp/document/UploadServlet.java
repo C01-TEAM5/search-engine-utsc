@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import org.apache.commons.io.FileUtils;
+import org.bson.types.ObjectId;
 
 
 @WebServlet("/upload")
@@ -94,7 +95,7 @@ public class UploadServlet extends HttpServlet {
                     if (!item.isFormField()) {
                         // gets file data
                         String fileName = item.getName();
-                        String filePath = Constants.FILE_UPLOAD_PATH + currentUser + File.separator;
+                        String filePath = Constants.FILE_PUBLIC_PATH + currentUser + File.separator;
                         String contentType = item.getContentType();
                         boolean isInMemory = item.isInMemory();
                         long sizeInBytes = item.getSize();
@@ -111,27 +112,34 @@ public class UploadServlet extends HttpServlet {
                         //Only upload the file if it does not exist already
                         if (!targetFile.isFile()) {
                             InputStream initialStream = item.getInputStream();
-                            FileUtils.copyInputStreamToFile(initialStream, targetFile);
 
                             // writes data to indexHandler
-                            DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
+                            DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
 
                             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseId, initialStream);
+                                docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseId);
                                 c.addFile(docFile.getId());
                                 CourseManager.updateCourse(courseId, c);
-                                System.out.println("Updating course files");
+                                
                             }
-
-                            if (courseCode != "" && CourseManager.courseExists(courseId)) {
+                            else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
+                                courseCode = courseCode.toLowerCase();
                                 docFile.setCourseCode(courseCode);
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseCode, initialStream);
+                                docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseCode);
                                 c.addFile(docFile.getId());
                                 CourseManager.updateCourse(courseCode, c);
                             }
-                            
+                            else {
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), "", initialStream);
+                                docFile.setId(fileId);
+                            }
+                            docFile.setPath(FileManager.download(new ObjectId(docFile.getId()), fileName));
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }

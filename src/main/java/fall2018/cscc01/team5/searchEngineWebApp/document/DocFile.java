@@ -27,15 +27,6 @@ public class DocFile {
 
         this.id = UUID.randomUUID().toString().replaceAll("-", "");
 
-        try {
-            while (IndexHandler.getInstance().searchById(this.id).length > 0 || IndexHandler.getInstance(true).searchById(this.id).length > 0) {
-                this.id = UUID.randomUUID().toString().replaceAll("-", "");
-            }
-        }
-        catch (Exception e) {
-            System.out.println("Id may not be unique.");
-        }
-
         this.filename = filename;
         this.isPublic = isPublic;
         this.courseCode = "";
@@ -175,7 +166,14 @@ public class DocFile {
     public void setId(String id) {
         this.id = id;
     }
-
+    
+    /**
+     * Set the path of this file
+     * @param path the new path of this file
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
     /**
      * Change the course code this file belongs to.
      * @param code the new course code
