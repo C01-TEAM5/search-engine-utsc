@@ -26,6 +26,7 @@ import org.apache.lucene.store.RAMDirectory;
 public class IndexHandler {
 
     private static IndexHandler indexHandler;
+    private static IndexHandler testHandler;
 
     private StandardAnalyzer analyzer;    // Use default setting
     private Directory indexDir;           // store index in Local dir
@@ -34,10 +35,9 @@ public class IndexHandler {
     //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 10;
     private boolean useRamDir;
-    
+
     /**
-     * Construct a new IndexHandler. This class represents the indexer for the
-     * search engine. Index is stored in RAM.
+     * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
      */
     private IndexHandler (boolean useRamDir) throws IOException {
         analyzer = new StandardAnalyzer();
@@ -63,7 +63,7 @@ public class IndexHandler {
      *
      * @return a shared IndexHandler
      */
-    public static IndexHandler getInstance() throws IOException {
+    public static IndexHandler getInstance () throws IOException {
         return getInstance(false);
     }
 
@@ -73,21 +73,28 @@ public class IndexHandler {
      * @param useRamDir if true use a RAMDirectoriy instead of a FSDirectory
      * @return a shared IndexHandler
      */
-    public static IndexHandler getInstance(boolean useRamDir) throws IOException {
+    public static IndexHandler getInstance (boolean useRamDir) throws IOException {
+
         if (indexHandler == null) {
             indexHandler = new IndexHandler(useRamDir);
-            return indexHandler;
         }
-
         return indexHandler;
+    }
+
+    public static IndexHandler getTestHandler() throws IOException {
+
+        if (testHandler == null) {
+            testHandler = new IndexHandler(true);
+        }
+        return testHandler;
     }
 
     /**
      * Takes a DocFile as a parameter and adds the contents of the DocFile to the index. If an invalid document type is
      * passed in, nothing happens.
-     * 
+     * <p>
      * File types that can be passed in include: .txt, .pdf, .html, .docx
-     * 
+     * <p>
      * Precondition: DocFiles passed into addDoc must not be already indexed
      *
      * @param newFile the object of the file that will be added to the index
@@ -95,29 +102,34 @@ public class IndexHandler {
     public void addDoc (DocFile newFile) {
 
         // Check if the file extension is valid
-        if (!isValid(newFile)) {
+        if (!isValid(newFile) ) {
             return;
         }
-        
+
         // Create the new document, add in DocID fields and UploaderID fields
         Document newDocument = new Document();
 
-        Field docIDField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
+        Field docIDField = new StringField(Constants.INDEX_KEY_ID, newFile.getId(), Store.YES);
+        Field docPathField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
         Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field filenameField = new TextField(Constants.INDEX_KEY_FILENAME, newFile.getFilename(), Store.YES);
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
-        Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(),Store.YES);
-        Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(),Store.YES);
-        Field permissionField = new IntPoint(Constants.INDEX_KEY_PERMISSION, newFile.getPermission());
-
+        Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(), Store.YES);
+        Field typeField = new TextField(Constants.INDEX_KEY_TYPE, newFile.getFileType(), Store.YES);
+        Field permissionField = new TextField(Constants.INDEX_KEY_PERMISSION, Integer.toString(newFile.getPermission()), Store.YES);
+        Field courseField = new TextField(Constants.INDEX_KEY_COURSE, newFile.getCourseCode(), Store.YES);
+       
+        
         newDocument.add(docIDField);
+        newDocument.add(docPathField);
         newDocument.add(userIDField);
         newDocument.add(filenameField);
         newDocument.add(isPublicField);
         newDocument.add(titleField);
         newDocument.add(typeField);
         newDocument.add(permissionField);
-
+        newDocument.add(courseField);
+        
         //Call Content Generator to add in the ContentField
         ContentGenerator.generateContent(newDocument, newFile);
 
@@ -142,9 +154,9 @@ public class IndexHandler {
         if (!isValid(updatefile) || !pathExists(updatefile.getPath())) {
             return;
         }
-        
+
         // remove the file from the index and re-add it
-		this.removeDoc(updatefile);
+        this.removeDoc(updatefile);
         this.addDoc(updatefile);
     }
 
@@ -160,11 +172,11 @@ public class IndexHandler {
             return;
         }
 
-    	Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
-    	//System.out.println("delete file: " + term.field() + " " + term.text());
+        Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
+        //System.out.println("delete file: " + term.field() + " " + term.text());
 
         // Check if path exists
-        if  (pathExists(deletefile.getPath())) {
+        if (pathExists(deletefile.getPath())) {
             // remove doc if exits
             try {
                 writer.deleteDocuments(term);
@@ -175,15 +187,15 @@ public class IndexHandler {
         }
         return;
     }
-    
-    
-    /** 
-     * Check if the path exists in Index Dir. 
-     * 
+
+
+    /**
+     * Check if the path exists in Index Dir.
+     *
      * @param path the path to check if it exists in Index Directory.
      * @return true if it exists. Otherwise return false.
      */
-    public boolean pathExists(String path) {
+    public boolean pathExists (String path) {
 
         File file = new File(path);
 
@@ -192,7 +204,30 @@ public class IndexHandler {
         }
         return true;
     }
-    
+
+    /**
+     * Check if a file exists in the index using the file's id
+     *
+     * @param id
+     * @return
+     * @throws ParseException
+     */
+    public boolean fileExists (String id) throws ParseException {
+        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id))).length > 0;
+    }
+
+    /**
+     * Search for DocFile by id
+     *
+     * @param id the id to search
+     * @return a list if docfiles containing this id
+     * @throws ParseException
+     */
+    public DocFile[] searchById(String id) throws ParseException, IOException {
+        if (indexDir.listAll().length < 2) return new DocFile[0];
+        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
+    }
+
     /**
      * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
      * .docx, .html
@@ -201,47 +236,44 @@ public class IndexHandler {
      * @return boolean true if the DocFile is a valid extension
      */
     private boolean isValid (DocFile file) {
-        return file!= null && Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
+        return file != null && Arrays.asList(Constants.VALIDDOCTYPES).contains(file.getFileType());
     }
-    
-    
+
     /**
-     * Commits the changes to a local copy from the RAM without shutting down the
-     * indexHandler.
+     * Commits the changes to a local copy from the RAM without shutting down the indexHandler.
      */
-    public void commitWriter() {
+    public void commitWriter () {
         try {
             writer.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
-     * Commits and closes the changes to a local copy from the RAM 
-     * shuts down the writer from the IndexHandler
+     * Commits and closes the changes to a local copy from the RAM shuts down the writer from the IndexHandler
      */
-    public void closeWriter() {
+    public void closeWriter () {
         try {
             writer.close();
             indexDir.close();
             indexHandler = null;
+            testHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Accept a list of queries and filters and return a list of DocFile that
-     * matches
+     * Accept a list of queries and filters and return a list of DocFile that matches
      *
-     * @param queries a list of String queries
-     * @param filters a list of String filters (list of Contants.INDEX_KEY*)
-     * @param expandedSearch if true filters will be used as additions to the search results, otherwise
-     *                       filters will further narrow down a search
+     * @param queries        a list of String queries
+     * @param filters        a list of String filters (list of Contants.INDEX_KEY*)
+     * @param expandedSearch if true filters will be used as additions to the search results, otherwise filters will
+     *                       further narrow down a search
      * @return a list of DocFile that matches all queries and filters
      */
-    public DocFile[] search(String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
+    public DocFile[] search (String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
 
         // check if there are records in the index (write.lock is always present in the directory)
         if (!useRamDir && indexDir.listAll().length < 2) return new DocFile[0];
@@ -251,20 +283,59 @@ public class IndexHandler {
     }
 
     /**
+     * Given a query, permission level and filetypes, return a list of matching DocFiles
+     *
+     * @param query a string of words
+     * @param permissionLevel the permission level of the files to filter
+     * @param fileTypes a list of file types, ex: [".html", ".pdf"]
+     * @return a list of DocFiles matching the given params
+     * @throws ParseException
+     */
+    public DocFile[] search(String query, int permissionLevel, String[] fileTypes) throws ParseException {
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // check content
+        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+        QueryParser parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        // check title
+        parser = new QueryParser(Constants.INDEX_KEY_TITLE, analyzer);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.MUST);
+        if (permissionLevel > Constants.PERMISSION_ALL)
+                masterQueryBuilder.add(IntPoint.newExactQuery(Constants.INDEX_KEY_PERMISSION, permissionLevel),
+                        BooleanClause.Occur.MUST);
+
+        String filterString = fileTypes[0];
+        for (String fileType : fileTypes) {
+            filterString += " OR " + fileType;
+        }
+        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
+                BooleanClause.Occur.MUST);
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery));
+    }
+
+    /**
      * Accept a list of queries and filters and return a list of DocFile that
      * matches
      *
-     * @param queries a list of String queries
-     * @param filters a list of String filters (list of Contants.INDEX_KEY*)
+     * @param queries     a list of String queries
+     * @param filters     a list of String filters (list of Contants.INDEX_KEY*)
      * @param filterOccur if Occur.SHOULD filters will be used as additions to the search results, otherwise, if
-     *                       Occur.MUST filters will further narrow down a search
+     *                    Occur.MUST filters will further narrow down a search
      * @return a list of DocFile that matches all queries and filters
      */
-    private DocFile[] search(String[] queries, String[] filters, BooleanClause.Occur filterOccur) throws ParseException {
+    private DocFile[] search (String[] queries, String[] filters, BooleanClause.Occur filterOccur) throws ParseException {
         // create a master query builder
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
         // loop through all queries
-        for (String query: queries) {
+        for (String query : queries) {
             if (query.equals("")) continue;
             // create a boolean query for the each query
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
@@ -284,16 +355,17 @@ public class IndexHandler {
 
         return searchResponse(searchExec(masterQuery));
     }
-    
+
     /**
      * Execute function for all searcher functions
+     *
      * @param query is the query to search in Query format
      * @return the ScoreDoc of results
      */
-    private ScoreDoc [] searchExec(Query query) {
-        
+    private ScoreDoc[] searchExec (Query query) {
+
         ScoreDoc[] hits = null;
-        
+
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -302,56 +374,57 @@ public class IndexHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        return hits;        
+
+        return hits;
     }
-    
+
     /**
-     * Helper function to the search methods. When provided an ScoreDoc array,
-     * this function builds the string that will be returned to the user.
-     * Each search method will use this to provide a uniform returned String
-     * for all searches.
-     * 
+     * Helper function to the search methods. When provided an ScoreDoc array, this function builds the string that will
+     * be returned to the user. Each search method will use this to provide a uniform returned String for all searches.
+     *
      * @param results a ScoreDoc array containing the hits
      * @return a list of DocFile results of the search
      */
-    public DocFile[] searchResponse(ScoreDoc[] results) {
+    public DocFile[] searchResponse (ScoreDoc[] results) {
 
         DocFile[] result = new DocFile[results.length];
 
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            
-            for(int i = 0; i < results.length; i++) {
+
+            for (int i = 0; i < results.length; i++) {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
-                
-                //System.out.println(document.get(Constants.INDEX_KEY_TITLE));
-                result[i] = new DocFile(
+                DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
                         document.get(Constants.INDEX_KEY_OWNER),
                         document.get(Constants.INDEX_KEY_PATH),
                         document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
+                toAdd.setId(document.get(Constants.INDEX_KEY_ID));
+                toAdd.setPermissions(Integer.parseInt(document.get(Constants.INDEX_KEY_PERMISSION)));
+                toAdd.setCourseCode(document.get(Constants.INDEX_KEY_COURSE));
+                result[i] = toAdd;
+
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return result;
-    }   
-    
-    
-    public StandardAnalyzer getAnalyzer() {
+    }
+
+
+    public StandardAnalyzer getAnalyzer () {
         return analyzer;
     }
-    
+
     public Directory getIndexDir () {
         return indexDir;
     }
-    
-    public IndexWriter getIndexWriter() {
+
+    public IndexWriter getIndexWriter () {
         return writer;
     }
 
