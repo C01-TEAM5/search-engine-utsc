@@ -118,7 +118,7 @@ public class CourseServlet extends HttpServlet {
                 }
 
                 if (newCode != null) {
-                    c.setCode(newCode);
+                    c.setCode(newCode.toLowerCase());
                 }
 
                 if (newName != null) {
