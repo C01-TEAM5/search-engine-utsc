@@ -1,6 +1,8 @@
 (function(){
     "use strict";
 
+    var permission = 2;
+
     var load = function() {
         setNotSignedIn();
         if (api.getCurrentUser() == null || api.getCurrentUser() === "") {
@@ -19,6 +21,19 @@
                 popuplogin.style.display = "none";
             }
         }
+
+        $(".registertypebutton").click(function() {
+            $(".registertypebutton").removeClass("active-permission");
+            $(this).addClass("active-permission");
+        });
+
+        $("#permission-student").click(function() {
+            permission = 2;
+        });
+
+        $("#permission-instructor").click(function() {
+            permission = 3;
+        });
 
         // handle login and register buttons
         $(".registerButton").click(function(){
@@ -90,7 +105,7 @@
                 icon: "../media/icons/loading.gif",
                 buttons: false
             });
-            api.register(username, name, email, password, function(err, result) {
+            api.register(username, name, email, password, permission, function(err, result) {
                 if (err != null) {  //get error when register
                     //display for register and login
                     // document.getElementById("loginButton").style.display = "inline-block";
