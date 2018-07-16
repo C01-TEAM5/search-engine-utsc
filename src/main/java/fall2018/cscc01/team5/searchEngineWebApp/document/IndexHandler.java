@@ -26,6 +26,7 @@ import org.apache.lucene.store.RAMDirectory;
 public class IndexHandler {
 
     private static IndexHandler indexHandler;
+    private static IndexHandler testHandler;
 
     private StandardAnalyzer analyzer;    // Use default setting
     private Directory indexDir;           // store index in Local dir
@@ -63,10 +64,7 @@ public class IndexHandler {
      * @return a shared IndexHandler
      */
     public static IndexHandler getInstance () throws IOException {
-        if (indexHandler == null) {
-            indexHandler = new IndexHandler(false);
-        }
-        return indexHandler;
+        return getInstance(false);
     }
 
     /**
@@ -77,7 +75,18 @@ public class IndexHandler {
      */
     public static IndexHandler getInstance (boolean useRamDir) throws IOException {
 
-        return new IndexHandler(useRamDir);
+        if (indexHandler == null) {
+            indexHandler = new IndexHandler(useRamDir);
+        }
+        return indexHandler;
+    }
+
+    public static IndexHandler getTestHandler() throws IOException {
+
+        if (testHandler == null) {
+            testHandler = new IndexHandler(true);
+        }
+        return testHandler;
     }
 
     /**
@@ -249,6 +258,7 @@ public class IndexHandler {
             writer.close();
             indexDir.close();
             indexHandler = null;
+            testHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
         }

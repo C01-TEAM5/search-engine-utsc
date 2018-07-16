@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -47,7 +48,7 @@ public class IndexHandlerSearchTest {
     @BeforeClass
     public static void indexSetup() throws IOException, DocumentException {
 
-        index = IndexHandler.getInstance(true);
+        index = IndexHandler.getTestHandler();
 
         generateTxtFiles();
         generateHtmlFiles();
@@ -143,6 +144,8 @@ public class IndexHandlerSearchTest {
         filter = new String[]{"Type"};
         actualFiles = index.search(query, filter, true);
         expectedFiles = new DocFile[]{docFiles.get(HTML1),docFiles.get(HTML2),docFiles.get(PDF1),docFiles.get(PDF2)};
+        System.out.println("\n\n\n\n\n\n\n");
+        System.out.println(Arrays.toString(actualFiles));
         assertArrayEquals(expectedFiles,actualFiles);
         
         //Test searching on docx
