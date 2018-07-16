@@ -26,7 +26,6 @@ import org.apache.lucene.store.RAMDirectory;
 public class IndexHandler {
 
     private static IndexHandler indexHandler;
-    private static IndexHandler testHandler;
 
     private StandardAnalyzer analyzer;    // Use default setting
     private Directory indexDir;           // store index in Local dir
@@ -34,15 +33,12 @@ public class IndexHandler {
     private IndexWriter writer;           // Index Writer
     //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 10;
-    private boolean useRamDir;
-
     /**
      * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
      */
-    private IndexHandler (boolean useRamDir) throws IOException {
+    private IndexHandler () throws IOException {
         analyzer = new StandardAnalyzer();
-        this.useRamDir = useRamDir;
-        indexDir = useRamDir ? new RAMDirectory() : FSDirectory.open(Paths.get(Constants.INDEX_DIRECTORY));
+        indexDir = new RAMDirectory();
         //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
@@ -64,29 +60,10 @@ public class IndexHandler {
      * @return a shared IndexHandler
      */
     public static IndexHandler getInstance () throws IOException {
-        return getInstance(false);
-    }
-
-    /**
-     * Return the shared instance of this index handler.
-     *
-     * @param useRamDir if true use a RAMDirectoriy instead of a FSDirectory
-     * @return a shared IndexHandler
-     */
-    public static IndexHandler getInstance (boolean useRamDir) throws IOException {
-
         if (indexHandler == null) {
-            indexHandler = new IndexHandler(useRamDir);
+            indexHandler = new IndexHandler();
         }
         return indexHandler;
-    }
-
-    public static IndexHandler getTestHandler() throws IOException {
-
-        if (testHandler == null) {
-            testHandler = new IndexHandler(true);
-        }
-        return testHandler;
     }
 
     /**
@@ -258,7 +235,6 @@ public class IndexHandler {
             writer.close();
             indexDir.close();
             indexHandler = null;
-            testHandler = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -276,7 +252,7 @@ public class IndexHandler {
     public DocFile[] search (String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
 
         // check if there are records in the index (write.lock is always present in the directory)
-        if (!useRamDir && indexDir.listAll().length < 2) return new DocFile[0];
+        if (indexDir.listAll().length < 2) return new DocFile[0];
 
         if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
         else return search(queries, filters, BooleanClause.Occur.MUST);
@@ -290,8 +266,10 @@ public class IndexHandler {
      * @param fileTypes a list of file types, ex: [".html", ".pdf"]
      * @return a list of DocFiles matching the given params
      * @throws ParseException
+     * @throws IOException 
      */
-    public DocFile[] search(String query, int permissionLevel, String[] fileTypes) throws ParseException {
+    public DocFile[] search(String query, int permissionLevel, String[] fileTypes) throws ParseException, IOException {
+        if (indexDir.listAll().length < 2) return new DocFile[0];
         // create a master query builder
         BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
         // check content
@@ -303,6 +281,11 @@ public class IndexHandler {
         parser = new QueryParser(Constants.INDEX_KEY_TITLE, analyzer);
         parser.setAllowLeadingWildcard(true);
         queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        // check course
+        parser = new QueryParser(Constants.INDEX_KEY_COURSE, analyzer);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse("*" + query + "*"), BooleanClause.Occur.SHOULD);
+        // add to the master builder
         masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.MUST);
         if (permissionLevel > Constants.PERMISSION_ALL)
                 masterQueryBuilder.add(IntPoint.newExactQuery(Constants.INDEX_KEY_PERMISSION, permissionLevel),
