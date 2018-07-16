@@ -1,4 +1,3 @@
-//TO DO
 var api = (function(){
     "use strict";
 
@@ -50,9 +49,48 @@ var api = (function(){
     	send ("POST", "/signout", {}, callback);
     }
     
-    
+    module.addStudent = function(courseID, username, callback) {
+        send("POST", "/course?id="+courseID, {"addStudnet":username}, callback);
+    }
 
-    function buildQueryString(query, filters) {
+    module.addInstructor = function(courseID, username, callback) {
+        console.log(username);
+        send("POST", "/course?id=" + courseID, {"addInstructor":username}, callback);
+    }
+
+    module.addFile = function(courseID, id, callback) {
+        send("POST", "/course?id="+courseID, {"addFile":id}, callback);
+    }
+
+    module.removeStudent = function(courseID, username, callback) {
+        send("POST", "/course?id="+courseID, {"removeStudent":username}, callback);
+    }
+
+    module.removeInstructor = function(courseID, username, callback) {
+        send("POST", "/course?id="+courseID, {"removeInstructor":username}, callback);
+    }
+
+    module.removeFile = function(courseID, id, callback) {
+        send("POST", "/course?id="+courseID, {"removeFile":id}, callback);
+    }
+
+    module.editCourse = function(courseID, newCode, newName, newDesc, newSize, callback) {
+        send("POST", "/course?id="+courseID, {"courseCode":newCode, "courseName":newName,"courseDesc":newDesc, "courseSize":newSize}, callback);
+    }
+
+    module.getFile = function(id, callback) {
+        send("GET", "/file?id=" + id + "&get=true", null, callback);
+    }
+
+    module.getUser = function(id, callback) {
+        send("GET", "/profile?id=" + id + "&get=true", null, callback);
+    }
+
+    module.getCourse = function(id, callback) {
+        send("GET", "/course?id=" + id + "&get=true", null, callback);
+    }
+
+    module.buildQuery = function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");
 

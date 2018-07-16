@@ -17,7 +17,6 @@
             if (event.target == popuplogin || event.target == popupregister) {
                 popupregister.style.display = "none";
                 popuplogin.style.display = "none";
-                history.pushState(null, '', '/');
             }
         }
 
@@ -70,8 +69,8 @@
                     document.getElementById("s-username").value = "";
                     document.getElementById("s-pwd").value = "";
                     document.getElementById("SIB").style.display = "none";
-                    history.pushState(null, '', '/');
                     swal.close();
+                    location.reload(); 
                 }
             });
             
@@ -109,6 +108,7 @@
                     // document.getElementById("logoutButton").style.display = "inline-block";
                     setSignedIn();
                     swal.close();
+                    location.reload(); 
                 }
             });
             
@@ -121,7 +121,6 @@
 
 
             document.getElementById('RIB').style.display='none';
-            history.pushState(null, '', '/');
         });
 
         document.getElementById("logoutButton").addEventListener("click", function(){
@@ -133,6 +132,7 @@
                 }
                 else {
                     setNotSignedIn();
+                    location.reload(); 
                 }
             });
             console.log(2);
@@ -167,13 +167,11 @@
     }
 
     var showLogin = function() {
-        history.pushState(null, '', '?login');
-        document.getElementById('SIB').style.display='block';
+        document.getElementById('SIB').style.display='flex';
     }
 
     var showRegister = function() {
-        history.pushState(null, '', '?register');
-        document.getElementById('RIB').style.display='block';
+        document.getElementById('RIB').style.display='flex';
     }
 
     var parseURL =  function() {
