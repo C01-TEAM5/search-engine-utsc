@@ -29,10 +29,17 @@ public class ProfileServlet extends HttpServlet {
 
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
+        String currentUser = getCurrentUser(req.getCookies());
 
         if (id == null || !AccountManager.exists(id.toLowerCase())) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
+            if (currentUser == null || currentUser.equals("")) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            else {
+                resp.sendRedirect("/profile?id="+currentUser);
+                return;
+            }
         }
 
         if (get) {
