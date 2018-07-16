@@ -56,8 +56,11 @@ public class SignUpServlet extends HttpServlet {
                     map.get("email"), 
                     map.get("name"), 
                     map.get("password"));
+           user.setPermissions(Integer.parseInt(map.get("permission")));
         } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "bad user values");
             e.printStackTrace();
+            return;
         }
         
         

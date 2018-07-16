@@ -33,6 +33,11 @@
     color: white;
 }
 
+.active-permission {
+    background-color: #121e61;
+    color: white;
+}
+
 .btn:hover {
     opacity: 0.8;
 }
@@ -47,7 +52,7 @@
     box-sizing: border-box;
 }
 
-.container {
+.container-logins {
     padding: 16px;
     height: 95%;
     width: 95%;
@@ -116,4 +121,11 @@
 
 #message {
     font-size: 20px;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
