@@ -178,7 +178,6 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   <script src="js/api.js"></script>
-  <script src="js/main.js"></script>
   <script src="./js/login.js"></script>
 </body>
 </html>

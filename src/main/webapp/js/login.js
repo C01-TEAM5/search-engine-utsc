@@ -73,6 +73,7 @@
                     setNotSignedIn();
                     console.log(err);
                     swal.close();
+                    swal("Error!", "Invalid login info", "error");
                 }
                 else {  //success when login 
                     //display==none for register and login
@@ -114,6 +115,8 @@
                     // document.getElementById("logoutButton").style.display = "none";
                     setNotSignedIn();
                     console.log(err);
+                    swal.close();
+                    swal("Error!", "Invalid login info", "error");
                 }
                 else { //success register 
                     //display==none for register and login

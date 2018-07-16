@@ -1,5 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.server;
 
+import fall2018.cscc01.team5.searchEngineWebApp.document.FileManager;
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 
 import javax.servlet.ServletContextEvent;
@@ -10,7 +11,7 @@ public class SearchEngineServletContextListener implements ServletContextListene
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        System.out.println("Closing index");
+        System.out.println("[DEBUG] Closing index");
         try {
             IndexHandler.getInstance().closeWriter();
         } catch (IOException e) {
@@ -22,9 +23,10 @@ public class SearchEngineServletContextListener implements ServletContextListene
     @Override
     public void contextInitialized (ServletContextEvent event) {
         // use crawler here to build the index
-        System.out.println("Creating new index");
+        System.out.println("[DEBUG] Creating new index");
         try {
-            IndexHandler.getInstance();
+            final IndexHandler ih = IndexHandler.getInstance();
+            FileManager.indexFiles(ih);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e);
