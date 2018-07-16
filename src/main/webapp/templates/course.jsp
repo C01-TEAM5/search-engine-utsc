@@ -54,34 +54,46 @@
 
                 <!-- the register pop up window -->
                 <div id="RIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                    <div class="container">
-                    <label for="uemail">User Email</label>
-                    <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
-
-                    <label for="uname">Name</label>
-                    <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
-
-                    <label for="username">Username</label>
-                    <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
-
-                    <label for="userpsw">Password</label>
-                    <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
-
-                    <label for="confirmpsw">Confirm Password</label>
-                    <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
-                    <span id = "message"></span><br>
-
-                    <div class="btn-container">
-                        <button id ="RC" class = "loginButton" type="submit" >Register</button>
-
-                        <button type="button"
-                        onclick="document.getElementById('RIB').style.display='none'"
-                        class="cancelbtn">Cancel</button>
-                    </div>
-                    </div>
-                </form>
-                </div>
+                    <form class="login-content" method ="POST" enctype = "multipart/form-data">
+                      <div class="container">
+                          <div class="row">
+                              <div class = "register-type col-sm-5">
+                                  <section class="typeinfo"> toggle register type info</section>
+                                  <div class="registerchoices">
+                                      <button type = "button" class="registertypebutton">Create Instructor Account</button>
+                                      <button type = "button" class="registertypebutton">Create Student Account</button>
+                                  </div>
+                              </div>
+      
+                              <div class = "register-info col-sm-7">
+                                  <label for="uemail">User Email</label>
+                                  <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
+      
+                                  <label for="uname">Name</label>
+                                  <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
+      
+                                  <label for="username">Username</label>
+                                  <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
+      
+                                  <label for="userpsw">Password</label>
+                                  <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+      
+                                  <label for="confirmpsw">Confirm Password</label>
+                                  <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                                  <span id = "message"></span><br>
+      
+                                  <div class="btn-container">
+                                      <button id ="RC" class = "loginButton" type="submit" >Register</button>
+      
+                                      <button type="button"
+                                      onclick="document.getElementById('RIB').style.display='none'"
+                                      class="cancelbtn">Cancel</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
             </div>
         </div>
         <!-- <div class="content">
@@ -141,11 +153,11 @@
                     <div class="content-info-segment">
                         <div class="ui raised segment" >
                             <h3 class="">Description</h3>
-                            <p>${courseDesc}</p>
+                            <p class="courseDesc">${courseDesc}</p>
                         </div>
                         <h3 class="ui header segment">
                             <i class="user circle icon"></i>
-                            <span class="courseID"></span>Enrollment Size: <span class="courseSize"> ${numStudentsEnrolled}</span>
+                            Enrollment Size: <span class="courseSize"> ${numStudentsEnrolled}</span>
                         </h3>
                     </div>
                     <div class="ui content-info-segment">
@@ -214,7 +226,7 @@
                     <div class="content-info-segment">
                         <h3 class="ui header segment">
                             <i class="file icon"></i>
-                            <span class="courseID"></span>Number of Files: <span class="courseSize"> ${numStudentsEnrolled}</span>
+                            Number of Files: <span class="courseNumSize"> </span>
                         </h3>
                     </div>
                     <div class="ui content-info-segment">
@@ -283,27 +295,27 @@
                                     <div class="ui blue right pointing label">
                                         Course code
                                     </div>
-                                    <input placeholder="${courseID}" type="text" value="${courseID}" required>
+                                    <input id="newCode" placeholder="${courseID}" type="text" value="${courseID}" required>
                                 </div>
                                 <div class="ui action input">
                                     <div class="ui blue right pointing label">
                                         Course name
                                     </div>
-                                    <input placeholder="${courseName}" type="text" value="${courseName}" required>
+                                    <input id="newName" placeholder="${courseName}" type="text" value="${courseName}" required>
                                 </div>
                                 <div class="ui form segment">
                                     <div class="field">
                                         <div class="ui blue ribbon label">
                                             Course Description
                                         </div>
-                                        <textarea placeholder="${courseDesc}" type="number" required>${courseDesc}</textarea>
+                                        <textarea id="newDesc" placeholder="${courseDesc}" type="text" required>${courseDesc}</textarea>
                                     </div>
                                 </div>
                                 <div class="ui action input">
                                     <div class="ui blue right pointing label">
                                         Enrollment size
                                     </div>
-                                    <input placeholder="${numStudentsEnrolled}" type="text" value="${numStudentsEnrolled}" required>
+                                    <input id="newSize" placeholder="${numStudentsEnrolled}" type="number" value="${numStudentsEnrolled}" required>
                                 </div>
                                 <h4 class="ui horizontal divider header">
                                     <i class="save icon"></i>

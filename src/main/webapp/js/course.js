@@ -56,7 +56,24 @@
     });
 
     $("#course-save-info").click(function() {
-        alert("not yet implemented");
+        swal({
+            title: "Processing!",
+            text: "Please wait.",
+            icon: "../media/icons/loading.gif",
+            buttons: false
+        });
+        api.editCourse($(".courseID").html(), $("#newCode").val(), $("#newName").val(), $("#newDesc").val(), $("#newSize").val(), function(err, data) {
+                if (err) {
+                    swal.close();
+                    swal("Error!", "Could not update course : \n" + err, "error");
+                }
+                else {
+                    swal.close();
+                    swal("Success!", "Successfully updated course.", "sucess");
+                    location.reload();
+                }
+            }
+        );
     });
 
     $("#course-add-instructor").click(function() {
@@ -192,6 +209,7 @@
     function setFiles(data) {
         console.log(data);
         $("#course-files-info #files-list .custom-list").html("");
+        $(".courseNumSize").html(data.length);
         data.forEach(function(id) {
             api.getFile(id, function(err, result) {
                 if (err != null) {
@@ -226,6 +244,18 @@
         });
     }
 
+    function setInfo(data) {
+        //code
+        //name
+        //desc
+        //size
+        $(".courseID").html(data["code"]);
+        $(".courseName").html(data["name"]);
+        $(".courseDesc").html(data["description"]);
+        $(".courseSize").html(data["size"]);
+
+    }
+
     function init() {
         console.log($(".courseID").html());
         api.getCourse($(".courseID").html(), function(err, data) {
@@ -234,6 +264,7 @@
             }
             else {
                 console.log(data["instructors"]);
+                setInfo(data);
                 setInstructors(data["instructors"]);
                 setStudents(data["students"]);
                 setFiles(data["files"]);

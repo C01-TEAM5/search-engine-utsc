@@ -63,7 +63,10 @@ public class IndexHandler {
      * @return a shared IndexHandler
      */
     public static IndexHandler getInstance () throws IOException {
-        return getInstance(false);
+        if (indexHandler == null) {
+            indexHandler = new IndexHandler(false);
+        }
+        return indexHandler;
     }
 
     /**
@@ -73,12 +76,8 @@ public class IndexHandler {
      * @return a shared IndexHandler
      */
     public static IndexHandler getInstance (boolean useRamDir) throws IOException {
-        if (indexHandler == null) {
-            indexHandler = new IndexHandler(useRamDir);
-            return indexHandler;
-        }
 
-        return indexHandler;
+        return new IndexHandler(useRamDir);
     }
 
     /**
