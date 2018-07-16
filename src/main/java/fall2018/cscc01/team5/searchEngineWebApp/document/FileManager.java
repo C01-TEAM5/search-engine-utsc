@@ -109,8 +109,8 @@ public class FileManager {
                 ih.addDoc(toAdd);
             }
         });
-        
-        FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_PATH));
+        if (new File(Constants.FILE_PUBLIC_PATH).exists())
+            FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_PATH));
     }
 
 }
