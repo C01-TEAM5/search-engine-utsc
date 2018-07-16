@@ -249,7 +249,7 @@
         //name
         //desc
         //size
-        $(".courseID").html(data["code"].toUpperCase());
+        $(".courseID").html(data["code"]);
         $(".courseName").html(data["name"]);
         $(".courseDesc").html(data["description"]);
         $(".courseSize").html(data["size"]);
