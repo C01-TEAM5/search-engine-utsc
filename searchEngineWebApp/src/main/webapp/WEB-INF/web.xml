@@ -25,9 +25,19 @@
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.ProfileServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>CourseServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.course.CourseServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CourseServlet</servlet-name>
+        <url-pattern>/course</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

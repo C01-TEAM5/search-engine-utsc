@@ -98,7 +98,7 @@ public class SearchServlet extends HttpServlet {
             e.printStackTrace();
         }
     
-        RequestDispatcher viewResults = req.getRequestDispatcher("/WEB-INF/searchresults.jsp");
+        RequestDispatcher viewResults = req.getRequestDispatcher("templates/searchresults.jsp");
         viewResults.forward(req, resp);
         
     }

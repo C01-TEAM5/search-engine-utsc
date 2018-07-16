@@ -1,14 +1,18 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import org.apache.lucene.queryparser.classic.ParseException;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DocFile {
 
+    private String id;
     private String filename; //Name of the file
     private boolean isPublic; //Whether the document can be accessed publicly
-    private String courseCode; //Optional course code association
+    private String courseCode; //Optional Course code association
     private String owner; //Uploader of the file
     private String path; //ID number of the file for updating/deletion
     private String title; //The title of the Document
@@ -21,9 +25,20 @@ public class DocFile {
      */
     public DocFile (String filename, String title, String owner, String path, boolean isPublic) {
 
+        this.id = UUID.randomUUID().toString().replaceAll("-", "");
+
+        try {
+            while (IndexHandler.getInstance().searchById(this.id).length > 0 || IndexHandler.getInstance(true).searchById(this.id).length > 0) {
+                this.id = UUID.randomUUID().toString().replaceAll("-", "");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Id may not be unique.");
+        }
+
         this.filename = filename;
         this.isPublic = isPublic;
-        this.courseCode = "None";
+        this.courseCode = "";
         this.owner = owner;
         this.path = path;
         this.title = title;
@@ -97,9 +112,9 @@ public class DocFile {
     }
 
     /**
-     * Return the course code of this DocFile
+     * Return the Course code of this DocFile
      *
-     * @return the course code of this DocFile
+     * @return the Course code of this DocFile
      */
     public String getCourseCode () {
         return courseCode;
@@ -119,13 +134,6 @@ public class DocFile {
      */
     public void setPermissions(int perm) {
         this.permission = perm;
-    }
-
-    /**
-     * Assigns a course code
-     */
-    public void setCourseCode (String courseCode) {
-        this.courseCode = courseCode;
     }
     
     /**
@@ -152,6 +160,31 @@ public class DocFile {
     }
 
     /**
+     * Get the id of this file
+     * 
+     * @return the id of this file
+     */
+    public String getId() {
+        return this.id;
+    }
+    
+    /**
+     * Set the id of this file
+     * @param id the new id of this file
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Change the course code this file belongs to.
+     * @param code the new course code
+     */
+    public void setCourseCode(String code) {
+        this.courseCode = code;
+    }
+    
+    /**
      * Return an integer representation of this DocFile
      *
      * @return an integer representation of this DocFile
@@ -174,8 +207,9 @@ public class DocFile {
                 ", owner: " + owner +
                 ", title: " + title +
                 ", path: " + path +
-                ", course code: " + courseCode +
+                ", Course code: " + courseCode +
                 ", public status: " + isPublic +
+                ", Permission: " + permission + 
                 "]";
 
         return result;

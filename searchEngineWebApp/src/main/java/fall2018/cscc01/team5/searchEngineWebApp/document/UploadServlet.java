@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
-import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 
 import org.apache.commons.io.FileUtils;
 
@@ -50,6 +50,7 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
 
         String currentUser = getCurrentUser(req.getCookies());
+        String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         if (!currentUser.equals("")) {
             // check upload request
             isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -58,6 +59,7 @@ public class UploadServlet extends HttpServlet {
 
             // empty return
             if (!isMultipart) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
@@ -67,11 +69,16 @@ public class UploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
-            try {              
+            try {
               
                 // parse multiple files
                 List items = upload.parseRequest(req);
                 Iterator itemIterator = items.iterator();
+
+                if (!itemIterator.hasNext()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
                 
                 // get course code as the last element of list
                 String courseCode = "";
@@ -81,14 +88,10 @@ public class UploadServlet extends HttpServlet {
                     courseCode = lastItem.getString();
                   }
                 }
-                
-                
-                // iteratively adds the upload items found
+
                 while (itemIterator.hasNext()) {
                     FileItem item = (FileItem) itemIterator.next();
-
                     if (!item.isFormField()) {
-
                         // gets file data
                         String fileName = item.getName();
                         String filePath = Constants.FILE_UPLOAD_PATH + currentUser + File.separator;
@@ -112,24 +115,61 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, false);
-                            if (courseCode != "") {
-                              docFile.setCourseCode(courseCode);
+
+                            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
+                                courseId = courseId.toLowerCase();
+                                docFile.setCourseCode(courseId);
+                                Course c = CourseManager.getCourse(courseId);
+                                c.addFile(docFile.getId());
+                                CourseManager.updateCourse(courseId, c);
+                                System.out.println("Updating course files");
                             }
+
+                            if (courseCode != "" && CourseManager.courseExists(courseId)) {
+                                docFile.setCourseCode(courseCode);
+                                Course c = CourseManager.getCourse(courseCode);
+                                c.addFile(docFile.getId());
+                                CourseManager.updateCourse(courseCode, c);
+                            }
+                            
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }
                     }
                 }
+
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                System.out.println("adding course failed");
+                return;
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(e);
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
             }
-
 //            PrintWriter output = resp.getWriter();
 //            output.print(new Gson().toJson("Success"));
 //            output.flush();
+            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
+                PrintWriter output = resp.getWriter();
+                try {
+                    output.print(new Gson().toJson(CourseManager.getCourse(courseId).getAllFiles()));
+                } catch (CourseDoesNotExistException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    output.flush();
+                    return;
+                }
+                output.flush();
+                return;
+            }
             resp.sendRedirect("/upload");
         }
         else {
+            if (courseId != null) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             resp.sendRedirect("/upload?error");
         }
 
