@@ -5,6 +5,7 @@
         <title>Course page: ${courseID}</title>
         <!-- <link rel= "stylesheet" href= "./css/main.css"> -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
         <link rel="stylesheet" href="../css/index.css" type="text/css">
         <link rel= "stylesheet" href= "../css/login.css" type="text/css">
@@ -33,7 +34,7 @@
                 <!-- the sign in pop up window -->
                 <div id="SIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                    <div class="container">
+                    <div class="container-logins">
                         <label for="username">Username</label>
                         <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
 
@@ -55,14 +56,14 @@
                 <!-- the register pop up window -->
                 <div id="RIB" class="popup-login">
                     <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                      <div class="container">
+                      <div class="container-logins">
                           <div class="row">
                               <div class = "register-type col-sm-5">
                                   <section class="typeinfo"> toggle register type info</section>
                                   <div class="registerchoices">
-                                      <button type = "button" class="registertypebutton">Create Instructor Account</button>
-                                      <button type = "button" class="registertypebutton">Create Student Account</button>
-                                  </div>
+                                        <button type = "button" class="registertypebutton" id="permission-instructor">Create Instructor Account</button>
+                                        <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
+                                    </div>
                               </div>
       
                               <div class = "register-info col-sm-7">
@@ -331,6 +332,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../lib/semantic/semantic.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
         <script src="../js/api.js"></script>
         <script src="../js/login.js"></script>
         <script src="../js/course.js"></script>
