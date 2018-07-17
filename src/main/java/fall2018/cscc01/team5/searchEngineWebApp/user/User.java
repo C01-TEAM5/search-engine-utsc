@@ -15,6 +15,7 @@ public class User {
     private String hash;
     private List<String> courses;
     private int permission;
+    private String desc;
 
     public User(String username, String email, String name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.username = username;
@@ -23,6 +24,7 @@ public class User {
         this.hash = UserValidator.getSaltedHash(password, UserValidator.getSalt());
         this.permission = Constants.PERMISSION_ALL;
         this.courses = new ArrayList<String>();
+        this.desc = "";
     }
 
     /**
@@ -74,6 +76,15 @@ public class User {
     }
 
     /**
+     * Return this users description
+     *
+     * @return this users description
+     */
+    public String getDescription() {
+        return desc;
+    }
+
+    /**
      * Replace this Users permission.
      *
      * @param perm - the replacement permission
@@ -88,7 +99,16 @@ public class User {
      * @param course a Course to enroll the user in
      */
     public void enrollInCourse(String course) {
-        this.courses.add(course);
+        if (!isEnrolledIn(course)) this.courses.add(course);
+    }
+
+    /**
+     * Enroll this user in a given Course.
+     *
+     * @param course a Course to enroll the user in
+     */
+    public void dropCourse(String course) {
+        if (isEnrolledIn(course)) this.courses.remove(course);
     }
 
     /**
@@ -115,6 +135,15 @@ public class User {
      */
     public void setCourses(List<String> courses) {
         this.courses = courses;
+    }
+
+    /**
+     * Change this users description
+     *
+     * @param desc the new description
+     */
+    public void setDescription(String desc) {
+        this.desc = desc;
     }
 
     /**
