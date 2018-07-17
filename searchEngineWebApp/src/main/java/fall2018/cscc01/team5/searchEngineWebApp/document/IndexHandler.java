@@ -206,6 +206,18 @@ public class IndexHandler {
     }
 
     /**
+     * Search for DocFile by username
+     *
+     * @param username the id to search
+     * @return a list if docfiles containing this username
+     * @throws ParseException
+     */
+    public DocFile[] searchByUser(String username) throws ParseException, IOException {
+        if (indexDir.listAll().length < 2) return new DocFile[0];
+        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username)));
+    }
+
+    /**
      * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
      * .docx, .html
      *

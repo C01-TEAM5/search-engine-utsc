@@ -47,6 +47,7 @@ public class AccountManager {
                 .append("username", user.getUsername())
                 .append("hash", user.getHash())
                 .append("courses", user.getCourses())
+                .append("desc", user.getDescription())
                 .append("permission", user.getPermission());
 
         usersCollection.insertOne(doc);
@@ -88,6 +89,7 @@ public class AccountManager {
                 .append("username", user.getUsername())
                 .append("hash", user.getHash())
                 .append("courses", user.getCourses())
+                .append("desc", user.getDescription())
                 .append("permission", user.getPermission());
 
         usersCollection.updateOne(Filters.eq("username", username), new Document("$set", doc));
@@ -110,6 +112,7 @@ public class AccountManager {
         user.setPermissions((Integer) doc.get("permission"));
         user.setHash(doc.getString("hash"));
         user.setCourses((List<String>) doc.get("courses"));
+        user.setDescription(doc.getString("desc"));
 
         return user;
     }
