@@ -169,7 +169,6 @@ public class SearchServlet extends HttpServlet {
         
         IndexHandler handler = IndexHandler.getInstance();          
         DocFile[] docFileResults = handler.search(queryString, 0, filterString);
-		handler.closeWriter();
 
 		return docFileResults;
     	

@@ -9,9 +9,7 @@ public class Constants {
     public static final String FILETYPE_PDF = "pdf";
     public static final String FILETYPE_TXT = "txt";
     
-    public static final String FILE_UPLOAD_PATH = "file-uploads" + File.separator;
-
-    public static final String INDEX_DIRECTORY = "index" + File.separator + "index.lucene";
+    public static final String FILE_PUBLIC_PATH = "tmp" + File.separator;
 
     public static final String INDEX_KEY_CONTENT = "Content";
     public static final String INDEX_KEY_FILENAME = "Filename";
