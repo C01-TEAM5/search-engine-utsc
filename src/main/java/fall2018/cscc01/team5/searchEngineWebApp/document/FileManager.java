@@ -85,7 +85,13 @@ public class FileManager {
 
         return path;
     }
-    
+
+    /**
+     * Runs the given indexer with all the files in the database.
+     *
+     * @param ih the indexer to run to add files
+     * @throws IOException
+     */
     public static void indexFiles (final IndexHandler ih) throws IOException {
         
         grid.find().forEach(new Block<GridFSFile>() {
