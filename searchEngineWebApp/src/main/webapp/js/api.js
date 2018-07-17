@@ -90,6 +90,14 @@ var api = (function(){
         send("GET", "/course?id=" + id + "&get=true", null, callback);
     }
 
+    module.updateUser = function(id, name, desc, image, callback) {
+        send("POST", "/profile?id=" + id, {"id":id, "name":name, "desc":desc, "image":image}, callback);
+    }
+
+    module.createCourse = function(courseId, callback) {
+        send("POST", "/profile?createCourse=true", {"courseId":courseId}, callback);
+    }
+
     module.buildQuery = function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");
