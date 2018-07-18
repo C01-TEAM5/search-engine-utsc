@@ -101,6 +101,27 @@
         $("#course-add-input").val("");
     });
 
+    $(".remove-file-button").click(function() {
+        swal({
+            title: "Processing!",
+            text: "Please wait.",
+            icon: "../media/icons/loading.gif",
+            buttons: false
+        });
+        var id = $(this).attr("id");
+        api.removeUserFile(id, function(err, data) {
+            if (err) {
+                swal.close();
+                swal("Error!", "An error occured \n" + err, "error");
+            }
+            else {
+                swal.close();
+                swal("Success!", "File removed \n", "success");
+                $("#" + id + "-item").remove();
+            }
+        });
+    });
+
     window.onbeforeunload = function() {
         if (editted) {
             return 'Are you sure you want to leave?';

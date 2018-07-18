@@ -98,6 +98,10 @@ var api = (function(){
         send("POST", "/profile?createCourse=true", {"courseId":courseId}, callback);
     }
 
+    module.removeUserFile = function(id, callback) {
+        send("POST", "/profile?deleteFile=true", {"fileId":id}, callback);
+    }
+
     module.buildQuery = function buildQueryString(query, filters) {
 
         var query = query.replace(" ","+");

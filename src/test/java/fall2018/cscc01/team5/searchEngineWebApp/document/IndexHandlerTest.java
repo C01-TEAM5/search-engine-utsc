@@ -16,6 +16,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -63,7 +64,7 @@ public class IndexHandlerTest {
     }
     
     @After
-    public void cleanUp() {
+    public void cleanUp() throws ParseException {
         indexHandler.removeDoc(file);
         indexHandler.removeDoc(txtFile);
         indexHandler.removeDoc(htmlFile);
@@ -162,11 +163,12 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("*").size());
 	}
     @Test
-    public void testIndexHandlerUpdateTxt() {
+    public void testIndexHandlerUpdateTxt() throws ParseException {
         indexHandler.addDoc(txtFile);
         List<String> searchBefore = search("*");
 
         DocFile txtFile2 = new DocFile("text1.txt","Dog Story 2","Janice","text1.txt",true);
+        txtFile2.setId(txtFile.getId());
         indexHandler.updateDoc(txtFile2);
         List<String> searchAfter = search("*");
         
@@ -174,7 +176,7 @@ public class IndexHandlerTest {
         assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
     }
     @Test
-    public void testIndexHandlerRemoveTxt() {
+    public void testIndexHandlerRemoveTxt() throws ParseException {
         indexHandler.addDoc(txtFile);
         int expectedSize = search("*").size() - 1;
         indexHandler.removeDoc(txtFile);
@@ -193,11 +195,12 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateHtml() {
+    public void testIndexHandlerUpdateHtml() throws ParseException {
         indexHandler.addDoc(htmlFile);
         List<String> searchBefore = search("*");
 
         DocFile htmlFile2 = new DocFile("html1.html","Mark's CD 2","Mark","html1.html",false);
+        htmlFile2.setId(htmlFile.getId());
         indexHandler.updateDoc(htmlFile2);
         List<String> searchAfter = search("*");
         
@@ -205,7 +208,7 @@ public class IndexHandlerTest {
         assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
     }
     @Test
-    public void testIndexHandlerRemoveHtml() {
+    public void testIndexHandlerRemoveHtml() throws ParseException {
         indexHandler.addDoc(htmlFile);
         int expectedSize = search("*").size() - 1;
         indexHandler.removeDoc(htmlFile);
@@ -224,11 +227,12 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdatePdf() {
+    public void testIndexHandlerUpdatePdf() throws ParseException {
         indexHandler.addDoc(pdfFile);
         List<String> searchBefore = search("*");
 
         DocFile pdfFile2 = new DocFile("pdf1.pdf","The Trade Show2","Mark","pdf1.pdf",true);
+        pdfFile2.setId(pdfFile.getId());
         indexHandler.updateDoc(pdfFile2);
         List<String> searchAfter = search("*");
         
@@ -236,7 +240,7 @@ public class IndexHandlerTest {
         assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
     }
     @Test
-    public void testIndexHandlerRemovePdf() {
+    public void testIndexHandlerRemovePdf() throws ParseException {
         indexHandler.addDoc(pdfFile);
         int expectedSize = search("*").size() - 1;
         indexHandler.removeDoc(pdfFile);
@@ -256,11 +260,12 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateDocx() {
+    public void testIndexHandlerUpdateDocx() throws ParseException {
         indexHandler.addDoc(docxFile);
         List<String> searchBefore = search("*");
 
         DocFile docxFile2 = new DocFile("docx1.docx","Shakespeare's Books2","Alice","docx1.docx",true);
+        docxFile2.setId(docxFile.getId());
         indexHandler.updateDoc(docxFile2);
         List<String> searchAfter = search("*");
         
@@ -268,7 +273,7 @@ public class IndexHandlerTest {
         assertTrue(searchBefore.size() == searchAfter.size() && !searchAfter.equals(searchBefore));
     }
     @Test
-    public void testIndexHandlerRemoveDocx() {
+    public void testIndexHandlerRemoveDocx() throws ParseException {
         indexHandler.addDoc(docxFile);
         int expectedSize = search("*").size() - 1;
         indexHandler.removeDoc(docxFile);
@@ -289,7 +294,7 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateNull() {
+    public void testIndexHandlerUpdateNull() throws ParseException {
         List<String> searchBefore = search("*");
         indexHandler.updateDoc(null);
         List<String> searchAfter = search("*");
@@ -300,7 +305,7 @@ public class IndexHandlerTest {
     }
     
     @Test
-    public void testIndexHandlerRemoveNull() {
+    public void testIndexHandlerRemoveNull() throws ParseException {
         int expectedSize = search("*").size();
         indexHandler.removeDoc(null);
 
@@ -313,7 +318,7 @@ public class IndexHandlerTest {
 	// boundary cases
 
     @Test
-	public void testIndexHandlerUpdateNonExisting() {
+	public void testIndexHandlerUpdateNonExisting() throws ParseException {
 	    List<String> searchBefore = search("*");
 
         DocFile txtFile2 = new DocFile("textNonExistingFile.txt","Dog Story 2","Janice","textNonExistingFile.txt",true);
@@ -327,7 +332,7 @@ public class IndexHandlerTest {
 
 	
 	@Test
-	public void testIndexHandlerRemoveEmpty() {
+	public void testIndexHandlerRemoveEmpty() throws ParseException {
     	indexHandler.removeDoc(txtFile);
     	
     	// should not be able to remove a document from an empty db
