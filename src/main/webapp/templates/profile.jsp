@@ -171,7 +171,6 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <i class="file icon"></i>
                     Files
                 </h3>
-                <hr>
                 <c:forEach var="result" items="${files}">
                     <div class="ui raised segment search-results-item" id="${result.id}-item">
                         <i class="file alternate outline icon"></i>
