@@ -130,16 +130,11 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             Owner: 
                             <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
                         </div>
+                        <div class="content-snip">
+                            ${result.contextString}
+                        </div>
                     </div>
                 </div>
-                <!-- <tr>
-                    <td>
-                        Title: <c:out value="${result.title}"/><br>
-                        Owner: <c:out value="${result.owner}"/><br>
-                        Course Code: <c:out value="${result.courseCode}"/><br>
-                        File Type: <c:out value="${result.fileType}"/><br>
-                    </td>
-                </tr> -->
             </c:forEach>
         </table>
 

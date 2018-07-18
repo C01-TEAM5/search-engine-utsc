@@ -391,7 +391,7 @@ public class IndexHandler {
                 
                 //Highlight the best Content context from each Doc
                 String contextString = highlighter.getBestFragment(highlightQuery, 
-                        searcher.getIndexReader(), results[i].doc,Constants.INDEX_KEY_CONTENT,80);
+                        searcher.getIndexReader(), results[i].doc,Constants.INDEX_KEY_CONTENT,140);
                 
                 DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
