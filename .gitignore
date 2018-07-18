@@ -8,3 +8,5 @@ bin/
 TestingClass.java
 index/
 file-upload*/
+tmp/
+tmp/*
