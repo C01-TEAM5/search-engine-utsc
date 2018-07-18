@@ -125,10 +125,11 @@ public class IndexHandler {
      *
      * @param updatefile the object of the file to be updated.
      */
-    public void updateDoc (DocFile updatefile) {
+    public void updateDoc (DocFile updatefile) throws ParseException {
 
         // Check if the file extension is valid
-        if (!isValid(updatefile) || !pathExists(updatefile.getPath())) {
+        if (updatefile == null) return;
+        if (!isValid(updatefile) || !(FileManager.fileExists(updatefile.getId()) || pathExists (updatefile.getPath()))) {
             return;
         }
 
@@ -142,21 +143,22 @@ public class IndexHandler {
      *
      * @param deletefile the object of the file to be removed from the index
      */
-    public void removeDoc (DocFile deletefile) {
+    public void removeDoc (DocFile deletefile) throws ParseException {
 
         // Check if the file extension is valid
+        if (deletefile == null) return;
         if (!isValid(deletefile)) {
             return;
         }
 
-        Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(deletefile.getId());
         //System.out.println("delete file: " + term.field() + " " + term.text());
 
         // Check if path exists
-        if (pathExists(deletefile.getPath())) {
+        if (FileManager.fileExists(deletefile.getId()) || pathExists (deletefile.getPath())) {
             // remove doc if exits
             try {
-                writer.deleteDocuments(term);
+                writer.deleteDocuments(query);
                 writer.commit();
             } catch (IOException e) {
                 e.printStackTrace();

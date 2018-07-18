@@ -23,7 +23,7 @@
 
 .card {
     width: 100% !important;
-    height: 250px;
+    height: 260px;
     display: flex !important;
     flex-direction: row !important;
     justify-content: flex-start !important;
@@ -73,6 +73,10 @@
 .user-info .input:disabled {
     color: black !important;
     -webkit-text-fill-color: black;
+}
+
+.user-files {
+    overflow-y: auto;
 }
 
 .user-files .card {

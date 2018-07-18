@@ -3,6 +3,7 @@ package fall2018.cscc01.team5.searchEngineWebApp.course;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.result.UpdateResult;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
@@ -12,12 +13,14 @@ import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExi
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.lucene.queryparser.classic.ParseException;
 
+import javax.print.DocFlavor;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.DocumentFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -127,6 +130,11 @@ public class CourseServlet extends HttpServlet {
                 }
 
                 if (removeFile != null) {
+                    for (DocFile file: IndexHandler.getInstance().searchById(removeFile)) {
+                        file.setCourseCode("");
+                        IndexHandler.getInstance().updateDoc(file);
+                    }
+
                     if (!c.removeFile(removeFile)) {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                         return;

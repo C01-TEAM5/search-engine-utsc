@@ -175,7 +175,8 @@ public class User {
                 + ", email: " + email
                 + ", name: " + name
                 + ", hashPassword: " + hash
-                + ", courses: " + courses.toString() + "]";
+                + ", courses: " + courses.toString() +
+                ", Description: " + desc + "]";
         return result;
     }
 }

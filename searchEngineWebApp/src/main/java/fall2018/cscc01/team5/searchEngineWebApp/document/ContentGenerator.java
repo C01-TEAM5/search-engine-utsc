@@ -138,6 +138,7 @@ public class ContentGenerator {
             fileReader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return;
         }
 
         BufferedReader BufferedFileReader = new BufferedReader(fileReader);

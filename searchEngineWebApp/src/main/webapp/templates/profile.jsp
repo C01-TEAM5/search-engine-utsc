@@ -173,7 +173,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 </h3>
                 <hr>
                 <c:forEach var="result" items="${files}">
-                    <div class="ui raised segment search-results-item">
+                    <div class="ui raised segment search-results-item" id="${result.id}-item">
                         <i class="file alternate outline icon"></i>
                         <div class="search-results-item-info">
                             <div class="file-name">
@@ -191,6 +191,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 
                             </div>
                         </div>
+                        <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
                     </div>
                 </c:forEach>
             </div>
