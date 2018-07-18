@@ -199,7 +199,7 @@ public class IndexHandler {
      * @return a list if docfiles containing this id
      * @throws ParseException
      */
-    public DocFile[] searchById(String id) throws ParseException, IOException {
+    public DocFile[] searchById(String id, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
         return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
     }
@@ -211,9 +211,26 @@ public class IndexHandler {
      * @return a list if docfiles containing this username
      * @throws ParseException
      */
-    public DocFile[] searchByUser(String username) throws ParseException, IOException {
+    public DocFile[] searchByUser(String username, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username)));
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // check content
+        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+        Query parsed = new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username);
+        queryBuilder.add(parsed, BooleanClause.Occur.MUST);
+
+        String filterString = fileTypes[0];
+        for (String fileType : fileTypes) {
+            filterString += " OR " + fileType;
+        }
+        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
+                BooleanClause.Occur.MUST);
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery));
     }
 
     /**

@@ -19,6 +19,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <title>UTSC Document Search - Profile</title>
 </head>
 <body>
+    <div id="docxNum" class="hidden" hidden>${docxNum}</div>
+    <div id="htmlNum" class="hidden" hidden>${htmlNum}</div>
+    <div id="pdfNum" class="hidden" hidden>${pdfNum}</div>
+    <div id="txtNum" class="hidden" hidden>${txtNum}</div>
     <div id="search-background"></div>
 
     <div class="header">
@@ -161,7 +165,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 </div>
             </c:if> 
             
-            <div class="stats">
+            <div class="stats" id="user-file-stats">
 
             </div>
         </div>
@@ -202,6 +206,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="../lib/semantic/semantic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="js/api.js"></script>
     <script src="./js/login.js"></script>
     <script src="./js/profile.js"></script>

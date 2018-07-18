@@ -113,7 +113,7 @@ public class ProfileServlet extends HttpServlet {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
-                DocFile file = IndexHandler.getInstance().searchById(fileId)[0];
+                DocFile file = IndexHandler.getInstance().searchById(fileId, new String[]{"html", "pdf", "txt", "docx"})[0];
                 file.setId(fileId);
                 if (CourseManager.courseExists(file.getCourseCode())) {
                     Course course = CourseManager.getCourse(file.getCourseCode());
@@ -230,7 +230,7 @@ public class ProfileServlet extends HttpServlet {
 
         try {
             User user = AccountManager.getUser(currentUser);
-            DocFile[] files = IndexHandler.getInstance().searchByUser(user.getUsername());
+            DocFile[] files = IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"html", "pdf", "txt", "docx"});
             req.setAttribute("userId", user.getUsername());
             req.setAttribute("name", user.getName());
             req.setAttribute("desc", user.getDescription());
@@ -238,6 +238,10 @@ public class ProfileServlet extends HttpServlet {
             req.setAttribute("files", files);
             req.setAttribute("permission", user.getPermission());
             req.setAttribute("courses", user.getCourses());
+            req.setAttribute("docxNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"docx"}).length);
+            req.setAttribute("htmlNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"html"}).length);
+            req.setAttribute("pdfNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"pdf"}).length);
+            req.setAttribute("txtNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"txt"}).length);
 
             RequestDispatcher view = req.getRequestDispatcher("templates/profile.jsp");
             view.forward(req, resp);

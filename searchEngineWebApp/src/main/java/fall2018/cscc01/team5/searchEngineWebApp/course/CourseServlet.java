@@ -144,7 +144,7 @@ public class CourseServlet extends HttpServlet {
                 }
 
                 if (removeFile != null) {
-                    for (DocFile file: IndexHandler.getInstance().searchById(removeFile)) {
+                    for (DocFile file: IndexHandler.getInstance().searchById(removeFile, new String[]{"html", "pdf", "txt", "docx"})) {
                         file.setCourseCode("");
                         IndexHandler.getInstance().updateDoc(file);
                     }

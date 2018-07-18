@@ -122,6 +122,48 @@
         });
     });
 
+    function loadStats() {
+        // code gotted from google developer site
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        //console.log(eval('${docxNum}'));
+        var x = "${docxNum}";
+        console.log(x);
+        function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'File Type');
+        data.addColumn('number', 'Occurence');
+        data.addRows([
+            ['DOCX', parseInt($("#docxNum").html())],
+            ['HTML', parseInt($("#htmlNum").html())],
+            ['PDF', parseInt($("#pdfNum").html())],
+            ['TXT', parseInt($("#txtNum").html())]
+        ]);
+
+        // Set chart options
+        var options = {'title':'File Statistics',
+                        'width':500,
+                        'height':500};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('user-file-stats'));
+            chart.draw(data, options);
+        }
+
+    }
+
+    loadStats();
+
     window.onbeforeunload = function() {
         if (editted) {
             return 'Are you sure you want to leave?';
