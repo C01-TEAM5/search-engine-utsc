@@ -4,7 +4,6 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -17,10 +16,8 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
@@ -32,7 +29,7 @@ public class IndexHandler {
     private IndexWriterConfig config;     // Index Writer Configurations
     private IndexWriter writer;           // Index Writer
     //private String storePath;             // The path where the index will be stored
-    private int hitsPerPage = 10;
+    private int hitsPerPage = 1000000;
     /**
      * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
      */
@@ -366,7 +363,7 @@ public class IndexHandler {
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage);
+            TopDocs docs = searcher.search(query, hitsPerPage); //search(query, docs);
             hits = docs.scoreDocs;
         } catch (IOException e) {
             e.printStackTrace();

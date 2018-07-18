@@ -80,6 +80,10 @@ public class CourseServlet extends HttpServlet {
                     if (AccountManager.exists(addStudent)) {
                         User u = AccountManager.getUser(addStudent.toLowerCase());
                         u.enrollInCourse(courseID.toLowerCase());
+                        if (u.getPermission() != Constants.PERMISSION_STUDENT) {
+                            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not an student");
+                            return;
+                        }
                         AccountManager.updateUser(u.getUsername().toLowerCase(), u);
                         c.addStudent(addStudent.toLowerCase());
                     } else {
@@ -90,11 +94,13 @@ public class CourseServlet extends HttpServlet {
 
                 if (removeStudent != null) {
                     if (!c.removeStudent(removeStudent)) {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                    else {
                         User u = AccountManager.getUser(removeStudent.toLowerCase());
                         u.dropCourse(courseID.toLowerCase());
                         AccountManager.updateUser(u.getUsername().toLowerCase(), u);
-                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-                        return;
                     }
                 }
 
@@ -102,8 +108,14 @@ public class CourseServlet extends HttpServlet {
                     if (AccountManager.exists(addInstructor)) {
                         User u = AccountManager.getUser(addInstructor.toLowerCase());
                         u.enrollInCourse(courseID.toLowerCase());
+                        if (u.getPermission() != Constants.PERMISSION_INSTRUCTOR) {
+                            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not an instructor");
+                            return;
+                        }
                         AccountManager.updateUser(u.getUsername().toLowerCase(), u);
                         c.addInstructor(addInstructor.toLowerCase());
+                        c.removeInstructor(addInstructor.toLowerCase());
+                        c.removeStudent(addInstructor.toLowerCase());
                     } else {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                         return;
@@ -112,11 +124,13 @@ public class CourseServlet extends HttpServlet {
 
                 if (removeInstructor != null) {
                     if (!c.removeInstructor(removeInstructor)) {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                    else {
                         User u = AccountManager.getUser(removeInstructor.toLowerCase());
                         u.dropCourse(courseID.toLowerCase());
                         AccountManager.updateUser(u.getUsername().toLowerCase(), u);
-                        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-                        return;
                     }
                 }
 
