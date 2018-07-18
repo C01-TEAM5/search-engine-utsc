@@ -404,8 +404,6 @@ public class IndexHandler {
                     toAdd.setContextString(contextString);
                 }
                 
-                System.out.println("Printing string" + contextString);
-                
                 toAdd.setId(document.get(Constants.INDEX_KEY_ID));
                 toAdd.setPermissions(Integer.parseInt(document.get(Constants.INDEX_KEY_PERMISSION)));
                 toAdd.setCourseCode(document.get(Constants.INDEX_KEY_COURSE));
