@@ -104,7 +104,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   </div>
     <!-- search results -->
     <div class=search-results>
-        ${totalResults} results found.
+        <div class="ui orange horrizontal label">${totalResults} results found</div>
         <div class="separator"></div>
         
         <table class="results-table">
