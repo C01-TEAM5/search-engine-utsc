@@ -18,7 +18,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
+import org.apache.lucene.search.vectorhighlight.FieldQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
@@ -190,7 +191,10 @@ public class IndexHandler {
      * @throws ParseException
      */
     public boolean fileExists (String id) throws ParseException {
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id))).length > 0;
+        
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id);
+        
+        return searchResponse(searchExec(query), query).length > 0;
     }
 
     /**
@@ -202,7 +206,10 @@ public class IndexHandler {
      */
     public DocFile[] searchById(String id) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
+        
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id);
+        
+        return searchResponse(searchExec(query), query);
     }
 
     /**
@@ -301,7 +308,7 @@ public class IndexHandler {
         // build the masterQuery
         BooleanQuery masterQuery = masterQueryBuilder.build();
 
-        return searchResponse(searchExec(masterQuery));
+        return searchResponse(searchExec(masterQuery), masterQuery);
     }
 
     /**
@@ -336,7 +343,7 @@ public class IndexHandler {
         // build the masterQuery
         BooleanQuery masterQuery = masterQueryBuilder.build();
 
-        return searchResponse(searchExec(masterQuery));
+        return searchResponse(searchExec(masterQuery), masterQuery);
     }
 
     /**
@@ -368,9 +375,11 @@ public class IndexHandler {
      * @param results a ScoreDoc array containing the hits
      * @return a list of DocFile results of the search
      */
-    public DocFile[] searchResponse (ScoreDoc[] results) {
+    public DocFile[] searchResponse(ScoreDoc[] results, Query query) {
 
         DocFile[] result = new DocFile[results.length];
+        FastVectorHighlighter highlighter = new FastVectorHighlighter(true,true);
+        FieldQuery highlightQuery = highlighter.getFieldQuery(query); 
 
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
@@ -379,12 +388,24 @@ public class IndexHandler {
             for (int i = 0; i < results.length; i++) {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
+                
+                //Highlight the best Content context from each Doc
+                String contextString = highlighter.getBestFragment(highlightQuery, 
+                        searcher.getIndexReader(), results[i].doc,Constants.INDEX_KEY_CONTENT,80);
+                
                 DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
                         document.get(Constants.INDEX_KEY_OWNER),
                         document.get(Constants.INDEX_KEY_PATH),
                         document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
+                
+                if (contextString != null) {
+                    toAdd.setContextString(contextString);
+                }
+                
+                System.out.println("Printing string" + contextString);
+                
                 toAdd.setId(document.get(Constants.INDEX_KEY_ID));
                 toAdd.setPermissions(Integer.parseInt(document.get(Constants.INDEX_KEY_PERMISSION)));
                 toAdd.setCourseCode(document.get(Constants.INDEX_KEY_COURSE));

@@ -8,7 +8,9 @@ import java.util.List;
 
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.TextField;
 
 import java.io.File;
@@ -76,7 +78,7 @@ public class ContentGenerator {
             pdfDoc = PDDocument.load(pdfFile);
             PDFTextStripper strip = new PDFTextStripper();
             pdfContents = strip.getText(pdfDoc);
-            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, pdfContents, Store.YES));
+            addContent(doc, pdfContents);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -106,16 +108,16 @@ public class ContentGenerator {
         try {
             parsedDoc = Jsoup.parse(input, "UTF-8", "");
             // index title of the document (for now using content key)
-            doc.add(new TextField(Constants.INDEX_KEY_CONTENT, parsedDoc.title(), Store.YES));
+            addContent(doc, parsedDoc.title());
             // index all other text
             for (Element element : parsedDoc.select("*")) {
                 // add "value" and "text" attributed of each tag to the index if they are not empty
                 String eleValue = element.attr("value");
                 String eleText = element.text();
                 if (!eleValue.equals(""))
-                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, eleValue, Store.YES));
+                    addContent(doc, eleValue);
                 if (!eleText.equals(""))
-                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, eleText, Store.YES));
+                    addContent(doc, eleText);
             }
 
         } catch (IOException e) {
@@ -144,7 +146,7 @@ public class ContentGenerator {
         String lineContent = null;
         try {
             while ((lineContent = BufferedFileReader.readLine()) != null) {
-                doc.add(new TextField(Constants.INDEX_KEY_CONTENT, lineContent, Store.YES));
+                addContent(doc, lineContent);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -181,12 +183,11 @@ public class ContentGenerator {
 
                 // for body text
                 if (element instanceof XWPFParagraph) {
-                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFParagraph) element).getText(), Store.YES));
+                    addContent(doc,((XWPFParagraph) element).getText());
 
                     // for body tables
                 } else if (element instanceof XWPFTable) {
-                    doc.add(new TextField(Constants.INDEX_KEY_CONTENT, ((XWPFTable) element).getText(), Store.YES));
-
+                    addContent(doc,((XWPFTable) element).getText());
                 }
             }
 
@@ -195,5 +196,22 @@ public class ContentGenerator {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Helper function to addContent to the document type no matter what the extension is.
+     * Adds content in a way that it can later be highlighted by search results.
+     * 
+     * @param doc
+     * @param contents
+     */
+    private static void addContent (Document doc, String content) {
+        
+        FieldType addType = new FieldType(TextField.TYPE_STORED);
+        addType.setStoreTermVectors(true);
+        addType.setStoreTermVectorPositions(true);
+        addType.setStoreTermVectorOffsets(true);
+        doc.add(new Field(Constants.INDEX_KEY_CONTENT, content, addType));
+        
     }
 }
