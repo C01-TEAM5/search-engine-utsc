@@ -97,8 +97,15 @@ a {
     color: #999;
 }
 
-pagination {
-    z-index: 101;
+.pagination {
+    position: absolute;
+    z-index: 200;
+    top: 90%;
+}
+
+.total-results {
+    position: absolute !important;
+    margin-top: -20% !important;
 }
 
 @media (max-width: 1600px) {
