@@ -105,7 +105,7 @@ a {
 
 .total-results {
     position: absolute !important;
-    margin-top: -20% !important;
+    top: 12% !important;
 }
 
 @media (max-width: 1600px) {
