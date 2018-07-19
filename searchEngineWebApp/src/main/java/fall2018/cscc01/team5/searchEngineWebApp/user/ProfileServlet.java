@@ -229,6 +229,13 @@ public class ProfileServlet extends HttpServlet {
         }
 
         try {
+            if (id != null && id != "") {
+                currentUser = id;
+            }
+            else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             User user = AccountManager.getUser(currentUser);
             DocFile[] files = IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"html", "pdf", "txt", "docx"});
             req.setAttribute("userId", user.getUsername());
