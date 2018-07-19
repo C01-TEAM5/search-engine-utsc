@@ -107,7 +107,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         <div class="ui orange horrizontal label">${totalResults} results found</div>
         <div class="separator"></div>
         
-        <table class="results-table">
+        <div class="results-table">
             <c:forEach var="result" items="${searchResults}">
                 <div class="ui raised segment search-results-item">
                     <i class="file alternate outline icon"></i>
@@ -141,7 +141,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </td>
                 </tr> -->
             </c:forEach>
-        </table>
+        </div>
 
         <!-- page number -->
         <table>
