@@ -150,22 +150,23 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <button class="circular ui icon button teal signedIn" id="save-profile-button"><i class="save icon"></i></button>
                 </div>
             </div>
-            <h3 class="ui header segment bestfit">
-                <i class="file icon"></i>
-                Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
-            </h3>
-            <c:if test="${permission == 3}">
-                <div class="ui raised segment signedIn">
-                    <h3>Create a course</h3>
-                    <hr>
-                    <div class="ui action input">
-                        <input placeholder="Course Id..." type="text" id="course-add-input">
-                        <button class="ui button" id="course-add">Create Course</button>
+            <div class="profile-row">
+                <h3 class="ui header segment bestfit">
+                    <i class="file icon"></i>
+                    Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
+                </h3>
+                <c:if test="${permission == 3}">
+                    <div class="ui raised segment signedIn">
+                        <h3>Create a course</h3>
+                        <hr>
+                        <div class="ui action input">
+                            <input placeholder="Course Id..." type="text" id="course-add-input">
+                            <button class="ui button" id="course-add">Create Course</button>
+                        </div>
                     </div>
-                </div>
-            </c:if> 
-            
-            <div class="stats" id="user-file-stats">
+                </c:if> 
+            </div>
+            <div class="stats ui raised segment" id="user-file-stats">
 
             </div>
         </div>
