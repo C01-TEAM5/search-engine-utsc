@@ -22,7 +22,7 @@ public class Constants {
     public static final String INDEX_KEY_TYPE = "Type";
     public static final String INDEX_KEY_COURSE = "Course";    
     
-    public static final int SEARCH_HITS_PER_PAGE = 10;
+    public static final int SEARCH_HITS_PER_PAGE = 100000;
     
     public static final String SERVLET_PARAMETER_ID = "id";
     public static final String SERVLET_PARAMETER_GET = "get";

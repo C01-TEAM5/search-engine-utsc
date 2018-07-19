@@ -150,6 +150,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <button class="circular ui icon button teal signedIn" id="save-profile-button"><i class="save icon"></i></button>
                 </div>
             </div>
+            <div class="profile-row">
             <h3 class="ui header segment bestfit">
                 <i class="file icon"></i>
                 Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
@@ -164,8 +165,8 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </div>
                 </div>
             </c:if> 
-            
-            <div class="stats" id="user-file-stats">
+            </div>
+            <div class="stats ui raised segment" id="user-file-stats">
 
             </div>
         </div>

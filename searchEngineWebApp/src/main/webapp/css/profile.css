@@ -163,9 +163,19 @@ span {
     margin-bottom: 20px !important;
 }
 
+.profile-row {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .stats {
-    width:400px;
-    height: 400px;
+    width:100%;
+    height: 31%;
     overflow: hidden;
 }
 
@@ -191,6 +201,15 @@ span {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
+    }
+
+    .profile-row {
+        width: 66%;
+    }
+
+    .stats {
+        width: 31%;
+        height: 200px;
     }
 
     .user-files {

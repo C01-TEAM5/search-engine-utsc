@@ -151,9 +151,7 @@
         ]);
 
         // Set chart options
-        var options = {'title':'File Statistics',
-                        'width':500,
-                        'height':500};
+        var options = {'title':'File Statistics'};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('user-file-stats'));
