@@ -104,7 +104,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   </div>
     <!-- search results -->
     <div class=search-results>
-        ${totalResults} results found.
+        <div class="ui orange horrizontal label">${totalResults} results found</div>
         <div class="separator"></div>
         
         <table class="results-table">
@@ -119,7 +119,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         <div class="file-course">
                             Course Code: 
                             <c:if test="${result.courseCode.length() > 0}">
-                                <a href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
+                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
                             </c:if> 
                             <c:if test="${result.courseCode.length() == 0}">
                                 <div class="ui red horizontal label">NONE</div>
@@ -167,12 +167,12 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 
     </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="../lib/semantic/semantic.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../lib/semantic/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script src="js/api.js"></script>
-  <script src="./js/login.js"></script>
+    <script src="js/api.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 </html>

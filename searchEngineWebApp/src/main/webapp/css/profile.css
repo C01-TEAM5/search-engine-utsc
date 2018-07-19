@@ -1,55 +1,218 @@
-.content {
-    width: 100%;
+.profile-container {
+    width: 80%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 }
-
-#update-user {
-    width: 100%;
-    height: auto;
-    background: rgba(59, 59, 59, 0.22);
-    padding-top: 25px;
-    padding-bottom: 25px;
+.profile-container-item {
+    width: 48%;
+    height: 95%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.form-item {
+.content .header {
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.card {
+    width: 100% !important;
+    height: 260px !important;
+    min-height: 260px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 5px !important;
+    overflow: auto;
+}
+
+.card .tag {
+    position: absolute !important;
+    z-index: 3;
+    top: 10px !important;
+}
+
+.profile-img {
+    height: 200px;
+    width: 200px;
+    min-width: 200px;
+    margin: 20px;
+}
+
+.user-info {
     width: 100%;
+    height: 95%;
+    min-height: 250px;
+    border-left: 1px solid #ddd;
+    padding-left: 20px;
+}
+
+#userDesc {
+    width: 100% !important;
+    height: 100px !important;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+#input-desc {
+    margin-top: 5px;
+}
+
+.user-info .input {
+    width: 100% !important;
+    color: black !important;
+    -webkit-text-fill-color: black;
+}
+
+.user-info .input:disabled {
+    color: black !important;
+    -webkit-text-fill-color: black;
+}
+
+.user-files {
+    overflow-y: auto;
+}
+
+.user-files .card {
+    width: 100% !important;
+    height: 91% !important;
+    padding: 20px !important;
+    padding-bottom: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+
+}
+
+.bestfit {
+    width: auto !important;
+    max-width: fit-content !important;
+}
+
+#username {
+    font-size: 20pt;
+    width: 90%;
+    height: 50px !important;
+    color: black !important;
+    -webkit-text-fill-color: black;
+    padding-left: 10px !important;
+}
+
+.edit-image-container {
+    transition-duration:0.2s;
+    width: 200px;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    z-index: 2;
+    border-radius: 50%;
+    display: none;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    color: white;
+    font-size: 30pt;
+    line-height: 30pt;
+    text-align: center;
+}
+
+.profile-image:hover, .edit-image-container:hover {
+    cursor: pointer;
+}
+
+.courses {
+    width: 100%;
+    height: 30px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding-bottom: 5px;
 }
 
-.item-label {
-    width: 200px;
-    text-align: right;
-    color: rgb(20, 20, 20);
-    padding-right: 5px;
-    font-weight: bold;
-}
-
-.item-input {
-    border: none;
-    width: 300px;
-    height: 25px;
-    padding-left: 5px;
-    border-radius: 2px;
-}
-
-.separator {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    width: 50%;
-    border-bottom: 1px solid #999;
+span {
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 
-.change-password-form {
-    display: none;
+#save-profile-button {
+    position: absolute !important;
+    z-index: 3 !important;
+    top: 80% !important;
+    left: 93% !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+#save-profile-button i {
+    font-size: 18pt;
+    line-height: 18pt;
+}
+
+.search-results-item {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+}
+
+.profile-row {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stats {
+    width:100%;
+    height: 31%;
+    overflow: hidden;
+}
+
+@media (max-width: 1600px) {
+    .profile-container {
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        flex-direction: row !important;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        margin-top: 0px;
+        border: 1px solid #aaa;
+    }
+
+    .profile-container-item {
+        width: 80%;
+        height: auto;
+        min-height: 400px;
+        margin-top: 20px;
+        min-height: 200px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .profile-row {
+        width: 66%;
+    }
+
+    .stats {
+        width: 31%;
+        height: 200px;
+    }
+
+    .user-files {
+        margin-bottom: 10px;
+    }
 }
