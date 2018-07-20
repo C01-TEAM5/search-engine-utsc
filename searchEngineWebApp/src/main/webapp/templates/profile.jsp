@@ -11,6 +11,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
+    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <link rel="stylesheet" href="./css/results.css" type="text/css">
