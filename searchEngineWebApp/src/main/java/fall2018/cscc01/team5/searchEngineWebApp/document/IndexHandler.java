@@ -4,21 +4,24 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
 
 public class IndexHandler {
 
@@ -85,7 +88,7 @@ public class IndexHandler {
 
         Field docIDField = new StringField(Constants.INDEX_KEY_ID, newFile.getId(), Store.YES);
         Field docPathField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
-        Field userIDField = new TextField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
+        Field userIDField = new StringField(Constants.INDEX_KEY_OWNER, newFile.getOwner(), Store.YES);
         Field filenameField = new TextField(Constants.INDEX_KEY_FILENAME, newFile.getFilename(), Store.YES);
         Field isPublicField = new TextField(Constants.INDEX_KEY_STATUS, newFile.isPublic().toString(), Store.YES);
         Field titleField = new TextField(Constants.INDEX_KEY_TITLE, newFile.getTitle(), Store.YES);
@@ -201,7 +204,7 @@ public class IndexHandler {
      */
     public DocFile[] searchById(String id, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
+        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse("\"" + id + "\"")));
     }
 
     /**
@@ -213,24 +216,19 @@ public class IndexHandler {
      */
     public DocFile[] searchByUser(String username, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        // create a master query builder
-        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
-        // check content
-        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-        Query parsed = new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username);
-        queryBuilder.add(parsed, BooleanClause.Occur.MUST);
+        PhraseQuery  pq = new PhraseQuery (Constants.INDEX_KEY_OWNER,username);
 
-        String filterString = fileTypes[0];
-        for (String fileType : fileTypes) {
-            filterString += " OR " + fileType;
+        ArrayList<DocFile> list = new ArrayList<DocFile>();
+        for (DocFile file: searchResponse(searchExec(pq))) {
+            if (Arrays.asList(fileTypes).contains(file.getFileType())) {
+                list.add(file);
+            }
         }
-        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
-                BooleanClause.Occur.MUST);
-
-        // build the masterQuery
-        BooleanQuery masterQuery = masterQueryBuilder.build();
-
-        return searchResponse(searchExec(masterQuery));
+        DocFile[] result = new DocFile[list.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = list.get(i);
+        }
+        return result;
     }
 
     /**
@@ -355,8 +353,13 @@ public class IndexHandler {
                 if (filter.equals("")) continue;
                 QueryParser parser = new QueryParser(filter, analyzer);
                 parser.setAllowLeadingWildcard(true);
-                Query parsedQ = parser.parse(query);
-                queryBuilder.add(parsedQ, filterOccur);
+                if (!filter.equals(Constants.INDEX_KEY_OWNER)) {
+                    Query parsedQ = parser.parse(query);
+                    queryBuilder.add(parsedQ, filterOccur);
+                }
+                else {
+                    queryBuilder.add(new PhraseQuery(filter, queries), filterOccur);
+                }
             }
             masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
         }
