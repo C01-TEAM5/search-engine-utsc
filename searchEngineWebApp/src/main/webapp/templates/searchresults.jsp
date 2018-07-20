@@ -11,6 +11,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
+  <link rel="stylesheet" href="./css/reset.css" type="text/css">
   <link rel="stylesheet" href="./css/index.css" type="text/css">
   <link rel="stylesheet" href="./css/results.css" type="text/css">
   <link rel= "stylesheet" href= "./css/login.css" type="text/css">
@@ -104,10 +105,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   </div>
     <!-- search results -->
     <div class=search-results>
-        ${totalResults} results found.
+        <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
         
-        <table class="results-table">
+        <div class="results-table">
             <c:forEach var="result" items="${searchResults}">
                 <div class="ui raised segment search-results-item">
                     <i class="file alternate outline icon"></i>
@@ -119,7 +120,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         <div class="file-course">
                             Course Code: 
                             <c:if test="${result.courseCode.length() > 0}">
-                                <a href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
+                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
                             </c:if> 
                             <c:if test="${result.courseCode.length() == 0}">
                                 <div class="ui red horizontal label">NONE</div>
@@ -130,22 +131,17 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             Owner: 
                             <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
                         </div>
+                        <div class="content-snip">
+                            ${result.contextString}
+                        </div>
                     </div>
                 </div>
-                <!-- <tr>
-                    <td>
-                        Title: <c:out value="${result.title}"/><br>
-                        Owner: <c:out value="${result.owner}"/><br>
-                        Course Code: <c:out value="${result.courseCode}"/><br>
-                        File Type: <c:out value="${result.fileType}"/><br>
-                    </td>
-                </tr> -->
             </c:forEach>
-        </table>
+        </div>
 
         <!-- page number -->
-        <table>
-            <tr>
+        <div class="pagination">
+            <div class="page">
                 <!-- previous link -->
                 <c:if test="${currentPage != 1}">
                     <td><a href="${noPageUri}page=${currentPage - 1}">
@@ -167,17 +163,17 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <td><a href="${noPageUri}page=${currentPage + 1}">
                     <button class="page-move-btn">Next</button></a><td>
                 </c:if>
-            </tr>
-        </table>
+            </div>
+        </div>
 
     </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="../lib/semantic/semantic.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../lib/semantic/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script src="js/api.js"></script>
-  <script src="./js/login.js"></script>
+    <script src="js/api.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 </html>

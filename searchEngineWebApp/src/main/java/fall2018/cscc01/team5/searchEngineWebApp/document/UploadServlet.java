@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -52,7 +53,7 @@ public class UploadServlet extends HttpServlet {
 
         String currentUser = getCurrentUser(req.getCookies());
         String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
-        if (!currentUser.equals("")) {
+        if (!currentUser.equals("") && AccountManager.exists(currentUser)) {
             // check upload request
             isMultipart = ServletFileUpload.isMultipartContent(req);
             resp.setContentType("text/html");

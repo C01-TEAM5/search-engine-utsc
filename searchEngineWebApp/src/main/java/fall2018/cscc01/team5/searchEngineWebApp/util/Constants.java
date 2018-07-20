@@ -22,10 +22,12 @@ public class Constants {
     public static final String INDEX_KEY_TYPE = "Type";
     public static final String INDEX_KEY_COURSE = "Course";    
     
-    public static final int SEARCH_HITS_PER_PAGE = 10;
+    public static final int SEARCH_HITS_PER_PAGE = 100000;
     
     public static final String SERVLET_PARAMETER_ID = "id";
     public static final String SERVLET_PARAMETER_GET = "get";
+    public static final String SERVLET_PARAMETER_CREATE_COURSE = "createCourse";
+    public static final String SERVLET_PARAMETER_DELETE_FILE = "deleteFile";
 
     public static final String SERVLET_PARAMETER_COURSE_GET_STUDENT = "getStudents";
     public static final String SERVLET_PARAMETER_COURSE_GET_INSTRUCTORS = "getInstructors";

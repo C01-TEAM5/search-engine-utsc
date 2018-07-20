@@ -4,7 +4,6 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -18,9 +17,10 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
+import org.apache.lucene.search.vectorhighlight.FieldQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 
 public class IndexHandler {
@@ -32,7 +32,7 @@ public class IndexHandler {
     private IndexWriterConfig config;     // Index Writer Configurations
     private IndexWriter writer;           // Index Writer
     //private String storePath;             // The path where the index will be stored
-    private int hitsPerPage = 10;
+    private int hitsPerPage = 1000000;
     /**
      * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
      */
@@ -125,10 +125,11 @@ public class IndexHandler {
      *
      * @param updatefile the object of the file to be updated.
      */
-    public void updateDoc (DocFile updatefile) {
+    public void updateDoc (DocFile updatefile) throws ParseException {
 
         // Check if the file extension is valid
-        if (!isValid(updatefile) || !pathExists(updatefile.getPath())) {
+        if (updatefile == null) return;
+        if (!isValid(updatefile) || !(FileManager.fileExists(updatefile.getId()) || pathExists (updatefile.getPath()))) {
             return;
         }
 
@@ -142,21 +143,22 @@ public class IndexHandler {
      *
      * @param deletefile the object of the file to be removed from the index
      */
-    public void removeDoc (DocFile deletefile) {
+    public void removeDoc (DocFile deletefile) throws ParseException {
 
         // Check if the file extension is valid
+        if (deletefile == null) return;
         if (!isValid(deletefile)) {
             return;
         }
 
-        Term term = new Term(Constants.INDEX_KEY_PATH, deletefile.getPath());
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(deletefile.getId());
         //System.out.println("delete file: " + term.field() + " " + term.text());
 
         // Check if path exists
-        if (pathExists(deletefile.getPath())) {
+        if (FileManager.fileExists(deletefile.getId()) || pathExists (deletefile.getPath())) {
             // remove doc if exits
             try {
-                writer.deleteDocuments(term);
+                writer.deleteDocuments(query);
                 writer.commit();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -190,7 +192,10 @@ public class IndexHandler {
      * @throws ParseException
      */
     public boolean fileExists (String id) throws ParseException {
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id))).length > 0;
+        
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id);
+        
+        return searchResponse(searchExec(query), query).length > 0;
     }
 
     /**
@@ -200,9 +205,41 @@ public class IndexHandler {
      * @return a list if docfiles containing this id
      * @throws ParseException
      */
-    public DocFile[] searchById(String id) throws ParseException, IOException {
+    public DocFile[] searchById(String id, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        return searchResponse(searchExec(new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id)));
+        
+        Query query = new QueryParser(Constants.INDEX_KEY_ID, analyzer).parse(id);
+        
+        return searchResponse(searchExec(query), query);
+    }
+
+    /**
+     * Search for DocFile by username
+     *
+     * @param username the id to search
+     * @return a list if docfiles containing this username
+     * @throws ParseException
+     */
+    public DocFile[] searchByUser(String username, String[] fileTypes) throws ParseException, IOException {
+        if (indexDir.listAll().length < 2) return new DocFile[0];
+        // create a master query builder
+        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
+        // check content
+        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+        Query parsed = new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username);
+        queryBuilder.add(parsed, BooleanClause.Occur.MUST);
+
+        String filterString = fileTypes[0];
+        for (String fileType : fileTypes) {
+            filterString += " OR " + fileType;
+        }
+        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
+                BooleanClause.Occur.MUST);
+
+        // build the masterQuery
+        BooleanQuery masterQuery = masterQueryBuilder.build();
+
+        return searchResponse(searchExec(masterQuery),masterQuery);
     }
 
     /**
@@ -301,7 +338,7 @@ public class IndexHandler {
         // build the masterQuery
         BooleanQuery masterQuery = masterQueryBuilder.build();
 
-        return searchResponse(searchExec(masterQuery));
+        return searchResponse(searchExec(masterQuery), masterQuery);
     }
 
     /**
@@ -336,7 +373,7 @@ public class IndexHandler {
         // build the masterQuery
         BooleanQuery masterQuery = masterQueryBuilder.build();
 
-        return searchResponse(searchExec(masterQuery));
+        return searchResponse(searchExec(masterQuery), masterQuery);
     }
 
     /**
@@ -352,7 +389,7 @@ public class IndexHandler {
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage);
+            TopDocs docs = searcher.search(query, hitsPerPage); //search(query, docs);
             hits = docs.scoreDocs;
         } catch (IOException e) {
             e.printStackTrace();
@@ -368,9 +405,11 @@ public class IndexHandler {
      * @param results a ScoreDoc array containing the hits
      * @return a list of DocFile results of the search
      */
-    public DocFile[] searchResponse (ScoreDoc[] results) {
+    public DocFile[] searchResponse(ScoreDoc[] results, Query query) {
 
         DocFile[] result = new DocFile[results.length];
+        FastVectorHighlighter highlighter = new FastVectorHighlighter(true,true);
+        FieldQuery highlightQuery = highlighter.getFieldQuery(query); 
 
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
@@ -379,12 +418,22 @@ public class IndexHandler {
             for (int i = 0; i < results.length; i++) {
                 int docId = results[i].doc;
                 Document document = searcher.doc(docId);
+                
+                //Highlight the best Content context from each Doc
+                String contextString = highlighter.getBestFragment(highlightQuery, 
+                        searcher.getIndexReader(), results[i].doc,Constants.INDEX_KEY_CONTENT,140);
+                
                 DocFile toAdd = new DocFile(
                         document.get(Constants.INDEX_KEY_FILENAME),
                         document.get(Constants.INDEX_KEY_TITLE),
                         document.get(Constants.INDEX_KEY_OWNER),
                         document.get(Constants.INDEX_KEY_PATH),
                         document.get(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
+                
+                if (contextString != null) {
+                    toAdd.setContextString(contextString);
+                }
+                
                 toAdd.setId(document.get(Constants.INDEX_KEY_ID));
                 toAdd.setPermissions(Integer.parseInt(document.get(Constants.INDEX_KEY_PERMISSION)));
                 toAdd.setCourseCode(document.get(Constants.INDEX_KEY_COURSE));
