@@ -204,7 +204,7 @@ public class ProfileServlet extends HttpServlet {
 
         if (id == null || !AccountManager.exists(id.toLowerCase())) {
             if (currentUser == null || currentUser.equals("")) {
-                resp.sendRedirect("/");
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
             else {
