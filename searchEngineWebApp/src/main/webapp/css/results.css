@@ -51,7 +51,7 @@ a {
 
 .search-results-item {
     width: 95% !important;
-    height: 110px !important;
+    height: 100% !important;
     min-height: 90px;
     padding: 10px !important;
     padding-left: 25px !important;
@@ -76,7 +76,6 @@ a {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-around;
-    padding: 5px;
     padding-left: 25px;
 }
 
@@ -86,6 +85,8 @@ a {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 .file-name .label {
@@ -105,7 +106,18 @@ a {
 
 .total-results {
     position: absolute !important;
-    top: 12% !important;
+    top: 15% !important;
+}
+
+.content-snip {
+	text-align: left;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.content-snip b {
+	color: #33A2FF;
+	font-weight: bold;
 }
 
 @media (max-width: 1600px) {
