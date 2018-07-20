@@ -37,7 +37,13 @@
             if (searchHtml.checked) {filterList.push(".html")}
             if (searchDocx.checked) {filterList.push(".docx")}
 
-            var queryString = api.buildQuery(searchQuery,filterList);
+            var perm = 0;
+            
+            $(".perm-all").click(function(){perm = 0;});
+            $(".perm-instructor").click(function(){perm = 3;});
+            $(".perm-student").click(function(){perm = 2;});
+            
+            var queryString = api.buildQuery(searchQuery,filterList,perm);
             document.location.href="/search?query="+queryString;
 
 

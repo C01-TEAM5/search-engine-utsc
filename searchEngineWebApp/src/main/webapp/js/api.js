@@ -90,13 +90,13 @@ var api = (function(){
         send("GET", "/course?id=" + id + "&get=true", null, callback);
     }
 
-    module.buildQuery = function buildQueryString(query, filters) {
+    module.buildQuery = function buildQueryString(query, filters, perm) {
 
         var query = query.replace(" ","+");
 
         if (filters.length <= 0) return query;
 
-        return query + "&filters=" + parseFilters(filters);
+        return query + "&filters=" + parseFilters(filters) + "&perm=" + perm;
     }
 
     function parseFilters(filters) {
