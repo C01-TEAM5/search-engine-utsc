@@ -52,7 +52,7 @@ a {
 .search-results-item {
     width: 95% !important;
     height: 100% !important;
-    min-height: 90px;
+    min-height: 100px;
     padding: 10px !important;
     padding-left: 25px !important;
     padding-right: 25px !important;
@@ -106,7 +106,7 @@ a {
 
 .total-results {
     position: absolute !important;
-    top: 15% !important;
+    top: 17% !important;
 }
 
 .content-snip {

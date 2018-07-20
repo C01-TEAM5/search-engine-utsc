@@ -1,4 +1,4 @@
-package fall2018.cscc01.team5.searchEngineWebApp.course;
+/*package fall2018.cscc01.team5.searchEngineWebApp.course;
 
 import static org.junit.Assert.*;
 import org.bson.Document;
@@ -127,3 +127,4 @@ public class CourseManagerTest {
     }
 
 }
+*/
