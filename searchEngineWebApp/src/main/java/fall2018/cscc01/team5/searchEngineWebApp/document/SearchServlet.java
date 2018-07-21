@@ -68,9 +68,7 @@ public class SearchServlet extends HttpServlet {
         String permParam = req.getParameter("perm");
         if (permParam==null) {
             permParam = "0";
-        }
-        System.out.println(permParam);
-        
+        }        
         
         //Perform search, only send the results we want shown on page to jsp
         try {
