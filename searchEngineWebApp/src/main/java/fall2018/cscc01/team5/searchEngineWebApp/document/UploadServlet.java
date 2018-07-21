@@ -1,9 +1,11 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -83,10 +85,20 @@ public class UploadServlet extends HttpServlet {
                 
                 // get course code as the last element of list
                 String courseCode = "";
+                List<String> tags = new ArrayList<String>();
+                
                 if (items.size()> 0) {
                   FileItem lastItem = (FileItem) items.get(items.size() - 1);
+                  FileItem lastItem2 = (FileItem) items.get(items.size() - 2);
+                  
+                  // form field check depends on last item and regex
                   if (lastItem.isFormField()) {
-                    courseCode = lastItem.getString();
+                    if (Pattern.matches("[A-Za-z]{3}.[0-9]{2}", lastItem.getString())) {
+                      courseCode = lastItem.getString();
+                    } else {
+                      courseCode = lastItem2.getString();
+                      tags = Arrays.asList(lastItem.getString().split(","));
+                    }
                   }
                 }
 
@@ -119,6 +131,7 @@ public class UploadServlet extends HttpServlet {
                             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
+                                docFile.setTag(tags);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseId, initialStream);
                                 docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseId);
@@ -129,6 +142,7 @@ public class UploadServlet extends HttpServlet {
                             else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
                                 courseCode = courseCode.toLowerCase();
                                 docFile.setCourseCode(courseCode);
+                                docFile.setTag(tags);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseCode, initialStream);
                                 docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseCode);

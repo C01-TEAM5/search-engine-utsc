@@ -147,6 +147,16 @@ public class DocFile {
       this.tags.add(tag);
     }
     
+    /**
+     * Sets new tags to the document
+     * @param tags - the tags to be set
+     */
+    public void setTag(List<String> tags) {
+      this.tags = tags;
+    }
+    
+    
+    
     
     /**
      * Check whether an object is equivalent to this DocFile
