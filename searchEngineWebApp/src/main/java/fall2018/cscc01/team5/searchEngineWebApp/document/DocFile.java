@@ -4,6 +4,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ public class DocFile {
     private String title; //The title of the Document
     private String fileType;
     private int permission;
+    private List<String> tags;
 
     /**
      * A DocFile is an object representing a file in the system. DocFiles contain a filename, is uploaded by a user, can
@@ -35,6 +38,7 @@ public class DocFile {
         this.title = title;
         this.fileType = getFileType();
         permission = Constants.PERMISSION_ALL;
+        this.tags = new ArrayList<String>();
     }
 
     /**
@@ -126,6 +130,23 @@ public class DocFile {
     public void setPermissions(int perm) {
         this.permission = perm;
     }
+    
+    /**
+     * Return the tags attached to the docfile
+     * @return a list of tags attached to the docfile
+     */
+    public List getTags() {
+      return this.tags;
+    }
+    
+    /**
+     * Add a new tag to the document
+     * @param tag - the tag to be added
+     */
+    public void addTag(String tag) {
+      this.tags.add(tag);
+    }
+    
     
     /**
      * Check whether an object is equivalent to this DocFile
