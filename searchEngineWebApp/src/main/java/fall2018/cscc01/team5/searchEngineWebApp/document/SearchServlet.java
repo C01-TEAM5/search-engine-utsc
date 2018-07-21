@@ -64,10 +64,17 @@ public class SearchServlet extends HttpServlet {
         }        
         String[] filterQuery = filterParam.split(",");
         
+        //Get permission level for search. If none, search all types of docs.
+        String permParam = req.getParameter("perm");
+        if (permParam==null) {
+            permParam = "0";
+        }
+        System.out.println(permParam);
+        
         
         //Perform search, only send the results we want shown on page to jsp
         try {
-            DocFile[] searchResults = performSearch(query,filterQuery);
+            DocFile[] searchResults = performSearch(query,filterQuery,permParam);
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
 
@@ -164,11 +171,11 @@ public class SearchServlet extends HttpServlet {
      * @throws ParseException
      * @throws IOException
      */
-    public DocFile[] performSearch (String queryString, String[] filterString) throws ParseException, IOException {
+    private DocFile[] performSearch (String queryString, String[] filterString, String permString) throws ParseException, IOException {
     	
         
         IndexHandler handler = IndexHandler.getInstance();          
-        DocFile[] docFileResults = handler.search(queryString, 0, filterString);
+        DocFile[] docFileResults = handler.search(queryString, Integer.parseInt(permString), filterString);
 
 		return docFileResults;
     	
