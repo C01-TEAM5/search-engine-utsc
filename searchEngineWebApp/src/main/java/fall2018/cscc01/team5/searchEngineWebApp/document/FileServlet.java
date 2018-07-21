@@ -9,6 +9,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.bson.types.ObjectId;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -40,7 +42,7 @@ public class FileServlet extends HttpServlet {
             throws ServletException, IOException {
         resp.setContentType("application/json");
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
-        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
+        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);   //get the request 
 
         try {
             if (id == null || IndexHandler.getInstance().searchById(id.toLowerCase()).length == 0) {
@@ -53,7 +55,7 @@ public class FileServlet extends HttpServlet {
         }
 
         if (get) {
-            PrintWriter out = resp.getWriter();
+            PrintWriter out = resp.getWriter();   //response 
             try {
                 out.println(new Gson().toJson(IndexHandler.getInstance().searchById(id.toLowerCase())[0]));
                 out.flush();
@@ -62,8 +64,31 @@ public class FileServlet extends HttpServlet {
             }
             return;
         }
-        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");
-        view.forward(req, resp);
+        
+        try {
+			DocFile[] file = IndexHandler.getInstance().searchById(id.toLowerCase());
+			req.setAttribute("test", file[0]);
+			
+			String path = FileManager.download(new ObjectId(file[0].getId()), file[0].getFilename());
+			req.setAttribute("path", path);
+			
+			FileInputStream stream = new FileInputStream(new File(path));
+//			byte fileContent[] = new byte[(int) file.length];
+//			stream.read(fileContent);
+//			String content = new String(fileContent);
+			int data; StringBuilder builder = new StringBuilder();
+			while ((data=stream.read()) != -1) {
+				builder.append((char) data);
+			}		
+			req.setAttribute("content", builder.toString());
+						
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		     
+        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");   //dispatch request to jsp 
+        view.forward(req, resp);   //forward request to another servlet
     }
 
     @Override
