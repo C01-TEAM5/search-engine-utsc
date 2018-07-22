@@ -126,6 +126,18 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             </c:if> 
                             
                         </div>
+                        <!-- 
+                        <div class="file-tag">
+                            Tags: 
+                            <c:if test="${result.tags.size() > 0}">
+                            	<label type = "text"> RESULT.tags.toString()</label>
+                            </c:if> 
+                            <c:if test="${result.tags.size() == 0}">
+                                <label type = "text"> NONE </label>
+                            </c:if> 
+                        </div>
+                         -->
+                         
                         <div class="file-owner">
                             Owner: 
                             <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
