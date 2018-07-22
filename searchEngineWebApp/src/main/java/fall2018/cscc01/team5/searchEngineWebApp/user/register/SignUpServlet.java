@@ -69,7 +69,7 @@ public class SignUpServlet extends HttpServlet {
             if (user != null) {
                 try {
                     AccountManager.register(user);
-                    Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getUsername());
+                    Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getName());
                     resp.addCookie(cookie);
 
                     // successfully signed up
