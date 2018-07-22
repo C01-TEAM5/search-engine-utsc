@@ -81,6 +81,15 @@ public class IndexHandlerSearchTest {
     	
     }
     
+    @Test
+    public void testNoResults() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("supercalifragulistic", 0, filters);
+    	
+    	assertEquals(0, results.length);
+    }
+    
     //Test searching across all doc types with multiple word query
     @Test
     public void testMultipleWordQuery() throws ParseException, IOException {
@@ -135,14 +144,34 @@ public class IndexHandlerSearchTest {
     
     //Test a search on all files with a certain level of permission
     @Test
-    public void testAllPermissionType() throws ParseException, IOException {
+    public void testPermissionSearch() throws ParseException, IOException {
     	
     	String[] filters = {".docx",".pdf",".html",".txt"};
     	DocFile[] results = index.search("*", Constants.PERMISSION_INSTRUCTOR, filters);
     	
     	assertEquals(3, results.length);
-    	//assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(DOCX1)));
+    	
+    	results = index.search("*", Constants.PERMISSION_STUDENT, filters);
+    	assertEquals(2, results.length);
     }
+    
+    //Test searching for a valid search ID
+    @Test
+    public void testSearchById () throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.searchById("test", filters);
+    	
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	
+    	results = index.searchById("testpdf", filters);
+    	assertEquals(docFiles.get(PDF1),results[0]);
+    	  	
+    }
+    
     
     /**
      * Remove the txt, html, docx and pdf files created
@@ -169,6 +198,7 @@ public class IndexHandlerSearchTest {
         writer.close();
         DocFile txt1 = new DocFile("text1.txt","Dog Story","Janice","text1.txt",true);
         txt1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        txt1.setId("test");
         docFiles.add(txt1);
         
         writer = new BufferedWriter(new FileWriter("text2.txt"));
@@ -233,6 +263,7 @@ public class IndexHandlerSearchTest {
         pdf1.close();
         DocFile pf1 = new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true);
         pf1.setPermissions(Constants.PERMISSION_STUDENT);
+        pf1.setId("testpdf");
         docFiles.add(pf1);
         
         PDDocument pdf2 = new PDDocument();
