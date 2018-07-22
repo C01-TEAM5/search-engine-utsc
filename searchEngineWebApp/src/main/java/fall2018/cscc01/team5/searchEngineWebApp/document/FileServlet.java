@@ -45,7 +45,7 @@ public class FileServlet extends HttpServlet {
             throws ServletException, IOException {
         resp.setContentType("application/json");
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
-        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);   //get the request 
+        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);   
 
         try {
             if (id == null || IndexHandler.getInstance().searchById(id.toLowerCase()).length == 0) {
@@ -58,7 +58,7 @@ public class FileServlet extends HttpServlet {
         }
 
         if (get) {
-            PrintWriter out = resp.getWriter();   //response 
+            PrintWriter out = resp.getWriter();  
             try {
                 out.println(new Gson().toJson(IndexHandler.getInstance().searchById(id.toLowerCase())[0]));
                 out.flush();
@@ -68,22 +68,16 @@ public class FileServlet extends HttpServlet {
             return;
         }
         
-        DocFile[] file;
 		try {
-			file = IndexHandler.getInstance().searchById(id.toLowerCase());
-			req.setAttribute("type", file[0].getFileType());
-
-			String path = FileManager.download(new ObjectId(file[0].getId()), file[0].getFilename());
+			String path = FileManager.download(new ObjectId(IndexHandler.getInstance().searchById(id.toLowerCase())[0].getId()), 
+					IndexHandler.getInstance().searchById(id.toLowerCase())[0].getFilename());
 			req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
-			
-
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");   //dispatch request to jsp 
-        view.forward(req, resp);   //forward request to another servlet
+        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");  
+        view.forward(req, resp);  
     }
 
     @Override
