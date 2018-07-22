@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -122,6 +124,24 @@ public class IndexHandlerSearchTest {
     @Test
     public void testMultipleFilters () throws ParseException, IOException {
     	
+    	String[] filters = {".docx", ".pdf"};
+    	DocFile[] results = index.search("shakespeare", 0, filters);
+    	
+    	assertEquals(2, results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(DOCX1)));   	
+    	
+    }
+    
+    //Test a search on all files with a certain level of permission
+    @Test
+    public void testAllPermissionType() throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.search("*", Constants.PERMISSION_INSTRUCTOR, filters);
+    	
+    	assertEquals(3, results.length);
+    	//assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
     }
     
     /**
@@ -147,27 +167,33 @@ public class IndexHandlerSearchTest {
         writer.write("Cats don't like water.\n");
         writer.write("Elephants remember everything.");
         writer.close();
-        docFiles.add(new DocFile("text1.txt","Dog Story","Janice","text1.txt",true));
+        DocFile txt1 = new DocFile("text1.txt","Dog Story","Janice","text1.txt",true);
+        txt1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        docFiles.add(txt1);
         
         writer = new BufferedWriter(new FileWriter("text2.txt"));
         writer.write("When my computer runs, it makes a loud noise.\n");
         writer.write("It runs all day and all night, I should turn it off.");
         writer.close();
-        docFiles.add(new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false));
+        DocFile txt2 = new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false);
+        txt2.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        docFiles.add(txt2);
         
     }
     
     private static void generateHtmlFiles() throws IOException {
         
         BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
-        writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
+        writer.write("<html>\n<head>Buy My New CD Shakespeare</head>\n<body>");
         writer.write("<h1>I am a great singer who doesn't like baseball but has a dog.</h1>");
         writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
         writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html1.html","Mark CD","Mark","html1.html",false));
+        DocFile html1 = new DocFile("html1.html","Mark CD","Mark","html1.html",false);
+        html1.setPermissions(Constants.PERMISSION_STUDENT);
+        docFiles.add(html1);
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
@@ -205,7 +231,9 @@ public class IndexHandlerSearchTest {
          
         pdf1.save("pdf1.pdf");
         pdf1.close();
-        docFiles.add(new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true));
+        DocFile pf1 = new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true);
+        pf1.setPermissions(Constants.PERMISSION_STUDENT);
+        docFiles.add(pf1);
         
         PDDocument pdf2 = new PDDocument();
         PDPage p2 = new PDPage();
@@ -215,15 +243,15 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("My Dog Spot");
-        contentStream.showText("Here is my dog spot. He is a missing dog.");
+        contentStream.showText("My Dog");
+        contentStream.showText("Here is my dog Shakespeare. He is a missing dog.");
         contentStream.showText("Call my phone number if you find him. I miss my dog.");
         contentStream.endText();
         contentStream.close();
          
         pdf2.save("pdf2.pdf");
         pdf2.close();
-        docFiles.add(new DocFile("pdf2.pdf","Spot Lost","Jane","pdf2.pdf",true));
+        docFiles.add(new DocFile("pdf2.pdf","Shakes Lost","Jane","pdf2.pdf",true));
         
     }
     
@@ -250,7 +278,9 @@ public class IndexHandlerSearchTest {
         
         docx1.write(stream);
         stream.close();
-        docFiles.add(new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true));
+        DocFile doc1 = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);
+        doc1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        docFiles.add(doc1);
         
         XWPFDocument docx2 = new XWPFDocument();
         loadFile = new File("docx2.docx");
