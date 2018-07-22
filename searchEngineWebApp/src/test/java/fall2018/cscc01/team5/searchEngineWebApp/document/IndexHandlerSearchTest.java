@@ -220,6 +220,18 @@ public class IndexHandlerSearchTest {
     	
     }
     
+    //Test searching by User
+    @Test
+    public void testSearchByUser() throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.searchByUser("Mark", filters);
+    	
+    	assertEquals(2,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF1)));
+    	
+    }
     
     /**
      * Remove the txt, html, docx and pdf files created
