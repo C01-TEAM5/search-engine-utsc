@@ -294,6 +294,11 @@ public class IndexHandler {
         // check content
         BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
         QueryParser parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
+        parser.setDefaultOperator(QueryParser.Operator.AND);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        // to match single word querries on top of all the phrases
+        parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
         parser.setAllowLeadingWildcard(true);
         queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
         // check title
@@ -336,7 +341,7 @@ public class IndexHandler {
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage); //search(query, docs);
+            TopDocs docs = searcher.search(query, hitsPerPage, new Sort(SortField.FIELD_SCORE)); //search(query, docs);
             hits = docs.scoreDocs;
         } catch (IOException e) {
             e.printStackTrace();
