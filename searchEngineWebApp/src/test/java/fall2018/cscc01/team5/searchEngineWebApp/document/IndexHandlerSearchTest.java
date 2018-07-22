@@ -75,9 +75,34 @@ public class IndexHandlerSearchTest {
     	DocFile[] results = index.search("baseball", 0, filters);
     	
     	assertEquals(3,results.length);
-    	assertEquals(docFiles.get(HTML2),results[0]);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML2)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	
+    }
+    
+    @Test
+    public void testContentSearchOrder() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("baseball", 0, filters);
+    	
+    	assertEquals(3,results.length);
+    	assertEquals(docFiles.get(HTML2),results[0]);
+    	assertEquals(docFiles.get(HTML1),results[1]);
+    	assertEquals(docFiles.get(TXT2),results[2]);
+    	
+    }
+    
+    //Confirm that search checks titles
+    @Test
+    public void testTitleSearch() throws ParseException, IOException{
+    	
+    	String [] filters = {".docx"};
+    	DocFile[] results = index.search("running", 0, filters);
+    	
+    	assertEquals(1,results.length);
+    	assertEquals(docFiles.get(DOCX2),results[0]);
     	
     }
     
@@ -98,10 +123,23 @@ public class IndexHandlerSearchTest {
     	DocFile[] results = index.search("dog runs", 0, filters);
     	
     	assertEquals(4, results.length);
-    	assertEquals(docFiles.get(TXT1),results[0]);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT1)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF2)));
+    	
+    }
+    
+    //Test ordering of top search results
+    @Test
+    public void testSearchOrdering() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("dog runs", 0, filters);
+    	
+    	assertEquals(4, results.length);
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	assertEquals(docFiles.get(PDF2),results[1]);
     	
     }
     
@@ -168,8 +206,18 @@ public class IndexHandlerSearchTest {
     	assertEquals(docFiles.get(TXT1),results[0]);
     	
     	results = index.searchById("testpdf", filters);
-    	assertEquals(docFiles.get(PDF1),results[0]);
-    	  	
+    	assertEquals(docFiles.get(PDF1),results[0]);   	  	
+    }
+    
+    //Test searching for an invalid search ID
+    @Test
+    public void testInvalidId () throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.searchById("test123", filters);
+    	
+    	assertEquals(0,results.length);
+    	
     }
     
     
@@ -207,6 +255,7 @@ public class IndexHandlerSearchTest {
         writer.close();
         DocFile txt2 = new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false);
         txt2.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        txt2.setId("1");
         docFiles.add(txt2);
         
     }
@@ -223,6 +272,7 @@ public class IndexHandlerSearchTest {
         writer.close();
         DocFile html1 = new DocFile("html1.html","Mark CD","Mark","html1.html",false);
         html1.setPermissions(Constants.PERMISSION_STUDENT);
+        html1.setId("2");
         docFiles.add(html1);
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
@@ -232,7 +282,9 @@ public class IndexHandlerSearchTest {
         writer.write("<p>We are going to win the championship.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html2.html","My Baseball Team","Naomi","html2.html",true));
+        DocFile html2 = new DocFile("html2.html","My Baseball Team","Naomi","html2.html",true); 
+        html2.setId("3");
+        docFiles.add(html2);
         
     }
     
@@ -276,13 +328,15 @@ public class IndexHandlerSearchTest {
         contentStream.beginText();
         contentStream.showText("My Dog");
         contentStream.showText("Here is my dog Shakespeare. He is a missing dog.");
-        contentStream.showText("Call my phone number if you find him. I miss my dog.");
+        contentStream.showText("Call my phone number runs if you find him. I miss my dog.");
         contentStream.endText();
         contentStream.close();
          
         pdf2.save("pdf2.pdf");
         pdf2.close();
-        docFiles.add(new DocFile("pdf2.pdf","Shakes Lost","Jane","pdf2.pdf",true));
+        DocFile pd2 = new DocFile("pdf2.pdf","Shakes Lost","Jane","pdf2.pdf",true);
+        pd2.setId("10");
+        docFiles.add(pd2);
         
     }
     
@@ -311,6 +365,7 @@ public class IndexHandlerSearchTest {
         stream.close();
         DocFile doc1 = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);
         doc1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        doc1.setId("ok");
         docFiles.add(doc1);
         
         XWPFDocument docx2 = new XWPFDocument();
@@ -327,7 +382,9 @@ public class IndexHandlerSearchTest {
         
         docx2.write(stream);
         stream.close();
-        docFiles.add(new DocFile("docx2.docx","My Running Story","Adam","docx2.docx",true));
+        DocFile doc2 = new DocFile("docx2.docx","My Running Story","Adam","docx2.docx",true); 
+        doc2.setId("hello");
+        docFiles.add(doc2);
     }
     
     private static void removeFiles() {
