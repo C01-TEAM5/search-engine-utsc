@@ -278,24 +278,6 @@ public class IndexHandler {
     }
 
     /**
-     * Accept a list of queries and filters and return a list of DocFile that matches
-     *
-     * @param queries        a list of String queries
-     * @param filters        a list of String filters (list of Contants.INDEX_KEY*)
-     * @param expandedSearch if true filters will be used as additions to the search results, otherwise filters will
-     *                       further narrow down a search
-     * @return a list of DocFile that matches all queries and filters
-     */
-    public DocFile[] search (String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
-
-        // check if there are records in the index (write.lock is always present in the directory)
-        if (indexDir.listAll().length < 2) return new DocFile[0];
-
-        if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
-        else return search(queries, filters, BooleanClause.Occur.MUST);
-    }
-
-    /**
      * Given a query, permission level and filetypes, return a list of matching DocFiles
      *
      * @param query a string of words
@@ -334,41 +316,6 @@ public class IndexHandler {
         }
         masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
                 BooleanClause.Occur.MUST);
-
-        // build the masterQuery
-        BooleanQuery masterQuery = masterQueryBuilder.build();
-
-        return searchResponse(searchExec(masterQuery), masterQuery);
-    }
-
-    /**
-     * Accept a list of queries and filters and return a list of DocFile that
-     * matches
-     *
-     * @param queries     a list of String queries
-     * @param filters     a list of String filters (list of Contants.INDEX_KEY*)
-     * @param filterOccur if Occur.SHOULD filters will be used as additions to the search results, otherwise, if
-     *                    Occur.MUST filters will further narrow down a search
-     * @return a list of DocFile that matches all queries and filters
-     */
-    private DocFile[] search (String[] queries, String[] filters, BooleanClause.Occur filterOccur) throws ParseException {
-        // create a master query builder
-        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
-        // loop through all queries
-        for (String query : queries) {
-            if (query.equals("")) continue;
-            // create a boolean query for the each query
-            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-            // loop through all filters
-            for (String filter : filters) {
-                if (filter.equals("")) continue;
-                QueryParser parser = new QueryParser(filter, analyzer);
-                parser.setAllowLeadingWildcard(true);
-                Query parsedQ = parser.parse(query);
-                queryBuilder.add(parsedQ, filterOccur);
-            }
-            masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.SHOULD);
-        }
 
         // build the masterQuery
         BooleanQuery masterQuery = masterQueryBuilder.build();
