@@ -227,12 +227,12 @@ public class IndexHandler {
         PhraseQuery  pq = new PhraseQuery (Constants.INDEX_KEY_OWNER,username);
 
         ArrayList<DocFile> list = new ArrayList<DocFile>();
-        for (DocFile file: searchResponse(searchExec(pq), pq)) {
+        for (DocFile file: searchResponse(searchExec(pq),pq)) {
+
             if (Arrays.asList(fileTypes).contains(file.getFileType())) {
                 list.add(file);
             }
         }
-
         DocFile[] result = new DocFile[list.size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i);
@@ -276,24 +276,6 @@ public class IndexHandler {
     }
 
     /**
-     * Accept a list of queries and filters and return a list of DocFile that matches
-     *
-     * @param queries        a list of String queries
-     * @param filters        a list of String filters (list of Contants.INDEX_KEY*)
-     * @param expandedSearch if true filters will be used as additions to the search results, otherwise filters will
-     *                       further narrow down a search
-     * @return a list of DocFile that matches all queries and filters
-     */
-    public DocFile[] search (String[] queries, String[] filters, boolean expandedSearch) throws ParseException, IOException {
-
-        // check if there are records in the index (write.lock is always present in the directory)
-        if (indexDir.listAll().length < 2) return new DocFile[0];
-
-        if (expandedSearch) return search(queries, filters, BooleanClause.Occur.SHOULD);
-        else return search(queries, filters, BooleanClause.Occur.MUST);
-    }
-
-    /**
      * Given a query, permission level and filetypes, return a list of matching DocFiles
      *
      * @param query a string of words
@@ -310,6 +292,11 @@ public class IndexHandler {
         // check content
         BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
         QueryParser parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
+        parser.setDefaultOperator(QueryParser.Operator.AND);
+        parser.setAllowLeadingWildcard(true);
+        queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
+        // to match single word querries on top of all the phrases
+        parser = new QueryParser(Constants.INDEX_KEY_CONTENT, analyzer);
         parser.setAllowLeadingWildcard(true);
         queryBuilder.add(parser.parse(query), BooleanClause.Occur.SHOULD);
         // check title
@@ -323,8 +310,8 @@ public class IndexHandler {
         // add to the master builder
         masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.MUST);
         if (permissionLevel > Constants.PERMISSION_ALL)
-                masterQueryBuilder.add(IntPoint.newExactQuery(Constants.INDEX_KEY_PERMISSION, permissionLevel),
-                        BooleanClause.Occur.MUST);
+            masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_PERMISSION, analyzer).parse(Integer.toString(permissionLevel)),
+                    BooleanClause.Occur.MUST);
 
         String filterString = fileTypes[0];
         for (String fileType : fileTypes) {
@@ -392,7 +379,7 @@ public class IndexHandler {
         try {
             IndexReader reader = DirectoryReader.open(indexDir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage); //search(query, docs);
+            TopDocs docs = searcher.search(query, hitsPerPage, new Sort(SortField.FIELD_SCORE)); //search(query, docs);
             hits = docs.scoreDocs;
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -61,196 +65,192 @@ public class IndexHandlerSearchTest {
         
         
     }
-    
-    /**
-     * Test method to test out different types of content search.
-     * 
-     * @throws ParseException
-     * @throws IOException 
-     */
+
+    //Test searching across all doc types with no permission set
+    //Test correct number of results returned and in right order
     @Test
     public void testContentSearch() throws ParseException, IOException {
-                
-        //Test for content found in only one file
-        String[] query = {"run"};
-        String[] filter = {"Content"};
-        DocFile [] actualFiles = index.search(query, filter, false);
-        DocFile [] expectedFiles = {docFiles.get(DOCX2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test empty search
-        query = new String[] {""};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test for content found in multiple files
-        //Also checks case sensitivity
-        //Ensure correct order
-        query = new String[] {"baseball"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[]{docFiles.get(HTML2), docFiles.get(HTML1)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test for content across multiple different file types
-        //Ensure correct order
-        query = new String[] {"water"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {docFiles.get(PDF1),docFiles.get(TXT1)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test for content that doesn't exist in any files
-        query = new String[] {"supercalifragulistic"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Check to make sure HTML files are stripped properly
-        query = new String[] {"html", "h1", "a href"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Check behaviour when multiple queries searched at once
-        query = new String[] {"dog", "cats"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {docFiles.get(TXT1),docFiles.get(PDF2),docFiles.get(HTML1)};
-        assertArrayEquals(expectedFiles,actualFiles);
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("baseball", 0, filters);
+    	
+    	assertEquals(3,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	
     }
     
-    /**
-     * Testing the title search functionality.
-     * @throws ParseException 
-     * 
-     */
     @Test
-    public void testTypeSearch() throws ParseException, IOException {
-        //Test searching an invalid type
-        String[] query = {".hello"};
-        String[] filter = {"Type"};
-        DocFile [] actualFiles = index.search(query, filter, true);
-        DocFile [] expectedFiles = {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test searching on txt
-        query = new String[]{".txt"};
-        filter = new String[]{"Type"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[]{docFiles.get(TXT1),docFiles.get(TXT2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test searching on html & pdf
-        query = new String[]{".html", ".pdf"};
-        filter = new String[]{"Type"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[]{docFiles.get(HTML1),docFiles.get(HTML2),docFiles.get(PDF1),docFiles.get(PDF2)};
-        System.out.println("\n\n\n\n\n\n\n");
-        System.out.println(Arrays.toString(actualFiles));
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Test searching on docx
-        query = new String[]{".docx"};
-        filter = new String[]{"Type"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[]{docFiles.get(DOCX1),docFiles.get(DOCX2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
+    public void testContentSearchOrder() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("baseball", 0, filters);
+    	
+    	assertEquals(3,results.length);
+    	assertEquals(docFiles.get(HTML2),results[0]);
+    	assertEquals(docFiles.get(HTML1),results[1]);
+    	assertEquals(docFiles.get(TXT2),results[2]);
+    	
     }
     
-    
-    /**
-     * Test method to test searching across multiple filters at once.
-     * @throws ParseException 
-     */
+    //Confirm that search checks titles
     @Test
-    public void testMultipleFilterSearch() throws ParseException, IOException {
-        
-        //Look for instances of baseball being in Content and Title fields
-        String[] query = {"baseball"};
-        String[] filter = {"Content", "Title"};
-        DocFile [] actualFiles = index.search(query, filter, false);
-        DocFile [] expectedFiles = {docFiles.get(HTML2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Look for Elephants in both body and title (only happens in body)
-        query = new String[] {"elephants"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Look for Spot in both body and title (only happens in title)
-        query = new String[] {"lost"};
-        actualFiles = index.search(query, filter, false);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
+    public void testTitleSearch() throws ParseException, IOException{
+    	
+    	String [] filters = {".docx"};
+    	DocFile[] results = index.search("running", 0, filters);
+    	
+    	assertEquals(1,results.length);
+    	assertEquals(docFiles.get(DOCX2),results[0]);
+    	
     }
     
-    /**
-     * Test method to test expanded search.
-     * @throws ParseException 
-     * 
-     */
     @Test
-    public void testExpandedSearch() throws ParseException, IOException {
-        //Look for instances of baseball being in Content or Title fields
-        String[] query = {"baseball"};
-        String[] filter = {"Content", "Title"};
-        DocFile [] actualFiles = index.search(query, filter, true);
-        DocFile [] expectedFiles = {docFiles.get(HTML2),docFiles.get(HTML1),docFiles.get(TXT2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Look for instances of baseball and monday being in Content or Title fields
-        query = new String[] {"baseball","monday"};
-        filter = new String[] {"Content", "Title"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[] {docFiles.get(HTML2),docFiles.get(PDF1),docFiles.get(HTML1),docFiles.get(TXT2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Check case when Query is in Two of the three filters
-        query = new String[] {"mark"};
-        filter = new String[] {"Content", "Title", "Owner"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[] {docFiles.get(HTML1),docFiles.get(PDF1)};
-        assertArrayEquals(expectedFiles,actualFiles);
-
-        //Check case when query is not in either filter
-        query = new String[] {"alice"};
-        filter = new String[] {"Content", "Title"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[] {};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
-        //Check case when query is in the final filter
-        query = new String[] {"alice"};
-        filter = new String[] {"Content", "Title", "Owner"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[] {docFiles.get(DOCX1)};
-        assertArrayEquals(expectedFiles,actualFiles);
+    public void testNoResults() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("supercalifragulistic", 0, filters);
+    	
+    	assertEquals(0, results.length);
     }
     
-    /**
-     * Test method to test expanded search.
-     * @throws ParseException 
-     * 
-     */
+    //Test searching across all doc types with multiple word query
     @Test
-    public void testPathSearch() throws ParseException, IOException {
-        
-        String[] query = {"*html2.html"};
-        String[] filter = {"Path"};
-        DocFile [] actualFiles = index.search(query, filter, true);
-        DocFile [] expectedFiles = {docFiles.get(HTML2)};
-        assertArrayEquals(expectedFiles,actualFiles);
-
-        query = new String[]{"*html2.html", "*pdf1.pdf"};
-        filter = new String[]{"Path"};
-        actualFiles = index.search(query, filter, true);
-        expectedFiles = new DocFile[]{docFiles.get(HTML2),docFiles.get(PDF1)};
-        assertArrayEquals(expectedFiles,actualFiles);
-        
+    public void testMultipleWordQuery() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("dog runs", 0, filters);
+    	
+    	assertEquals(4, results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF2)));
+    	
     }
     
+    //Test ordering of top search results
+    @Test
+    public void testSearchOrdering() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("dog runs", 0, filters);
+    	
+    	assertEquals(4, results.length);
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	assertEquals(docFiles.get(PDF2),results[1]);
+    	
+    }
+    
+    //Test that changing the filter type changes the results
+    //to only include the specified document type
+    @Test
+    public void testTypeFilter () throws ParseException, IOException {
+    	
+    	String [] filters = {".txt"};
+    	DocFile[] results = index.search("water", 0, filters);
+    	
+    	assertEquals(1, results.length);
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	
+    	String[] filters2 = {".pdf"};
+    	results = index.search("water", 0, filters2);
+    	
+    	assertEquals(1, results.length);
+    	assertEquals(docFiles.get(PDF1),results[0]);
+    	
+    	String[] filters3 = {".docx"};
+    	results = index.search("water", 0, filters3);
+    	
+    	assertEquals(0, results.length);
+    	
+    }
+    
+    //Test multiple filters active at once
+    @Test
+    public void testMultipleFilters () throws ParseException, IOException {
+    	
+    	String[] filters = {".docx", ".pdf"};
+    	DocFile[] results = index.search("shakespeare", 0, filters);
+    	
+    	assertEquals(2, results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(DOCX1)));   	
+    	
+    }
+    
+    //Test a search on all files with a certain level of permission
+    @Test
+    public void testPermissionSearch() throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.search("*", Constants.PERMISSION_INSTRUCTOR, filters);
+    	
+    	assertEquals(3, results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(DOCX1)));
+    	
+    	results = index.search("*", Constants.PERMISSION_STUDENT, filters);
+    	assertEquals(2, results.length);
+    }
+    
+    //Test searching for a valid search ID
+    @Test
+    public void testSearchById () throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.searchById("test", filters);
+    	
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	
+    	results = index.searchById("testpdf", filters);
+    	assertEquals(docFiles.get(PDF1),results[0]);   	  	
+    }
+    
+    //Test searching for an invalid search ID
+    @Test
+    public void testInvalidId () throws ParseException, IOException {
+    	
+    	String[] filters = {".docx",".pdf",".html",".txt"};
+    	DocFile[] results = index.searchById("test123", filters);
+    	
+    	assertEquals(0,results.length);
+    	
+    }
+    
+    //Test searching by User
+    @Test
+    public void testSearchByUser() throws ParseException, IOException {
+    	
+    	String[] filters = {"docx","pdf","html","txt"};
+    	DocFile[] results = index.searchByUser("Mark", filters);
+    	
+    	assertEquals(2,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF1)));
+    	
+    	String[] filters2 = {"html"};
+    	results = index.searchByUser("Mark", filters2);
+    	
+    	assertEquals(1,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	
+    }
+    
+    //Test searching a user whos name is also in content
+    //Only the result with the username should be returned
+    @Test
+    public void testUserSearchInContent() throws ParseException, IOException {
+    	
+    	String[] filters = {"docx","pdf","html","txt"};
+    	DocFile[] results = index.searchByUser("Naomi", filters);
+    	
+    	assertEquals(1,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML2)));
+    	
+    }
     
     /**
      * Remove the txt, html, docx and pdf files created
@@ -275,27 +275,37 @@ public class IndexHandlerSearchTest {
         writer.write("Cats don't like water.\n");
         writer.write("Elephants remember everything.");
         writer.close();
-        docFiles.add(new DocFile("text1.txt","Dog Story","Janice","text1.txt",true));
+        DocFile txt1 = new DocFile("text1.txt","Dog Story","Janice","text1.txt",true);
+        txt1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        txt1.setId("test");
+        docFiles.add(txt1);
         
         writer = new BufferedWriter(new FileWriter("text2.txt"));
         writer.write("When my computer runs, it makes a loud noise.\n");
         writer.write("It runs all day and all night, I should turn it off.");
         writer.close();
-        docFiles.add(new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false));
+        DocFile txt2 = new DocFile("text2.txt","Baseball Story","Adam","text2.txt",false);
+        txt2.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        txt2.setId("1");
+        docFiles.add(txt2);
         
     }
     
     private static void generateHtmlFiles() throws IOException {
         
         BufferedWriter writer = new BufferedWriter(new FileWriter("html1.html"));
-        writer.write("<html>\n<head>Buy My New CD</head>\n<body>");
+        writer.write("<html>\n<head>Buy My New CD Shakespeare</head>\n<body>");
         writer.write("<h1>I am a great singer who doesn't like baseball but has a dog.</h1>");
         writer.write("<a href=\"https://www.catchy.com\">See me on stage</a>");
         writer.write("<img src=\"sing.gif\" alt=\"Sing\" height=\"50\" width=\"50\">");
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html1.html","Mark CD","mark","html1.html",false));
+
+        DocFile html1 = new DocFile("html1.html","Mark CD","Mark","html1.html",false);
+        html1.setPermissions(Constants.PERMISSION_STUDENT);
+        html1.setId("2");
+        docFiles.add(html1);
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
@@ -304,7 +314,9 @@ public class IndexHandlerSearchTest {
         writer.write("<p>We are going to win the championship.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html2.html","My Baseball Team","Naomi","html2.html",true));
+        DocFile html2 = new DocFile("html2.html","My Baseball Team","Naomi","html2.html",true); 
+        html2.setId("3");
+        docFiles.add(html2);
         
     }
     
@@ -326,14 +338,18 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("Come to the water trade show!");
+        contentStream.showText("Come to the water trade show! Naomi will be there.");
         contentStream.showText("Monday to Friday from 9 AM to 6 PM. Free water.");
         contentStream.endText();
         contentStream.close();
          
         pdf1.save("pdf1.pdf");
         pdf1.close();
-        docFiles.add(new DocFile("pdf1.pdf","The Trade Show","mark","pdf1.pdf",true));
+
+        DocFile pf1 = new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true);
+        pf1.setPermissions(Constants.PERMISSION_STUDENT);
+        pf1.setId("testpdf");
+        docFiles.add(pf1);
         
         PDDocument pdf2 = new PDDocument();
         PDPage p2 = new PDPage();
@@ -343,15 +359,17 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("My Dog Spot");
-        contentStream.showText("Here is my dog spot. He is a missing dog.");
-        contentStream.showText("Call my phone number if you find him. I miss my dog.");
+        contentStream.showText("My Dog");
+        contentStream.showText("Here is my dog Shakespeare. He is a missing dog.");
+        contentStream.showText("Call my phone number runs if you find him. I miss my dog.");
         contentStream.endText();
         contentStream.close();
          
         pdf2.save("pdf2.pdf");
         pdf2.close();
-        docFiles.add(new DocFile("pdf2.pdf","Spot Lost","Jane","pdf2.pdf",true));
+        DocFile pd2 = new DocFile("pdf2.pdf","Shakes Lost","Jane","pdf2.pdf",true);
+        pd2.setId("10");
+        docFiles.add(pd2);
         
     }
     
@@ -378,7 +396,11 @@ public class IndexHandlerSearchTest {
         
         docx1.write(stream);
         stream.close();
-        docFiles.add(new DocFile("docx1.docx","Shakespeare's Books","alice","docx1.docx",true));
+
+        DocFile doc1 = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);
+        doc1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
+        doc1.setId("ok");
+        docFiles.add(doc1);
         
         XWPFDocument docx2 = new XWPFDocument();
         loadFile = new File("docx2.docx");
@@ -394,7 +416,9 @@ public class IndexHandlerSearchTest {
         
         docx2.write(stream);
         stream.close();
-        docFiles.add(new DocFile("docx2.docx","My Running Story","Adam","docx2.docx",true));
+        DocFile doc2 = new DocFile("docx2.docx","My Running Story","Adam","docx2.docx",true); 
+        doc2.setId("hello");
+        docFiles.add(doc2);
     }
     
     private static void removeFiles() {
