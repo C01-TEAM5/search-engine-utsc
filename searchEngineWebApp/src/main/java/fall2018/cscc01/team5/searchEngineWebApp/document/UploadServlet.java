@@ -93,7 +93,7 @@ public class UploadServlet extends HttpServlet {
                   
                   // form field check depends on last item and regex
                   if (lastItem.isFormField()) {
-                    if (Pattern.matches("[A-Za-z]{3}.[0-9]{2}", lastItem.getString())) {
+                    if (Pattern.matches("[A-Za-z]{3}.[0-9]{2}[hHyY][135]", lastItem.getString())) {
                       courseCode = lastItem.getString();
                     } else {
                       courseCode = lastItem2.getString();
@@ -124,7 +124,7 @@ public class UploadServlet extends HttpServlet {
                         //Only upload the file if it does not exist already
                         if (!targetFile.isFile()) {
                             InputStream initialStream = item.getInputStream();
-
+                            
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
 
@@ -152,6 +152,7 @@ public class UploadServlet extends HttpServlet {
                             else {
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), "", initialStream);
                                 docFile.setId(fileId);
+                                docFile.setTag(tags);
                             }
                             docFile.setPath(FileManager.download(new ObjectId(docFile.getId()), fileName));
                             IndexHandler indexHandler = IndexHandler.getInstance();
