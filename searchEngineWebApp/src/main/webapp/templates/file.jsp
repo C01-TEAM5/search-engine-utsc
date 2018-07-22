@@ -3,8 +3,14 @@
 <!DOCTYPE html>
 <html>
 <body>
+    <object data="../${path}"
+        type="text/html" width="100%" height="800px">
+        <p><b>Example fallback content</b>
+        : This browser does not support docxs. Please download the
+        docx to view it: <a href="../${path}">Download</a>.</p>
+    </object>
 
-    <c:choose>
+    <%-- <c:choose>
         <c:when test = "${type=='pdf'} ">
             <object data="../${path}"
                 type="application/pdf" width="100%" height="800px">
@@ -31,7 +37,7 @@
                 docx to view it: <a href="../${path}">Download</a>.</p>
             </object>
         </c:when>
-    </c:choose>
+    </c:choose> --%>
 
 </body>
 </html>
