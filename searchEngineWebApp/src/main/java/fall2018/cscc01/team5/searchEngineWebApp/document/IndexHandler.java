@@ -4,6 +4,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -222,24 +223,19 @@ public class IndexHandler {
      */
     public DocFile[] searchByUser(String username, String[] fileTypes) throws ParseException, IOException {
         if (indexDir.listAll().length < 2) return new DocFile[0];
-        // create a master query builder
-        BooleanQuery.Builder masterQueryBuilder = new BooleanQuery.Builder();
-        // check content
-        BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-        Query parsed = new QueryParser(Constants.INDEX_KEY_OWNER, analyzer).parse(username);
-        queryBuilder.add(parsed, BooleanClause.Occur.MUST);
+        PhraseQuery  pq = new PhraseQuery (Constants.INDEX_KEY_OWNER,username);
 
-        String filterString = fileTypes[0];
-        for (String fileType : fileTypes) {
-            filterString += " OR " + fileType;
+        ArrayList<DocFile> list = new ArrayList<DocFile>();
+        for (DocFile file: searchResponse(searchExec(pq),pq)) {
+            if (Arrays.asList(fileTypes).contains(file.getFileType())) {
+                list.add(file);
+            }
         }
-        masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_TYPE, analyzer).parse(filterString),
-                BooleanClause.Occur.MUST);
-
-        // build the masterQuery
-        BooleanQuery masterQuery = masterQueryBuilder.build();
-
-        return searchResponse(searchExec(masterQuery),masterQuery);
+        DocFile[] result = new DocFile[list.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = list.get(i);
+        }
+        return result;
     }
 
     /**
