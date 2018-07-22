@@ -224,15 +224,15 @@ public class IndexHandlerSearchTest {
     @Test
     public void testSearchByUser() throws ParseException, IOException {
     	
-    	String[] filters = {".docx",".pdf",".html",".txt"};
-    	DocFile[] results = index.searchByUser("Mark", filters);
+    	String[] filters = {"docx","pdf","html","txt"};
+    	DocFile[] results = index.searchByUser("mark", filters);
     	
     	assertEquals(2,results.length);
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF1)));
     	
-    	String[] filters2 = {".html"};
-    	results = index.searchByUser("Mark", filters2);
+    	String[] filters2 = {"html"};
+    	results = index.searchByUser("mark", filters2);
     	
     	assertEquals(1,results.length);
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
