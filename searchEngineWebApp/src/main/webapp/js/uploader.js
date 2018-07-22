@@ -14,4 +14,13 @@
 
     parseURL();
 
+    $("#upload-files-button").click(function() {
+        swal({
+            title: "Processing!",
+            text: "Please wait.",
+            icon: "../media/icons/loading.gif",
+            buttons: false
+        });
+    });
+
 })();

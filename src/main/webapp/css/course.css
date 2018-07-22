@@ -1,0 +1,230 @@
+.course-content {
+    height: 100%;
+    width: 100%;
+    background: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+    height: 50px !important;
+}
+
+.ui.header.segment {
+    width: auto !important;
+    height: auto !important;
+    min-height: 80px !important;
+    padding: 20px !important;
+    margin-bottom: 0px !important;
+}
+
+.icon-bar {
+    height: 100%;
+    width: 50px;
+    background: #222225;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0px;
+}
+
+.content-info {
+    width: 95%;
+    height: 95%;
+    background:none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.bar-item {
+    transition-duration: 0.15s;
+    width: 50px;
+    height: 50px;
+    border-bottom: 1px solid #aaa;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.bar-item:hover {
+    cursor: pointer;
+    background:#444445;
+}
+
+.bar-item .icon {
+    color: white !important;
+    font-size: 20pt !important;
+}
+
+.bar-item.filler {
+    background: #aaa;
+    border: none;
+    height: 1px;
+}
+
+.bar-item.filler:hover {
+    cursor: default;
+    background: #484165;
+}
+
+.bar-active {
+    background: #121e61;
+}
+
+.bar-active:hover {
+    cursor: pointer;
+    background: #39458a;
+}
+
+.content-info-item {
+    width: 98%;
+    height: 80%;
+    max-height: 80%;
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.content-info-segment .ui.header.segment {
+    width: fit-content !important;
+    height: 68px !important;
+    min-height: auto !important;
+}
+.content-info-segment {
+    width: 49%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+
+}
+
+.content-info-segment .ui.raised.segment {
+    width: 100% !important;
+    height: 48% !important;
+}
+
+.custom-list .ui.raised.segment:hover {
+    cursor: pointer;
+    background: rgb(224, 229, 255) !important;
+}
+
+.custom-list {
+    width: 100% !important;
+    max-height: 80% !important;
+    overflow-y: auto !important;
+    padding-bottom: 10px !important;
+    padding-top: 10px !important;
+}
+
+.custom-list .content a {
+    margin-right: 50px;
+}
+
+.custom-list .item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.custom-list .content {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: 25px !important;
+}
+
+.custom-list button {
+    margin: 0 !important;
+    padding: 10px !important;
+    width: 100px !important;
+    border: 1px solid #999 !important;
+}
+
+.content-info-item-active {
+    display: flex;
+}
+
+.course-content span {
+    padding-left: 5px;
+}
+
+#tas-list {
+    display: block;
+}
+
+#course-students-info .ui.raised.segment, #course-files-info .ui.raised.segment {
+    height: 100% !important;
+}
+
+#course-config-info .ui.raised.segment, #course-config-info .ui.raised.segment {
+    overflow: hidden !important;
+    overflow-y: auto !important;
+}
+
+#course-config-info .course-config-segment{
+    width: auto !important;
+    height: 85% !important;
+    max-height: 90% !important;
+    padding-bottom: 80px !important;
+    margin-bottom: 80px !important;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+}
+
+#course-config-info .ui.raised.segment{
+    width: auto !important;
+    height: auto !important;
+}
+
+#course-config-info .ui.stacked.segment{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#course-save-info {
+    margin-bottom: 20px;
+}
+
+.ui.action.input {
+    margin-top: 10px !important;
+    width: 500px !important;
+    height: 50px !important;
+}
+
+#course-config-info .ui.stacked.segment .ui.action.input{
+    width: 98% !important;
+    height: auto !important;
+    margin: 10px !important;
+}
+
+.bar-item .label {
+    transition-duration: 0.5s;
+    left: 50px;
+    display: none;
+    filter: invert(100%);
+    color: black;
+    z-index: 100;
+}
+
+.bar-item i {
+    position: fixed;
+}
+
+.bar-item:hover .label {
+    position: fixed;
+    display: inline;
+}

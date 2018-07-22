@@ -7,6 +7,7 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
+        <link rel="stylesheet" href="./css/reset.css" type="text/css">
         <link rel="stylesheet" href="../css/index.css" type="text/css">
         <link rel= "stylesheet" href= "../css/login.css" type="text/css">
         <link rel= "stylesheet" href= "../css/course.css" type="text/css">

@@ -258,7 +258,7 @@ public class IndexHandlerSearchTest {
      * 
      */
     @AfterClass
-    public static void cleanUp() {
+    public static void cleanUp() throws ParseException {
         for (DocFile file: docFiles) {
             index.removeDoc(file);
         }

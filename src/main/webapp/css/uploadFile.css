@@ -1,0 +1,50 @@
+.uploadFile {
+    background-color: #FFFFFF;
+    padding: 3% 5%;
+    position:absolute;
+    top:30%;
+}
+
+.uploadFile span {
+    color: #11248a;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.uploadSection {
+    padding: 1% 0%;
+}
+
+.uploadFilePath {
+    padding: 1% 0%;
+}
+
+.FN {
+    display: block;
+    padding-bottom: 1%;
+}
+
+.FD {
+    display: block;
+    padding-bottom: 1%;
+}
+
+.uploadInput input {
+    width: 79%;
+    padding: 1%;
+    border: 1px solid #ccc;
+}
+
+.uploadInput textarea {
+    width: 79%;
+    height: 80px;
+    padding: 1%;
+    resize: both;
+    border: 1px solid #ccc;
+}
+
+
+input {
+    width: 500px;
+    height: 25px;
+}
