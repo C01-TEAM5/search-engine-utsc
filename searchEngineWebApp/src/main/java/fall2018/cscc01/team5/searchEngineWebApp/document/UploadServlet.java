@@ -93,12 +93,15 @@ public class UploadServlet extends HttpServlet {
                   
                   // form field check depends on last item and regex
                   if (lastItem.isFormField()) {
+                    courseCode = lastItem.getString();
+                    /*
                     if (Pattern.matches("[A-Za-z]{3}.[0-9]{2}[hHyY][135]", lastItem.getString())) {
                       courseCode = lastItem.getString();
                     } else {
                       courseCode = lastItem2.getString();
                       tags = Arrays.asList(lastItem.getString().split(","));
                     }
+                    */
                   }
                 }
 
