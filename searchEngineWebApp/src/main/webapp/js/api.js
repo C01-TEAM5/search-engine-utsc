@@ -102,7 +102,7 @@ var api = (function(){
         send("POST", "/profile?deleteFile=true", {"fileId":id}, callback);
     }
 
-    module.buildQuery = function buildQueryString(query, filters) {
+    module.buildQuery = function buildQueryString(query, filters, perm) {
 
         var query = query.replace(" ","+");
 
