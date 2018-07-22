@@ -8,6 +8,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.bson.types.ObjectId;
 
@@ -20,8 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
@@ -65,28 +68,20 @@ public class FileServlet extends HttpServlet {
             return;
         }
         
-        try {
-			DocFile[] file = IndexHandler.getInstance().searchById(id.toLowerCase());
-			req.setAttribute("test", file[0]);
-			
+        DocFile[] file;
+		try {
+			file = IndexHandler.getInstance().searchById(id.toLowerCase());
+			req.setAttribute("type", file[0].getFileType());
+
 			String path = FileManager.download(new ObjectId(file[0].getId()), file[0].getFilename());
-			req.setAttribute("path", path);
+			req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
 			
-			FileInputStream stream = new FileInputStream(new File(path));
-//			byte fileContent[] = new byte[(int) file.length];
-//			stream.read(fileContent);
-//			String content = new String(fileContent);
-			int data; StringBuilder builder = new StringBuilder();
-			while ((data=stream.read()) != -1) {
-				builder.append((char) data);
-			}		
-			req.setAttribute("content", builder.toString());
-						
-		} catch (ParseException e1) {
+
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
-		     
+		
         RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");   //dispatch request to jsp 
         view.forward(req, resp);   //forward request to another servlet
     }

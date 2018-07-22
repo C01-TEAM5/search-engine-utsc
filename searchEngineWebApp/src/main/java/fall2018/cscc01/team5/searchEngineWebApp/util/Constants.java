@@ -9,6 +9,7 @@ public class Constants {
     public static final String FILETYPE_PDF = "pdf";
     public static final String FILETYPE_TXT = "txt";
     
+    public static final String FILE_PUBLIC_BASE_PATH = "src" + File.separator + "main" + File.separator + "webapp" + File.separator;
     public static final String FILE_PUBLIC_PATH = "tmp" + File.separator;
 
     public static final String INDEX_KEY_CONTENT = "Content";

@@ -73,10 +73,10 @@ public class FileManager {
      */
     public static String download(ObjectId id, String fileName) throws IOException {
         
-        File tmpPath = new File(Constants.FILE_PUBLIC_PATH);
+        File tmpPath = new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH);
         if (!tmpPath.exists()) tmpPath.mkdirs();
         
-        String path = Constants.FILE_PUBLIC_PATH + id.toHexString() + "-" + fileName;
+        String path = Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH + id.toHexString() + "-" + fileName;
         
         FileOutputStream stream = new FileOutputStream(path);
         
@@ -85,7 +85,7 @@ public class FileManager {
 
         return path;
     }
-
+    
     /**
      * Runs the given indexer with all the files in the database.
      *
@@ -115,8 +115,8 @@ public class FileManager {
                 ih.addDoc(toAdd);
             }
         });
-        if (new File(Constants.FILE_PUBLIC_PATH).exists())
-            FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_PATH));
+        if (new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH).exists())
+            FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH));
     }
 
 }
