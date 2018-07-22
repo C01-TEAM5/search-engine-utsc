@@ -307,8 +307,8 @@ public class IndexHandler {
         // add to the master builder
         masterQueryBuilder.add(queryBuilder.build(), BooleanClause.Occur.MUST);
         if (permissionLevel > Constants.PERMISSION_ALL)
-                masterQueryBuilder.add(IntPoint.newExactQuery(Constants.INDEX_KEY_PERMISSION, permissionLevel),
-                        BooleanClause.Occur.MUST);
+            masterQueryBuilder.add(new QueryParser(Constants.INDEX_KEY_PERMISSION, analyzer).parse(Integer.toString(permissionLevel)),
+                    BooleanClause.Occur.MUST);
 
         String filterString = fileTypes[0];
         for (String fileType : fileTypes) {
