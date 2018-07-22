@@ -295,7 +295,7 @@ public class IndexHandlerSearchTest {
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-        docFiles.add(new DocFile("html1.html","Mark CD","Mark","html1.html",false));
+        docFiles.add(new DocFile("html1.html","Mark CD","mark","html1.html",false));
         
         writer = new BufferedWriter(new FileWriter("html2.html"));
         writer.write("<html>\n<head>My Baseball Team</head>\n<body>");
@@ -333,7 +333,7 @@ public class IndexHandlerSearchTest {
          
         pdf1.save("pdf1.pdf");
         pdf1.close();
-        docFiles.add(new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true));
+        docFiles.add(new DocFile("pdf1.pdf","The Trade Show","mark","pdf1.pdf",true));
         
         PDDocument pdf2 = new PDDocument();
         PDPage p2 = new PDPage();
@@ -378,7 +378,7 @@ public class IndexHandlerSearchTest {
         
         docx1.write(stream);
         stream.close();
-        docFiles.add(new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true));
+        docFiles.add(new DocFile("docx1.docx","Shakespeare's Books","alice","docx1.docx",true));
         
         XWPFDocument docx2 = new XWPFDocument();
         loadFile = new File("docx2.docx");
