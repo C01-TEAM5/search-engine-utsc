@@ -155,8 +155,20 @@ public class DocFile {
       this.tags = tags;
     }
     
-    
-    
+    /**
+     * flatten a list of tags to string
+     * @return a string of all the tags
+     */
+    public String flattenTags() {
+      String result = "";
+      if (tags.size() > 0) {
+        for (String tag : tags) {
+          result = result + tag + ", ";
+        }
+        result = result.substring(0, result.length() - 2);
+      }
+      return result;
+    }
     
     /**
      * Check whether an object is equivalent to this DocFile
