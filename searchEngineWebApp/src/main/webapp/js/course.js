@@ -70,7 +70,7 @@
                 else {
                     swal.close();
                     swal("Success!", "Successfully updated course.", "sucess");
-                    location.reload();
+                    window.location.replace("/course?id=" + $("#newCode").val());
                 }
             }
         );

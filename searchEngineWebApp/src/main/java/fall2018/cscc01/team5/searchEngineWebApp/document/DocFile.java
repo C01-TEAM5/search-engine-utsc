@@ -18,6 +18,7 @@ public class DocFile {
     private String title; //The title of the Document
     private String fileType;
     private int permission;
+    private String contextString; //String set by the highlighter for a given search
 
     /**
      * A DocFile is an object representing a file in the system. DocFiles contain a filename, is uploaded by a user, can
@@ -211,5 +212,23 @@ public class DocFile {
                 "]";
 
         return result;
+    }
+    
+    /** Return the given context String for a Docfile.
+     * 
+     * 
+     * @return String contextString
+     */
+    public String getContextString() {
+        return contextString;
+    }
+
+    /**
+     *  Set the context String for a Docile to provide context on searches.
+     * 
+     * @param contextString
+     */
+    public void setContextString(String contextString) {
+        this.contextString = contextString;
     }
 }
