@@ -231,6 +231,21 @@ public class IndexHandlerSearchTest {
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
     	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF1)));
     	
+    	String[] filters2 = {".html"};
+    	results = index.searchByUser("Mark", filters);
+    	
+    	assertEquals(1,results.length);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	
+    }
+    
+    //Test searching a user whos name is also in content
+    //Only the result with the username should be returned
+    @Test
+    public void testUserSearchInContent() throws ParseException, IOException {
+    	
+    	
+    	
     }
     
     /**
@@ -318,7 +333,7 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("Come to the water trade show!");
+        contentStream.showText("Come to the water trade show! Naomi will be there.");
         contentStream.showText("Monday to Friday from 9 AM to 6 PM. Free water.");
         contentStream.endText();
         contentStream.close();
