@@ -1,6 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,6 +64,66 @@ public class IndexHandlerSearchTest {
         
     }
 
+    //Test searching across all doc types with no permission set
+    //Test correct number of results returned and in right order
+    @Test
+    public void testContentSearch() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("baseball", 0, filters);
+    	
+    	assertEquals(3,results.length);
+    	assertEquals(docFiles.get(HTML2),results[0]);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	
+    }
+    
+    //Test searching across all doc types with multiple word query
+    @Test
+    public void testMultipleWordQuery() throws ParseException, IOException {
+    	
+    	String [] filters = {".txt",".pdf",".html",".docx"};
+    	DocFile[] results = index.search("dog runs", 0, filters);
+    	
+    	assertEquals(4, results.length);
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(TXT2)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
+    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF2)));
+    	
+    }
+    
+    //Test that changing the filter type changes the results
+    //to only include the specified document type
+    @Test
+    public void testTypeFilter () throws ParseException, IOException {
+    	
+    	String [] filters = {".txt"};
+    	DocFile[] results = index.search("water", 0, filters);
+    	
+    	assertEquals(1, results.length);
+    	assertEquals(docFiles.get(TXT1),results[0]);
+    	
+    	String[] filters2 = {".pdf"};
+    	results = index.search("water", 0, filters2);
+    	
+    	assertEquals(1, results.length);
+    	assertEquals(docFiles.get(PDF1),results[0]);
+    	
+    	String[] filters3 = {".docx"};
+    	results = index.search("water", 0, filters3);
+    	
+    	assertEquals(0, results.length);
+    	
+    }
+    
+    //Test multiple filters active at once
+    @Test
+    public void testMultipleFilters () throws ParseException, IOException {
+    	
+    }
+    
     /**
      * Remove the txt, html, docx and pdf files created
      * for testing.
