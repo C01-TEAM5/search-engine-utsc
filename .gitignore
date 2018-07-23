@@ -8,5 +8,9 @@ bin/
 TestingClass.java
 index/
 file-upload*/
+.metadata/
+.recommenders/
+*src/main/webapp/tmp/
 tmp/
 tmp/*
+

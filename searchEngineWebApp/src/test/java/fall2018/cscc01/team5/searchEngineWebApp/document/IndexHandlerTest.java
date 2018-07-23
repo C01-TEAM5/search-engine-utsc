@@ -163,7 +163,7 @@ public class IndexHandlerTest {
 		assertEquals(expectedSize, search("*").size());
 	}
     @Test
-    public void testIndexHandlerUpdateTxt() throws ParseException {
+    public void testIndexHandlerUpdateTxt() throws ParseException, IOException {
         indexHandler.addDoc(txtFile);
         List<String> searchBefore = search("*");
 
@@ -195,7 +195,7 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateHtml() throws ParseException {
+    public void testIndexHandlerUpdateHtml() throws ParseException, IOException {
         indexHandler.addDoc(htmlFile);
         List<String> searchBefore = search("*");
 
@@ -227,7 +227,7 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdatePdf() throws ParseException {
+    public void testIndexHandlerUpdatePdf() throws ParseException, IOException {
         indexHandler.addDoc(pdfFile);
         List<String> searchBefore = search("*");
 
@@ -260,7 +260,7 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateDocx() throws ParseException {
+    public void testIndexHandlerUpdateDocx() throws ParseException, IOException {
         indexHandler.addDoc(docxFile);
         List<String> searchBefore = search("*");
 
@@ -294,7 +294,7 @@ public class IndexHandlerTest {
         assertEquals(expectedSize, search("*").size());
     }
     @Test
-    public void testIndexHandlerUpdateNull() throws ParseException {
+    public void testIndexHandlerUpdateNull() throws ParseException, IOException {
         List<String> searchBefore = search("*");
         indexHandler.updateDoc(null);
         List<String> searchAfter = search("*");
@@ -318,7 +318,7 @@ public class IndexHandlerTest {
 	// boundary cases
 
     @Test
-	public void testIndexHandlerUpdateNonExisting() throws ParseException {
+	public void testIndexHandlerUpdateNonExisting() throws ParseException, IOException {
 	    List<String> searchBefore = search("*");
 
         DocFile txtFile2 = new DocFile("textNonExistingFile.txt","Dog Story 2","Janice","textNonExistingFile.txt",true);

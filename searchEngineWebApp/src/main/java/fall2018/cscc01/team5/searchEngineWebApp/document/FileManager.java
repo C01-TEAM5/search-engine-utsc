@@ -1,10 +1,6 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import com.mongodb.client.model.Filters;
 import org.apache.commons.io.FileUtils;
@@ -74,10 +70,10 @@ public class FileManager {
      */
     public static String download(ObjectId id, String fileName) throws IOException {
         
-        File tmpPath = new File(Constants.FILE_PUBLIC_PATH);
+        File tmpPath = new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH);
         if (!tmpPath.exists()) tmpPath.mkdirs();
         
-        String path = Constants.FILE_PUBLIC_PATH + id.toHexString() + "-" + fileName;
+        String path = Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH + id.toHexString() + "-" + fileName;
         
         FileOutputStream stream = new FileOutputStream(path);
         
@@ -86,7 +82,7 @@ public class FileManager {
 
         return path;
     }
-
+    
     /**
      * Runs the given indexer with all the files in the database.
      *
@@ -116,8 +112,34 @@ public class FileManager {
                 ih.addDoc(toAdd);
             }
         });
-        if (new File(Constants.FILE_PUBLIC_PATH).exists())
-            FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_PATH));
+        cleanTemporaryDownloads();
+    }
+
+    /**
+     * Clean the temporary downloads folder
+     * @throws IOException
+     */
+    public static void cleanTemporaryDownloads() throws IOException {
+        if (new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH).exists())
+            FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH));
+    }
+
+    /**
+     * Update a file with new data
+     *
+     * @param id the id of the current file
+     * @param file the updated file
+     *
+     * @return the new id of the file
+     * @throws IOException
+     */
+    public static String update(String id, DocFile file) throws IOException {
+
+        String path = download(new ObjectId(id), file.getFilename());
+        InputStream is = new FileInputStream(path);
+        deleteFile(id);
+        return upload(file.getFilename(), file.getOwner(), file.isPublic(), file.getTitle(), file.getFileType(), file.getPermission(),
+                file.getCourseCode(), is);
     }
 
     /**
