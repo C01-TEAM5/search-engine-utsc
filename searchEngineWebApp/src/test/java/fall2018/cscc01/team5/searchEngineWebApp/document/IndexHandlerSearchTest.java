@@ -220,37 +220,6 @@ public class IndexHandlerSearchTest {
     	
     }
     
-    //Test searching by User
-    @Test
-    public void testSearchByUser() throws ParseException, IOException {
-    	
-    	String[] filters = {"docx","pdf","html","txt"};
-    	DocFile[] results = index.searchByUser("Mark", filters);
-    	
-    	assertEquals(2,results.length);
-    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
-    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(PDF1)));
-    	
-    	String[] filters2 = {"html"};
-    	results = index.searchByUser("Mark", filters2);
-    	
-    	assertEquals(1,results.length);
-    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML1)));
-    	
-    }
-    
-    //Test searching a user whos name is also in content
-    //Only the result with the username should be returned
-    @Test
-    public void testUserSearchInContent() throws ParseException, IOException {
-    	
-    	String[] filters = {"docx","pdf","html","txt"};
-    	DocFile[] results = index.searchByUser("Naomi", filters);
-    	
-    	assertEquals(1,results.length);
-    	assertEquals(true, Arrays.asList(results).contains(docFiles.get(HTML2)));
-    	
-    }
     
     /**
      * Remove the txt, html, docx and pdf files created
@@ -301,7 +270,6 @@ public class IndexHandlerSearchTest {
         writer.write("<p>I hate baseball.</p>");
         writer.write("</body></html>");
         writer.close();
-
         DocFile html1 = new DocFile("html1.html","Mark CD","Mark","html1.html",false);
         html1.setPermissions(Constants.PERMISSION_STUDENT);
         html1.setId("2");
@@ -338,14 +306,13 @@ public class IndexHandlerSearchTest {
          
         contentStream.setFont(PDType1Font.COURIER, 12);
         contentStream.beginText();
-        contentStream.showText("Come to the water trade show! Naomi will be there.");
+        contentStream.showText("Come to the water trade show!");
         contentStream.showText("Monday to Friday from 9 AM to 6 PM. Free water.");
         contentStream.endText();
         contentStream.close();
          
         pdf1.save("pdf1.pdf");
         pdf1.close();
-
         DocFile pf1 = new DocFile("pdf1.pdf","The Trade Show","Mark","pdf1.pdf",true);
         pf1.setPermissions(Constants.PERMISSION_STUDENT);
         pf1.setId("testpdf");
@@ -396,7 +363,6 @@ public class IndexHandlerSearchTest {
         
         docx1.write(stream);
         stream.close();
-
         DocFile doc1 = new DocFile("docx1.docx","Shakespeare's Books","Alice","docx1.docx",true);
         doc1.setPermissions(Constants.PERMISSION_INSTRUCTOR);
         doc1.setId("ok");

@@ -153,8 +153,8 @@
                 
                 <div class="content-info-item content-info-item-active" id="course-home-info">
                     <div class="content-info-segment">
-                        <div class="ui raised segment course-info-segment" >
-                            <h3 class="ui header course-info-title">Description</h3>
+                        <div class="ui raised segment" >
+                            <h3 class="">Description</h3>
                             <p class="courseDesc">${courseDesc}</p>
                         </div>
                         <h3 class="ui header segment">
