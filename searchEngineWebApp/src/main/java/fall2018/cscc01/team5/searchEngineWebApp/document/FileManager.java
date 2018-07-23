@@ -56,8 +56,25 @@ public class FileManager {
         metad.addUserMetadata(Constants.INDEX_KEY_TYPE, fileType);
         metad.addUserMetadata(Constants.INDEX_KEY_PERMISSION, Integer.toString(permission));
         metad.addUserMetadata(Constants.INDEX_KEY_COURSE, course);
+        switch (fileType) {
+        case "pdf":
+            metad.setContentType("application/pdf");
+            break;
+        case "html":
+            metad.setContentType("application/html");
+            break;
+        case "docx":
+            metad.setContentType("application/text");
+            break;
+        default:
+            metad.setContentType("application/text");
+            break;
+        }
+        metad.setContentDisposition("inline");
         
-        s3client.putObject(new PutObjectRequest(bucketName, id + "." + fileType, fileStream, metad));
+        PutObjectRequest object = new PutObjectRequest(bucketName, id + "." + fileType, fileStream, metad);
+               
+        s3client.putObject(object);
         
         return id;
     }

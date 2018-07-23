@@ -144,6 +144,7 @@ public class UploadServlet extends HttpServlet {
                                         docFile.getPermission(), docFile.getCourseCode(), docFile.getId(), initialStream);
                                 docFile.setId(fileId);
                             }
+                            
                             docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
