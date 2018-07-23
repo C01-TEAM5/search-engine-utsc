@@ -1,32 +1,35 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
-import com.mongodb.client.model.Filters;
 import org.apache.commons.io.FileUtils;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.gridfs.GridFSBucket;
-import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.model.GridFSUploadOptions;
-import com.mongodb.client.gridfs.model.GridFSFile;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class FileManager {
     
-    private static MongoClientURI uri = new MongoClientURI(
-            "mongodb+srv://user01:CWu73Dl13bTLZ5uD@search-engine-oslo6.mongodb.net/");
-
-    private static MongoClient mongoClient = new MongoClient(uri);
-    private static MongoDatabase database = mongoClient.getDatabase("search-engine");
-    private static GridFSBucket grid = GridFSBuckets.create(database, "files");
+    private static AWSCredentials credentials = new BasicAWSCredentials(Constants.AWS_ACCESS_KEY,Constants.AWS_SECRET_KEY);
+    private static AmazonS3 s3client = AmazonS3ClientBuilder
+            .standard()
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withRegion(Regions.US_EAST_1)
+            .build();
+    private static String bucketName = "search-engine-utsc";
     
     /**
      * Upload a given file along with its meta data to the database
@@ -43,42 +46,39 @@ public class FileManager {
      * @return the id of the uploaded file
      */
     public static String upload(String fileName, String owner, boolean isPublic, String title, String fileType,
-            int permission, String course, InputStream fileStream) {
-        Document metadata = new Document();
-        metadata.append(Constants.INDEX_KEY_FILENAME, fileName);
-        metadata.append(Constants.INDEX_KEY_OWNER, owner);
-        metadata.append(Constants.INDEX_KEY_STATUS, Boolean.toString(isPublic));
-        metadata.append(Constants.INDEX_KEY_TITLE, title);
-        metadata.append(Constants.INDEX_KEY_TYPE, fileType);
-        metadata.append(Constants.INDEX_KEY_PERMISSION, Integer.toString(permission));
-        metadata.append(Constants.INDEX_KEY_COURSE, course);
-        GridFSUploadOptions options = new GridFSUploadOptions()
-                .chunkSizeBytes(1024)
-                .metadata(metadata);
-
-        return grid.uploadFromStream(fileName, fileStream, options).toHexString();
+            int permission, String course, String id, InputStream fileStream) {
+        
+        ObjectMetadata metad = new ObjectMetadata();
+        metad.addUserMetadata(Constants.INDEX_KEY_FILENAME, fileName);
+        metad.addUserMetadata(Constants.INDEX_KEY_OWNER, owner);
+        metad.addUserMetadata(Constants.INDEX_KEY_STATUS, Boolean.toString(isPublic));
+        metad.addUserMetadata(Constants.INDEX_KEY_TITLE, title);
+        metad.addUserMetadata(Constants.INDEX_KEY_TYPE, fileType);
+        metad.addUserMetadata(Constants.INDEX_KEY_PERMISSION, Integer.toString(permission));
+        metad.addUserMetadata(Constants.INDEX_KEY_COURSE, course);
+        
+        s3client.putObject(new PutObjectRequest(bucketName, id + "." + fileType, fileStream, metad));
+        
+        return id;
     }
     
     /**
      * Download a file from the database given its id and filename
-     * 
      * @param id the id of the file
      * @param fileName the name of the file
      * 
      * @return the temporary path containing the file
      * @throws IOException
      */
-    public static String download(ObjectId id, String fileName) throws IOException {
+    public static String download(String id, String fileType) throws IOException {
         
         File tmpPath = new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH);
         if (!tmpPath.exists()) tmpPath.mkdirs();
         
-        String path = Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH + id.toHexString() + "-" + fileName;
+        String path = Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH + id + "." + fileType;
         
-        FileOutputStream stream = new FileOutputStream(path);
-        
-        grid.downloadToStream(id, stream);
-        stream.close();
+        S3Object object = s3client.getObject(bucketName, id + "." + fileType);
+        FileUtils.copyInputStreamToFile(object.getObjectContent(), new File(path));
 
         return path;
     }
@@ -91,27 +91,26 @@ public class FileManager {
      */
     public static void indexFiles (final IndexHandler ih) throws IOException {
         
-        grid.find().forEach(new Block<GridFSFile>() {
-            @Override
-            public void apply(final GridFSFile file) {
-                Document metadata = file.getMetadata();
-                ObjectId id = file.getId().asObjectId().getValue();
-                String tmpPath = "";
-                try {
-                    tmpPath = download(id, file.getFilename());
-                } catch (IOException e) {
-                    return;
-                }
-                
-                DocFile toAdd = new DocFile(metadata.getString(Constants.INDEX_KEY_FILENAME), metadata.getString(Constants.INDEX_KEY_TITLE),
-                        metadata.getString(Constants.INDEX_KEY_OWNER), tmpPath, metadata.getString(Constants.INDEX_KEY_STATUS).equalsIgnoreCase("true"));
-                toAdd.setCourseCode(metadata.getString(Constants.INDEX_KEY_COURSE));
-                toAdd.setPermissions(Integer.parseInt(metadata.getString(Constants.INDEX_KEY_PERMISSION)));
-                toAdd.setId(id.toHexString());
-                
-                ih.addDoc(toAdd);
-            }
-        });
+        ObjectListing objectList = s3client.listObjects(bucketName);
+        for (S3ObjectSummary summary: objectList.getObjectSummaries()) {
+            S3Object object = s3client.getObject(bucketName, summary.getKey());
+            ObjectMetadata metadata = object.getObjectMetadata(); 
+            
+            String filename = metadata.getUserMetaDataOf(Constants.INDEX_KEY_FILENAME);
+            String owner = metadata.getUserMetaDataOf(Constants.INDEX_KEY_OWNER);
+            boolean status = metadata.getUserMetaDataOf(Constants.INDEX_KEY_STATUS).equalsIgnoreCase(new Boolean(true).toString());
+            String title = metadata.getUserMetaDataOf(Constants.INDEX_KEY_TITLE);
+            String type = metadata.getUserMetaDataOf(Constants.INDEX_KEY_TYPE);
+            int perm = Integer.parseInt(metadata.getUserMetaDataOf(Constants.INDEX_KEY_PERMISSION));
+            String course = metadata.getUserMetaDataOf(Constants.INDEX_KEY_COURSE);
+            
+            DocFile file = new DocFile(filename, title, owner, "", status);
+            file.setCourseCode(course);
+            file.setPermissions(perm);
+            file.setId(summary.getKey().split("\\.")[0]);
+            file.setPath(download(summary.getKey().split("\\.")[0], type));
+            ih.addDoc(file);
+        }
         cleanTemporaryDownloads();
     }
 
@@ -134,12 +133,20 @@ public class FileManager {
      * @throws IOException
      */
     public static String update(String id, DocFile file) throws IOException {
-
-        String path = download(new ObjectId(id), file.getFilename());
-        InputStream is = new FileInputStream(path);
-        deleteFile(id);
-        return upload(file.getFilename(), file.getOwner(), file.isPublic(), file.getTitle(), file.getFileType(), file.getPermission(),
-                file.getCourseCode(), is);
+        
+        S3Object object = s3client.getObject(bucketName, id + "." + file.getFileType());
+        ObjectMetadata metadata = object.getObjectMetadata();
+        metadata.addUserMetadata(Constants.INDEX_KEY_FILENAME, file.getFilename());
+        metadata.addUserMetadata(Constants.INDEX_KEY_OWNER, file.getOwner());
+        metadata.addUserMetadata(Constants.INDEX_KEY_STATUS, Boolean.toString(file.isPublic()));
+        metadata.addUserMetadata(Constants.INDEX_KEY_TITLE, file.getTitle());
+        metadata.addUserMetadata(Constants.INDEX_KEY_TYPE, file.getFileType());
+        metadata.addUserMetadata(Constants.INDEX_KEY_PERMISSION, Integer.toString(file.getPermission()));
+        metadata.addUserMetadata(Constants.INDEX_KEY_COURSE, file.getCourseCode());
+        
+        s3client.putObject(new PutObjectRequest(bucketName, id + "." + file.getFileType(), object.getObjectContent(), metadata));
+        
+        return id;
     }
 
     /**
@@ -147,8 +154,8 @@ public class FileManager {
      *
      * @param fileId the file to remove
      */
-    public static void deleteFile(String fileId) {
-        grid.delete(new ObjectId(fileId));
+    public static void deleteFile(String fileId, String fileType) {
+        s3client.deleteObject(bucketName, fileId + "." + fileType);
     }
 
     /**
@@ -157,9 +164,10 @@ public class FileManager {
      * @param fileId the file to check
      * @return true if file exists, false otherwise
      */
-    public static boolean fileExists(String fileId) {
+    public static boolean fileExists(String fileId, String fileType) {
         try {
-            return grid.find(Filters.eq("_id", new ObjectId(fileId))).first() != null;
+            return s3client.getObject(bucketName, fileId + "." + fileType) != null;
+            //return false;
         }
         catch (Exception e) {
             return false;
