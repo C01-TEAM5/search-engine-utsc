@@ -127,6 +127,10 @@ public class DocFile {
     public void setPermissions(int perm) {
         this.permission = perm;
     }
+
+    public void setTitle(String name) {
+        this.title = name;
+    }
     
     /**
      * Check whether an object is equivalent to this DocFile

@@ -122,8 +122,13 @@ a {
 
 @media (max-width: 1600px) {
 
+    .search-results {
+        width: 98%;
+    }
+
     .search-results-item {
-        height: 23% !important
+        height: 33% !important;
+        max-height: 35% !important;
     }
 
     .search-results-item-info *{
@@ -143,6 +148,6 @@ a {
     }
 
     .label {
-        font-size: 6pt !important;
+        font-size: 8pt !important;
     }
 }

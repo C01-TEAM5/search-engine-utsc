@@ -101,21 +101,61 @@
         </div>
         <div class="file-container">
             <div class="file-container-item">
-                
-                <a class="ui blue button" href="../${path}" Download><i class="download icon"></i>Download</a>
+                <div class="file-info ui raised segment">
+                    <div class="buttons-container">
+                        <a class="ui blue button" href="../${path}" Download><i class="download icon"></i>Download</a>
+                        <button class="ui blue button isOwner" id="remove-file-button"><i class="trash icon"></i>Delete</a>
+                    </div>
+                    <a class="ui teal label" href="/profile?id=${owner}">
+                        <i class="user icon"></i>Owned by: ${owner}
+                    </a>
+                    <div class="file-info-edit-item ui transparent input" id="file-name">
+                        <input placeholder="File Name..." type="text" value="${fileName}" id="file-name-input" disabled>
+                        <button class="ui icon button isOwner" id="edit-file-name">
+                            <i class="edit icon"></i>
+                        </button>
+                    </div>
+                    <div class="file-info-edit-item file-info-edit-item-smaller ui transparent input" id="courseId">
+                        <input placeholder="Course code..." type="text" value="${courseId}" id="courseId-input" disabled>
+                        <button class="ui icon button isOwner" id="edit-courseId">
+                            <i class="edit icon"></i>
+                        </button>
+                    </div>
+                    <select name="gender" class="ui dropdown disabled" id="file-permissions">
+                        <option value="">Permission</option>
+                        <c:if test="${permission == 3}">
+                            <option value="0">All</option>
+                            <option value="2">Student</option>
+                            <option value="3" selected>Instructor</option>
+                        </c:if> 
+                        <c:if test="${permission == 2}">
+                            <option value="0">All</option>
+                            <option value="2" selected>Student</option>
+                            <option value="3">Instructor</option>
+                        </c:if> 
+                        <c:if test="${permission == 0}">
+                            <option value="0" selected>All</option>
+                            <option value="2">Student</option>
+                            <option value="3">Instructor</option>
+                        </c:if>
+                    </select>
+                    <button class="ui blue button isOwner" id="save-file-info"><i class="save icon"></i>Save</a>
+                </div>
             </div>
             <div class="file-container-item ui raised segment">
-                <object data="../${path}" type="text/html" class="file-preview">
+                <div class="ui red ribbon label">Preview</div>
+                <object data="../${path}" type="text/html" class="file-preview">Preview Unavailable, please download file to view.
                 </object>
             </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="../lib/semantic/semantic.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="../lib/semantic/semantic.min.js"></script>
         <script src="js/api.js"></script>
         <script src="./js/login.js"></script>
+        <script src="./js/file.js"></script>
     </body>
 </html>

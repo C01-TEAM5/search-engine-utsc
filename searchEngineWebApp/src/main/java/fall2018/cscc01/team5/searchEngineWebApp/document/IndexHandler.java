@@ -25,6 +25,7 @@ import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
+import org.bson.types.ObjectId;
 
 public class IndexHandler {
 
@@ -128,7 +129,7 @@ public class IndexHandler {
      *
      * @param updatefile the object of the file to be updated.
      */
-    public void updateDoc (DocFile updatefile) throws ParseException {
+    public void updateDoc (DocFile updatefile) throws ParseException, IOException {
 
         // Check if the file extension is valid
         if (updatefile == null) return;
@@ -136,9 +137,15 @@ public class IndexHandler {
             return;
         }
 
+        if (FileManager.fileExists(updatefile.getId())) {
+            String path = FileManager.download(new ObjectId(updatefile.getId()), updatefile.getFilename());
+            updatefile.setPath(path);
+        }
+
         // remove the file from the index and re-add it
         this.removeDoc(updatefile);
         this.addDoc(updatefile);
+        //FileManager.cleanTemporaryDownloads();
     }
 
     /**
