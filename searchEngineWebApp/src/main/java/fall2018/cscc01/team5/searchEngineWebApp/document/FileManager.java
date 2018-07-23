@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.mongodb.client.model.Filters;
 import org.apache.commons.io.FileUtils;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -58,7 +59,7 @@ public class FileManager {
         GridFSUploadOptions options = new GridFSUploadOptions()
                 .chunkSizeBytes(1024)
                 .metadata(metadata);
-        
+
         return grid.uploadFromStream(fileName, fileStream, options).toHexString();
     }
     
@@ -117,6 +118,30 @@ public class FileManager {
         });
         if (new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH).exists())
             FileUtils.cleanDirectory(new File(Constants.FILE_PUBLIC_BASE_PATH + Constants.FILE_PUBLIC_PATH));
+    }
+
+    /**
+     * Delete given file from the database
+     *
+     * @param fileId the file to remove
+     */
+    public static void deleteFile(String fileId) {
+        grid.delete(new ObjectId(fileId));
+    }
+
+    /**
+     * Given a id check if a file exists
+     *
+     * @param fileId the file to check
+     * @return true if file exists, false otherwise
+     */
+    public static boolean fileExists(String fileId) {
+        try {
+            return grid.find(Filters.eq("_id", new ObjectId(fileId))).first() != null;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
 }

@@ -48,7 +48,7 @@ public class FileServlet extends HttpServlet {
         boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
 
         try {
-            if (id == null || IndexHandler.getInstance().searchById(id.toLowerCase()).length == 0) {
+            if (id == null || IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"}).length == 0) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
@@ -60,7 +60,7 @@ public class FileServlet extends HttpServlet {
         if (get) {
             PrintWriter out = resp.getWriter();
             try {
-                out.println(new Gson().toJson(IndexHandler.getInstance().searchById(id.toLowerCase())[0]));
+                out.println(new Gson().toJson(IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0]));
                 out.flush();
             } catch (ParseException e) {
                 System.out.println("failed to get file name");
@@ -69,8 +69,8 @@ public class FileServlet extends HttpServlet {
         }
 
         try {
-            String path = FileManager.download(new ObjectId(IndexHandler.getInstance().searchById(id.toLowerCase())[0].getId()),
-                    IndexHandler.getInstance().searchById(id.toLowerCase())[0].getFilename());
+            DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
+            String path = FileManager.download(new ObjectId(file.getId()), file.getFilename());
             req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
         } catch (ParseException e) {
             e.printStackTrace();

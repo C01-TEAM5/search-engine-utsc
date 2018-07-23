@@ -1,7 +1,7 @@
 .search-results {
     text-align: center;
     width: 60%;
-    height: 100%;
+    height: 85%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,12 +12,12 @@
 }
 
 .results-table {
-    text-align: left;
-    width: 80%;
+    width: 100%;
     height: 80%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .page-move-btn {
@@ -28,7 +28,7 @@
     border: 2px;
     border-radius: 2px;
     color: white;
-    font-size: 15px;
+    font-size: 12pt;
 }
 
 #active-page {
@@ -49,20 +49,18 @@ a {
   text-decoration: none;
 }
 
-td {
-
-  padding-bottom: 1.5em;
-
-}
-
 .search-results-item {
     width: 95% !important;
-    height: auto !important;
-    padding: 20px !important;
+    height: 100% !important;
+    min-height: 100px;
+    padding: 10px !important;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
     display: flex !important;
     flex-direction: row !important;
     justify-content: flex-start !important;
     align-items: center !important;
+    margin-bottom: 5px !important;
 }
 
 .search-results-item  i {
@@ -87,6 +85,8 @@ td {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 .file-name .label {
@@ -96,4 +96,53 @@ td {
 
 .file-course, .file-owner {
     color: #999;
+}
+
+.pagination {
+    position: absolute;
+    z-index: 200;
+    top: 90%;
+}
+
+.total-results {
+    position: absolute !important;
+    top: 17% !important;
+}
+
+.content-snip {
+	text-align: left;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.content-snip b {
+	color: #33A2FF;
+	font-weight: bold;
+}
+
+@media (max-width: 1600px) {
+
+    .search-results-item {
+        height: 23% !important
+    }
+
+    .search-results-item-info *{
+        font-size: 9pt;
+    }
+
+    .file-name {
+        font-size: 10pt;
+    }
+
+    .search-results-item  i {
+        font-size: 24pt;
+    }
+
+    .page-move-btn { 
+        font-size: 11pt;
+    }
+
+    .label {
+        font-size: 6pt !important;
+    }
 }
