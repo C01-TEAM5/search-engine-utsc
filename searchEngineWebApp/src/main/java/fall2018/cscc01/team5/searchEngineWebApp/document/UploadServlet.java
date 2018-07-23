@@ -116,8 +116,7 @@ public class UploadServlet extends HttpServlet {
 
                             // writes data to indexHandler
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
-                            docFile.setPermissions(AccountManager.getPermission(currentUser));
-                            
+
                             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);

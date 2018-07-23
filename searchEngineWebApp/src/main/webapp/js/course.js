@@ -95,7 +95,6 @@
                     swal.close();
                     swal("Success!", "Successfully added new Instructor.", "sucess");
                     setInstructors(data["instructors"]);
-                    isInstructor(data["instructors"]);
                 }
             });
         }
@@ -128,17 +127,6 @@
         $("#course-add-student-input").val("");
     });
 
-    // check if the current user is an instructor in the course
-    function isInstructor(data) {
-    	document.getElementById('course-config').style.visibility = 'hidden';
-    	// if user is found as instructor then enable the course-config
-    	data.forEach(function(id) {
-    		if (document.cookie.includes(id)) {
-    			document.getElementById('course-config').style.visibility = 'visible';
-    		}
-    	});
-    }
-    
     function setInstructors(data) {
         $("#instructors-list .custom-list").html("");
         data.forEach(function(id) {
@@ -278,7 +266,6 @@
                 console.log(data["instructors"]);
                 setInfo(data);
                 setInstructors(data["instructors"]);
-                isInstructor(data["instructors"]);
                 setStudents(data["students"]);
                 setFiles(data["files"]);
             }
