@@ -36,16 +36,16 @@ public class FileServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void init () throws ServletException {
+    public void init() throws ServletException {
         super.init();
     }
 
     @Override
-    protected void doGet (HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         resp.setContentType("application/json");
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
-        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);   
+        boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
 
         try {
             if (id == null || IndexHandler.getInstance().searchById(id.toLowerCase()).length == 0) {
@@ -58,7 +58,7 @@ public class FileServlet extends HttpServlet {
         }
 
         if (get) {
-            PrintWriter out = resp.getWriter();  
+            PrintWriter out = resp.getWriter();
             try {
                 out.println(new Gson().toJson(IndexHandler.getInstance().searchById(id.toLowerCase())[0]));
                 out.flush();
@@ -67,21 +67,21 @@ public class FileServlet extends HttpServlet {
             }
             return;
         }
-        
-		try {
-			String path = FileManager.download(new ObjectId(IndexHandler.getInstance().searchById(id.toLowerCase())[0].getId()), 
-					IndexHandler.getInstance().searchById(id.toLowerCase())[0].getFilename());
-			req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");  
-        view.forward(req, resp);  
+
+        try {
+            String path = FileManager.download(new ObjectId(IndexHandler.getInstance().searchById(id.toLowerCase())[0].getId()),
+                    IndexHandler.getInstance().searchById(id.toLowerCase())[0].getFilename());
+            req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");
+        view.forward(req, resp);
     }
 
     @Override
-    public void doPost (HttpServletRequest req, HttpServletResponse resp)
+    public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
 
@@ -90,7 +90,7 @@ public class FileServlet extends HttpServlet {
     private String getCurrentUser(Cookie[] cookies) {
         String res = "";
         if (cookies == null) return res;
-        for (Cookie cookie: cookies) {
+        for (Cookie cookie : cookies) {
             if (cookie.getName().equals("currentUser")) res = cookie.getValue();
         }
 

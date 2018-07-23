@@ -10,4 +10,5 @@ index/
 file-upload*/
 /.metadata/
 /.recommenders/
-src/main/webapp/tmp/
+*src/main/webapp/tmp/
+tmp/
