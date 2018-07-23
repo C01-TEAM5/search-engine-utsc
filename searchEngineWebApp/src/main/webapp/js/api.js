@@ -31,8 +31,8 @@ var api = (function(){
         return null;
     };
 
-    module.search = function(query, filters, callback) {
-        var queryString = buildQueryString(query, filters);
+    module.search = function(query, filters, perm, callback) {
+        var queryString = buildQueryString(query, filters, perm);
         send("GET", "/search?query=" + queryString, null, callback);
     };
 
@@ -107,7 +107,7 @@ var api = (function(){
         send("POST", "/file?id=" + id, {"name":name, "course":course, "permission":permission}, callback);
     }
 
-    module.buildQuery = function buildQueryString(query, filters) {
+    module.buildQuery = function buildQueryString(query, filters, perm) {
 
         var query = query.replace(" ","+");
 
