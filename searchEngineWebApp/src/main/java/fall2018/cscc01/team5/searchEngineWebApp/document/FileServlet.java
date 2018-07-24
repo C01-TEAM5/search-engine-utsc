@@ -73,7 +73,7 @@ public class FileServlet extends HttpServlet {
 
         try {
             DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
-            String path = "https://s3.amazonaws.com/search-engine-utsc/" + file.getId() + "." + file.getFileType();
+            String path = FileManager.buildPublicUrl(file.getId(), file.getFileType());
             req.setAttribute("path", path);
             req.setAttribute("fileName", file.getTitle());
             req.setAttribute("courseId", file.getCourseCode());

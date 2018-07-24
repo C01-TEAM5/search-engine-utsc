@@ -6,6 +6,7 @@ public class Constants {
     
     public static final String AWS_ACCESS_KEY = "AKIAJV5UQ7TRTXC62K2Q";
     public static final String AWS_SECRET_KEY = "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";
+    public static final String AWS_PUBLIC_URL_PREFIX = "https://s3.amazonaws.com/search-engine-utsc/";    
 
     public static final String FILETYPE_DOCX = "docx";
     public static final String FILETYPE_HTML = "html";

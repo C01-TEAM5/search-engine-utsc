@@ -84,10 +84,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                           <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
 
                           <label for="userpsw">Password</label>
-                          <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+                          <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
 
                           <label for="confirmpsw">Confirm Password</label>
-                          <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                          <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                           <span id = "message"></span><br>
 
                           <div class="btn-container">

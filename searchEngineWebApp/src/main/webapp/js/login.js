@@ -156,20 +156,24 @@
             console.log(2);
         });
 
+        document.getElementById("r-pwd1").addEventListener("keyup", check);
+        document.getElementById("r-pwd2").addEventListener("keyup", check);
 
 
-        var check = function() {
-            if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
-                document.getElementById('message').style.color = 'green';
-                document.getElementById('message').innerHTML = 'Passwords match';
-                document.getElementById('RC').disabled = false;
-            } else {
-                document.getElementById('message').style.color = 'red';
-                document.getElementById('message').innerHTML = 'The provided passwords do not match';
-                document.getElementById('RC').disabled = true;
-            }
-        }
         parseURL();
+        
+    }
+
+    var check = function() {
+        if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Passwords match';
+            document.getElementById('RC').disabled = false;
+        } else {
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'The provided passwords do not match';
+            document.getElementById('RC').disabled = true;
+        }
     }
 
     var setSignedIn = function() {
