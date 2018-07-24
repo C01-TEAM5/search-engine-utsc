@@ -36,6 +36,7 @@ public class CrawlerController {
 		this.pages = pages;
 		
 		CrawlConfig config = new CrawlConfig();
+		config.setCrawlStorageFolder("/temp");
 		config.setMaxDepthOfCrawling(depth);
 		config.setMaxPagesToFetch(pages);
 		config.setIncludeBinaryContentInCrawling(true);

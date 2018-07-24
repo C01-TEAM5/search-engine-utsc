@@ -96,14 +96,19 @@ public class Crawler extends WebCrawler {
         if (docPattern.matcher(href).matches()) {
             
             try {
+                //Download the file
                 URL pageURL = new URL(href);
                 String filepath = savedDocsFolder + File.separator + FilenameUtils.getName(pageURL.getPath());
                 File newDownload = new File(filepath);
- 
                 FileUtils.copyURLToFile(pageURL, newDownload);
+                
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
+            //Upload the downloaded file to the website
+            
+            
         }
       
     }
