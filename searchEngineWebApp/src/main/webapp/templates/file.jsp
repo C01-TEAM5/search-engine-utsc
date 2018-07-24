@@ -120,6 +120,9 @@
                         <button class="ui icon button isOwner" id="edit-courseId">
                             <i class="edit icon"></i>
                         </button>
+                        <a class="ui icon teal button" href="/course?id=${courseId}">
+                            <i class="linkify icon"></i>
+                        </a>
                     </div>
                     <select name="gender" class="ui dropdown disabled" id="file-permissions">
                         <option value="">Permission</option>

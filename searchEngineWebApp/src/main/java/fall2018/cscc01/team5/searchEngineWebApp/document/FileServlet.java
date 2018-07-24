@@ -142,14 +142,7 @@ public class FileServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
             return;
         }
-        else {
-            if (CourseManager.courseExists(file.getCourseCode())) {
-                try {
-                    Course oldC = CourseManager.getCourse(file.getCourseCode());
-                    oldC.removeFile(file.getId());
-                    CourseManager.updateCourse(file.getCourseCode(), oldC);
-                } catch (CourseDoesNotExistException e) {}
-            }
+        else if (CourseManager.courseExists(newCourse)) {
             Course c;
             try {
                 c = CourseManager.getCourse(newCourse);
@@ -161,7 +154,14 @@ public class FileServlet extends HttpServlet {
             }
         }
 
-        file.setTitle(newName);
+        file.setTitle(newName);        
+        if (CourseManager.courseExists(file.getCourseCode())) {
+            try {
+                Course oldC = CourseManager.getCourse(file.getCourseCode());
+                oldC.removeFile(file.getId());
+                CourseManager.updateCourse(file.getCourseCode(), oldC);
+            } catch (CourseDoesNotExistException e) {}
+        }
         file.setCourseCode(newCourse);
         try {
             file.setPermissions(Integer.parseInt(newPerm));
