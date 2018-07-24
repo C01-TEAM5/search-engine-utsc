@@ -145,7 +145,7 @@
             <div class="file-container-item ui raised segment">
                 <div class="ui red ribbon label">Preview</div>
                 <c:if test='${fileType.equals("docx")}'>
-                    <iframe src="http://docs.google.com/gview?url=${path}&embedded=true"
+                    <iframe src="https://docs.google.com/gview?url=${path}&embedded=true"
                     class="file-preview">Preview Unavailable, please download file to view.</iframe>
                 </c:if>
                 <c:if test='${!fileType.equals("docx")}'>
