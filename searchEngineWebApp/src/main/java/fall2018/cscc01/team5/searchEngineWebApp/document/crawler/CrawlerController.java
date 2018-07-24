@@ -1,5 +1,7 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document.crawler;
 
+import java.io.IOException;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -54,7 +56,14 @@ public class CrawlerController {
 	 */
 	public void startCrawl() {
 		
+		
+		Crawler.setup("tempDocs");
 		controller.start(Crawler.class, 1);
+		try {
+			Crawler.teardown();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}	
 	

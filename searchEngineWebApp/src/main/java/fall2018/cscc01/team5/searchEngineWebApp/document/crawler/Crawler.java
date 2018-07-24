@@ -1,13 +1,24 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document.crawler;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
+/**
+ * Crawler class based off the ImageCrawler in the Crawler4j documentation.
+ * This crawler downloads all appropriate document types into a temporary folder,
+ * indexes them and then removes the temporary folder.
+ *
+ */
 public class Crawler extends WebCrawler {
 
     //Adjusted filters from the documentation to suit my needs
@@ -17,6 +28,25 @@ public class Crawler extends WebCrawler {
 	
     private static final Pattern docPattern = Pattern.compile(
             ".*(\\.(pdf|txt|docx|html))$");
+    
+    private static File savedDocsFolder;
+    
+    public static void setup(String savedDocsPath) {
+    	
+    	savedDocsFolder = new File(savedDocsPath);
+    	if (!savedDocsFolder.exists()) {
+    		savedDocsFolder.mkdirs();
+    	}
+    	
+    }
+    
+    public static void teardown() throws IOException {
+    	
+    	if (savedDocsFolder.exists()) {
+    		FileUtils.deleteDirectory(savedDocsFolder);
+    	}
+    	
+    }
 
     /**
      * Method to determine if a given page should be visited
