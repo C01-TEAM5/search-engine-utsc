@@ -79,10 +79,10 @@
                                     <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
             
                                     <label for="userpsw">Password</label>
-                                    <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+                                    <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
             
                                     <label for="confirmpsw">Confirm Password</label>
-                                    <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                                    <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                                     <span id = "message"></span><br>
             
                                     <div class="btn-container">
@@ -120,6 +120,9 @@
                         <button class="ui icon button isOwner" id="edit-courseId">
                             <i class="edit icon"></i>
                         </button>
+                        <a class="ui icon teal button" href="/course?id=${courseId}">
+                            <i class="linkify icon"></i>
+                        </a>
                     </div>
                     <select name="gender" class="ui dropdown disabled" id="file-permissions">
                         <option value="">Permission</option>

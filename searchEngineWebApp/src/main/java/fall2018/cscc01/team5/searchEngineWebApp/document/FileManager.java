@@ -41,6 +41,7 @@ public class FileManager {
      * @param fileType the type of this file
      * @param permission the permission level of this file
      * @param course the course this file belongs to
+     * @param id the DocFile id
      * @param fileStream the input stream containing the file contents
      * 
      * @return the id of the uploaded file
@@ -77,6 +78,17 @@ public class FileManager {
         s3client.putObject(object);
         
         return id;
+    }
+    
+    /**
+     * Build a AWS public link given the id and the filetype
+     * 
+     * @param id the id of the file
+     * @param fileType the type of the file
+     * @return a String representation of the a aws public url 
+     */
+    public static String buildPublicUrl(String id, String fileType) {
+        return Constants.AWS_PUBLIC_URL_PREFIX + id + "." + fileType;
     }
     
     /**

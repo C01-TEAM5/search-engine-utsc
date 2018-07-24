@@ -2,6 +2,8 @@ package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
@@ -73,7 +75,7 @@ public class FileServlet extends HttpServlet {
 
         try {
             DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
-            String path = "https://s3.amazonaws.com/search-engine-utsc/" + file.getId() + "." + file.getFileType();
+            String path = FileManager.buildPublicUrl(file.getId(), file.getFileType());
             req.setAttribute("path", path);
             req.setAttribute("fileName", file.getTitle());
             req.setAttribute("courseId", file.getCourseCode());
@@ -135,13 +137,31 @@ public class FileServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid params");
             return;
         }
-
+        
         if (!newCourse.equals("") && !CourseManager.courseExists(newCourse)) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
             return;
         }
+        else if (CourseManager.courseExists(newCourse)) {
+            Course c;
+            try {
+                c = CourseManager.getCourse(newCourse);
+                c.addFile(file.getId());
+                CourseManager.updateCourse(newCourse, c);
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
+                return;
+            }
+        }
 
-        file.setTitle(newName);
+        file.setTitle(newName);        
+        if (CourseManager.courseExists(file.getCourseCode())) {
+            try {
+                Course oldC = CourseManager.getCourse(file.getCourseCode());
+                oldC.removeFile(file.getId());
+                CourseManager.updateCourse(file.getCourseCode(), oldC);
+            } catch (CourseDoesNotExistException e) {}
+        }
         file.setCourseCode(newCourse);
         try {
             file.setPermissions(Integer.parseInt(newPerm));
