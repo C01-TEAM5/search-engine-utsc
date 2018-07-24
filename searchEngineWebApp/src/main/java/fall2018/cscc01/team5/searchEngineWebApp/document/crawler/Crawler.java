@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -77,14 +78,33 @@ public class Crawler extends WebCrawler {
     }
     
     /**
-     * This method is called when a page is visited. Responsible for
-     * gathering the required information and sending to the CSVWriter
-     * to be written to file.
+     * This method is called when a page is visited. 
+     * If the page is an appropriate document type, download it to the
+     * storage folder and then upload it to the website.
+     * 
+     * Otherwise, do nothing.
      * 
      */
     @Override
     public void visit(Page page) {
         
+        String href = page.getWebURL().getURL().toLowerCase();
+      
+        //If we crawl to an appropriate document type, download it
+        //Note: if multiple document types have the same name, only one will be
+        //downloaded.
+        if (docPattern.matcher(href).matches()) {
+            
+            try {
+                URL pageURL = new URL(href);
+                String filepath = savedDocsFolder + File.separator + FilenameUtils.getName(pageURL.getPath());
+                File newDownload = new File(filepath);
+ 
+                FileUtils.copyURLToFile(pageURL, newDownload);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
       
     }
     
