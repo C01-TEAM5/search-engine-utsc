@@ -2,6 +2,8 @@ package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
@@ -135,10 +137,28 @@ public class FileServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid params");
             return;
         }
-
+        
         if (!newCourse.equals("") && !CourseManager.courseExists(newCourse)) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
             return;
+        }
+        else {
+            if (CourseManager.courseExists(file.getCourseCode())) {
+                try {
+                    Course oldC = CourseManager.getCourse(file.getCourseCode());
+                    oldC.removeFile(file.getId());
+                    CourseManager.updateCourse(file.getCourseCode(), oldC);
+                } catch (CourseDoesNotExistException e) {}
+            }
+            Course c;
+            try {
+                c = CourseManager.getCourse(newCourse);
+                c.addFile(file.getId());
+                CourseManager.updateCourse(newCourse, c);
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
+                return;
+            }
         }
 
         file.setTitle(newName);
