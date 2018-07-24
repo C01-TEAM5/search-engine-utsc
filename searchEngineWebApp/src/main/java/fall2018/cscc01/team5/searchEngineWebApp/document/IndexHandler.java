@@ -133,12 +133,12 @@ public class IndexHandler {
 
         // Check if the file extension is valid
         if (updatefile == null) return;
-        if (!isValid(updatefile) || !(FileManager.fileExists(updatefile.getId()) || pathExists (updatefile.getPath()))) {
+        if (!isValid(updatefile) || !(FileManager.fileExists(updatefile.getId(), updatefile.getFileType()) || pathExists (updatefile.getPath()))) {
             return;
         }
 
-        if (FileManager.fileExists(updatefile.getId())) {
-            String path = FileManager.download(new ObjectId(updatefile.getId()), updatefile.getFilename());
+        if (FileManager.fileExists(updatefile.getId(), updatefile.getFileType())) {
+            String path = FileManager.download(updatefile.getId(), updatefile.getFileType());
             updatefile.setPath(path);
         }
 
@@ -165,7 +165,7 @@ public class IndexHandler {
         //System.out.println("delete file: " + term.field() + " " + term.text());
 
         // Check if path exists
-        if (FileManager.fileExists(deletefile.getId()) || pathExists (deletefile.getPath())) {
+        if (FileManager.fileExists(deletefile.getId(), deletefile.getFileType()) || pathExists (deletefile.getPath())) {
             // remove doc if exits
             try {
                 writer.deleteDocuments(query);

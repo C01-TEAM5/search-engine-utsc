@@ -103,7 +103,7 @@
             <div class="file-container-item">
                 <div class="file-info ui raised segment">
                     <div class="buttons-container">
-                        <a class="ui blue button" href="../${path}" Download><i class="download icon"></i>Download</a>
+                        <a class="ui blue button" href="${path}" download><i class="download icon"></i>Download</a>
                         <button class="ui blue button isOwner" id="remove-file-button"><i class="trash icon"></i>Delete</a>
                     </div>
                     <a class="ui teal label" href="/profile?id=${owner}">
@@ -144,8 +144,15 @@
             </div>
             <div class="file-container-item ui raised segment">
                 <div class="ui red ribbon label">Preview</div>
-                <object data="../${path}" type="text/html" class="file-preview">Preview Unavailable, please download file to view.
-                </object>
+                <c:if test='${fileType.equals("docx")}'>
+                    <iframe src="https://docs.google.com/gview?url=${path}&embedded=true"
+                    class="file-preview">Preview Unavailable, please download file to view.</iframe>
+                </c:if>
+                <c:if test='${!fileType.equals("docx")}'>
+                    <object data="${path}" type="text/html" class="file-preview">Preview Unavailable, please download file to view.
+                    </object>
+                </c:if>
+                
             </div>
         </div>
 

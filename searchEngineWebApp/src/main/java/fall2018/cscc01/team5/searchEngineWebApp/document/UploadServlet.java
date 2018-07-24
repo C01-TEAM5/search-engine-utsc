@@ -121,7 +121,8 @@ public class UploadServlet extends HttpServlet {
                             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseId, initialStream);
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
+                                        docFile.getPermission(), courseId, docFile.getId(), initialStream);
                                 docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseId);
                                 c.addFile(docFile.getId());
@@ -131,17 +132,20 @@ public class UploadServlet extends HttpServlet {
                             else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
                                 courseCode = courseCode.toLowerCase();
                                 docFile.setCourseCode(courseCode);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), courseCode, initialStream);
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
+                                        docFile.getPermission(), courseCode, docFile.getId(), initialStream);
                                 docFile.setId(fileId);
                                 Course c = CourseManager.getCourse(courseCode);
                                 c.addFile(docFile.getId());
                                 CourseManager.updateCourse(courseCode, c);
                             }
                             else {
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), docFile.getPermission(), "", initialStream);
+                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
+                                        docFile.getPermission(), docFile.getCourseCode(), docFile.getId(), initialStream);
                                 docFile.setId(fileId);
                             }
-                            docFile.setPath(FileManager.download(new ObjectId(docFile.getId()), fileName));
+                            
+                            docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
                         }

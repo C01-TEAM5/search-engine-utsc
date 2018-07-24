@@ -51,8 +51,8 @@ a {
 
 .search-results-item {
     width: 95% !important;
-    height: 100% !important;
-    min-height: 100px;
+    height: 33% !important;
+    min-height: 150px !important;
     padding: 10px !important;
     padding-left: 25px !important;
     padding-right: 25px !important;
@@ -102,6 +102,10 @@ a {
     position: absolute;
     z-index: 200;
     top: 90%;
+}
+
+.pagination button:hover {
+    cursor: pointer;
 }
 
 .total-results {

@@ -73,12 +73,13 @@ public class FileServlet extends HttpServlet {
 
         try {
             DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
-            String path = FileManager.download(new ObjectId(file.getId()), file.getFilename());
-            req.setAttribute("path", path.replace(Constants.FILE_PUBLIC_BASE_PATH, ""));
+            String path = "https://s3.amazonaws.com/search-engine-utsc/" + file.getId() + "." + file.getFileType();
+            req.setAttribute("path", path);
             req.setAttribute("fileName", file.getTitle());
             req.setAttribute("courseId", file.getCourseCode());
             req.setAttribute("permission", file.getPermission());
             req.setAttribute("owner", file.getOwner());
+            req.setAttribute("fileType", file.getFileType());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -99,15 +100,14 @@ public class FileServlet extends HttpServlet {
             return;
         }
 
-        if (!FileManager.fileExists(id)) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "File does not exist");
-            return;
-        }
-
         DocFile file = null;
 
         try {
             file = IndexHandler.getInstance().searchById(id, new String[]{"html", "pdf", "txt", "docx"})[0];
+            if (!FileManager.fileExists(id, file.getFileType())) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "File does not exist");
+                return;
+            }
         } catch (ParseException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "File does not exist");
             return;

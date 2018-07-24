@@ -122,7 +122,7 @@ public class ProfileServlet extends HttpServlet {
                 }
                 IndexHandler.getInstance().removeDoc(file);
                 AccountManager.updateUser(currentUser, user);
-                FileManager.deleteFile(file.getId());
+                FileManager.deleteFile(file.getId(), file.getFileType());
             } catch (EmailAlreadyExistsException e) {
                 e.printStackTrace();
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

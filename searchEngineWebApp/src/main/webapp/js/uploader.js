@@ -18,7 +18,7 @@
         swal({
             title: "Processing!",
             text: "Please wait.",
-            icon: "../media/icons/loading.gif",
+            icon: "./media/icons/loading.gif",
             buttons: false
         });
     });
