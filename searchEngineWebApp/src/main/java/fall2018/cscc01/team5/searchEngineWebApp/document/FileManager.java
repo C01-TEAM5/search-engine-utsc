@@ -61,13 +61,13 @@ public class FileManager {
             metad.setContentType("application/pdf");
             break;
         case "html":
-            metad.setContentType("application/html");
+            metad.setContentType("text/html");
             break;
         case "docx":
-            metad.setContentType("application/text");
+            metad.setContentType("text/msword");
             break;
         default:
-            metad.setContentType("application/text");
+            metad.setContentType("text/plain");
             break;
         }
         metad.setContentDisposition("inline");

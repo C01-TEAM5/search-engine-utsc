@@ -79,6 +79,7 @@ public class FileServlet extends HttpServlet {
             req.setAttribute("courseId", file.getCourseCode());
             req.setAttribute("permission", file.getPermission());
             req.setAttribute("owner", file.getOwner());
+            req.setAttribute("fileType", file.getFileType());
         } catch (ParseException e) {
             e.printStackTrace();
         }
