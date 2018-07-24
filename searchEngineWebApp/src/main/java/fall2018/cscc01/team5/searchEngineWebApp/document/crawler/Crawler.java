@@ -11,7 +11,11 @@ import edu.uci.ics.crawler4j.url.WebURL;
 public class Crawler extends WebCrawler {
 
     //Adjusted filters from the documentation to suit my needs
-    private static final Pattern acceptedTypes = Pattern.compile(
+	private static final Pattern filters = Pattern.compile(
+	        ".*(\\.(css|js|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|bmp" +
+	        "|rm|smil|wmv|swf|wma|zip|rar|gz|doc|gif|jpe?g|png|tiff?))$");
+	
+    private static final Pattern docPattern = Pattern.compile(
             ".*(\\.(pdf|txt|docx|html))$");
 
     /**
@@ -25,9 +29,17 @@ public class Crawler extends WebCrawler {
     	
     	String href = url.getURL().toLowerCase();
     	
+    	if (filters.matcher(href).matches()) {
+    		return false;
+    	}
+    	
+    	if (docPattern.matcher(href).matches()) {
+    		return true;
+    	}
+    	
     	try {
 			boolean inSeeds = withinSeeds(referringPage, url);
-			return inSeeds && acceptedTypes.matcher(href).matches();
+			return inSeeds;
 		} catch (MalformedURLException e) {
 			return false;
 		}
