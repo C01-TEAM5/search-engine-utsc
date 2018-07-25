@@ -67,7 +67,6 @@ public class UploadServlet extends HttpServlet {
 
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
-            //factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
@@ -96,11 +95,7 @@ public class UploadServlet extends HttpServlet {
                     if (!item.isFormField()) {
                         // gets file data
                         String fileName = item.getName();
-                        String filePath = Constants.FILE_PUBLIC_PATH + currentUser + File.separator;
-                        String contentType = item.getContentType();
-                        boolean isInMemory = item.isInMemory();
-                        long sizeInBytes = item.getSize();
-
+                        String filePath = Uploader.getUploadPath(currentUser);
                         
                         // creates the save directory if it does not exists
                         File fileSaveDir = new File(filePath);
@@ -162,9 +157,7 @@ public class UploadServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-//            PrintWriter output = resp.getWriter();
-//            output.print(new Gson().toJson("Success"));
-//            output.flush();
+
             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                 PrintWriter output = resp.getWriter();
                 try {
