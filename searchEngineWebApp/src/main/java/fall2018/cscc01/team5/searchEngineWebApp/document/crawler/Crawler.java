@@ -14,6 +14,10 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
+import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.Uploader;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 
 /**
  * Crawler class based off the ImageCrawler in the Crawler4j documentation.
@@ -112,19 +116,26 @@ public class Crawler extends WebCrawler {
                 //Download the file
                 URL pageURL = new URL(href);
                 String filepath = savedDocsFolder + File.separator + FilenameUtils.getName(pageURL.getPath());
+                String filename = FilenameUtils.getName(pageURL.getPath());
+                String uploadPath = Uploader.getUploadPath(currentUser);
                 File newDownload = new File(filepath);
                 FileUtils.copyURLToFile(pageURL, newDownload);
                 
                 //Upload the file to the system
                 InputStream fileStream = FileUtils.openInputStream(newDownload);
-                
+                DocFile newDoc = new DocFile(filename, filename, currentUser, uploadPath + filename, true);
+                newDoc.setPermissions(AccountManager.getPermission(currentUser));
+                if (courseCode != "") {
+                    courseCode = courseCode.toLowerCase();
+                    newDoc.setCourseCode(courseCode);
+                }
+                Uploader.handleUpload(newDoc, fileStream);
                 
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-            
-            //Upload the downloaded file to the website
-            
+            } catch (CourseDoesNotExistException e) {
+                e.printStackTrace();
+            }            
             
         }
       
