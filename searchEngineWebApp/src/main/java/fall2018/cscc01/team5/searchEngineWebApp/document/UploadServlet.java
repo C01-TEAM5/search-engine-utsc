@@ -97,53 +97,27 @@ public class UploadServlet extends HttpServlet {
                         String fileName = item.getName();
                         String filePath = Uploader.getUploadPath(currentUser);
                         
-                        // creates the save directory if it does not exists
-                        File fileSaveDir = new File(filePath);
-                        if (!fileSaveDir.exists()) {
-                            fileSaveDir.mkdir();
-                        }
+                        //Get file InputStream
+                        InputStream initialStream = item.getInputStream();
 
-
-                        File targetFile = new File(filePath + fileName);
-                        //Only upload the file if it does not exist already
-                        if (!targetFile.isFile()) {
-                            InputStream initialStream = item.getInputStream();
-
-                            // writes data to indexHandler
-                            DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
-                            docFile.setPermissions(AccountManager.getPermission(currentUser));
-                            
-                            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
-                                courseId = courseId.toLowerCase();
-                                docFile.setCourseCode(courseId);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), courseId, docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                                Course c = CourseManager.getCourse(courseId);
-                                c.addFile(docFile.getId());
-                                CourseManager.updateCourse(courseId, c);
+                        //Set up DocFile to uploaded
+                        DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
+                        docFile.setPermissions(AccountManager.getPermission(currentUser));
+                        
+                        //Set course information if it exists (courseCode comes from upload form, courseID from course page)
+                        if (courseId != null) {
+                            courseId = courseId.toLowerCase();
+                            docFile.setCourseCode(courseId);
                                 
-                            }
-                            else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
-                                courseCode = courseCode.toLowerCase();
-                                docFile.setCourseCode(courseCode);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), courseCode, docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                                Course c = CourseManager.getCourse(courseCode);
-                                c.addFile(docFile.getId());
-                                CourseManager.updateCourse(courseCode, c);
-                            }
-                            else {
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), docFile.getCourseCode(), docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                            }
-                            
-                            docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
-                            IndexHandler indexHandler = IndexHandler.getInstance();
-                            indexHandler.addDoc(docFile);
                         }
+                        else if (courseCode != "") {
+                            courseCode = courseCode.toLowerCase();
+                            docFile.setCourseCode(courseCode);
+                        }
+                        
+                        //Upload the file and index it
+                        Uploader.handleUpload(docFile, initialStream);
+                            
                     }
                 }
 
