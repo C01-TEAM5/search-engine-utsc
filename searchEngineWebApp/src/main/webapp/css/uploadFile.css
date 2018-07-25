@@ -49,3 +49,12 @@ input {
     width: 500px;
     height: 25px;
 }
+
+#tab-menu {
+    position:absolute;
+    top:30%;
+}
+
+.item {
+    background-color: #FFFFFF !important;
+}
