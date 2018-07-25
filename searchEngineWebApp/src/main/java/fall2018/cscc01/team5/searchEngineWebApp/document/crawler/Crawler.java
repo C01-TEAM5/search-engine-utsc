@@ -2,6 +2,7 @@ package fall2018.cscc01.team5.searchEngineWebApp.document.crawler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
@@ -22,6 +23,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
  */
 public class Crawler extends WebCrawler {
 
+    
     //Adjusted filters from the documentation to suit my needs
 	private static final Pattern filters = Pattern.compile(
 	        ".*(\\.(css|js|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|bmp" +
@@ -32,22 +34,33 @@ public class Crawler extends WebCrawler {
     
     private static File savedDocsFolder;
     
-    public static void setup(String savedDocsPath) {
-    	
-    	savedDocsFolder = new File(savedDocsPath);
-    	if (!savedDocsFolder.exists()) {
-    		savedDocsFolder.mkdirs();
-    	}
-    	
+    private String currentUser;
+    private String courseCode;
+    
+    public Crawler(String currentUser, String courseCode) {
+        
+        this.currentUser = currentUser;
+        this.courseCode = courseCode;
+        
+        savedDocsFolder = new File(currentUser + File.separator + "tempDocs");
+        if (!savedDocsFolder.exists()) {
+            savedDocsFolder.mkdirs();
+        }
+        
+        
     }
     
-    public static void teardown() throws IOException {
-    	
-    	if (savedDocsFolder.exists()) {
-    		FileUtils.deleteDirectory(savedDocsFolder);
-    	}
-    	
+    public void onBeforeExit() {
+        if (savedDocsFolder.exists()) {
+            try {
+                FileUtils.deleteDirectory(savedDocsFolder);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
+    
 
     /**
      * Method to determine if a given page should be visited
@@ -101,6 +114,10 @@ public class Crawler extends WebCrawler {
                 String filepath = savedDocsFolder + File.separator + FilenameUtils.getName(pageURL.getPath());
                 File newDownload = new File(filepath);
                 FileUtils.copyURLToFile(pageURL, newDownload);
+                
+                //Upload the file to the system
+                InputStream fileStream = FileUtils.openInputStream(newDownload);
+                
                 
             } catch (IOException e) {
                 e.printStackTrace();

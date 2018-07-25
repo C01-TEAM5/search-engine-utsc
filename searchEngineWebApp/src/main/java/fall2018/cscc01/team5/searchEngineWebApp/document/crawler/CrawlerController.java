@@ -7,6 +7,7 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 
 /**
  * Crawler Controller used to establish the correct
@@ -19,6 +20,9 @@ public class CrawlerController {
 	private String seed;
 	private int depth;
 	private int pages;
+	private String currentUser;
+	private String courseCode;
+	private int permissions;
 
 	/**
 	 * Create a new CrawlerController with the target seed, 
@@ -29,11 +33,14 @@ public class CrawlerController {
 	 * @param pages the max number of pages the crawler will crawl
 	 * @throws Exception 
 	 */
-	public CrawlerController(String seed, int depth, int pages) throws Exception {
+	public CrawlerController(String seed, int depth, int pages, String currentUser, String courseCode) throws Exception {
 		
 		this.seed = seed;
 		this.depth = depth;
 		this.pages = pages;
+		this.currentUser = currentUser;
+		this.courseCode = courseCode;
+		this.permissions = AccountManager.getPermission(currentUser);
 		
 		CrawlConfig config = new CrawlConfig();
 		config.setCrawlStorageFolder("/temp");
@@ -57,14 +64,8 @@ public class CrawlerController {
 	 */
 	public void startCrawl() {
 		
-		
-		Crawler.setup("tempDocs");
-		controller.start(Crawler.class, 1);
-		try {
-			Crawler.teardown();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    CrawlerFactory factory = new CrawlerFactory(currentUser, courseCode);
+		controller.start(factory, 1);
 		
 	}	
 	
