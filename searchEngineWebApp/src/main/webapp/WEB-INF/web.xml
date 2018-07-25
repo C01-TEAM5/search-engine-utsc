@@ -30,6 +30,11 @@
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.course.CourseServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>CrawlerServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.document.crawler.CrawlerServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search</url-pattern>
@@ -43,6 +48,11 @@
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
         <url-pattern>/UploadServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CrawlerServlet</servlet-name>
+        <url-pattern>/CrawlerServlet</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

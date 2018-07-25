@@ -4,14 +4,13 @@
     <meta charset= "UTF-8">
     <title>Upload page</title>
     <!-- <link rel= "stylesheet" href= "./css/main.css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/reset.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
-    <!-- <link rel= "stylesheet" href= "./css/header.css">
-    <link rel= "stylesheet" href= "./css/searchBar.css"> -->
-    <link rel= "stylesheet" href= "./css/uploadFile.css">
+    <link rel= "stylesheet" href= "./css/uploadFile.css" type="text/css">
 </head>
 
 <body>
@@ -27,7 +26,7 @@
 
                 <button class = "btn notSignedIn registerButton">
                 Register</button>
-                
+
                 <div class="signedIn header-info">Welcome! <span class="user"></span></div>
                 <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                 <button class="btn signedIn" id="logoutButton">Logout</button>
@@ -67,27 +66,27 @@
                                 <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
                             </div>
                           </div>
-  
+
                           <div class = "register-info col-sm-7">
                               <label for="uemail">User Email</label>
                               <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
-  
+
                               <label for="uname">Name</label>
                               <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
-  
+
                               <label for="username">Username</label>
                               <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
-  
+
                               <label for="userpsw">Password</label>
                               <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
-  
+
                               <label for="confirmpsw">Confirm Password</label>
                               <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                               <span id = "message"></span><br>
-  
+
                               <div class="btn-container">
                                   <button id ="RC" class = "loginButton" type="submit" >Register</button>
-  
+
                                   <button type="button"
                                   onclick="document.getElementById('RIB').style.display='none'"
                                   class="cancelbtn">Cancel</button>
@@ -97,65 +96,55 @@
                   </div>
                 </form>
               </div>
-            
+
         </div>
     </div>
-
-    <!-- <section class = "searchBar">
-        <form>
-            <div id = "uploaderType">
-                <label class="A">
-                    <input type = "radio" name = "toggle" checked>
-                    <span>All</span>
-                </label>
-                <label class="A">
-                    <input type = "radio" name = "toggle">
-                    <span>Instructor</span>
-                </label>
-                <label class="A" id = "B">
-                    <input type = "radio" name = "toggle">
-                    <span>Student</span>
-                </label>
-            </div>
-            <input type = "text" placeholder = "What are you looking for?" name = "searchQry">
-            <button type = "submit" >Search</button>
-            <div class = "FileType">
-                <input type = "checkbox" name = "AllFile" checked> All File Type
-                <input type = "checkbox" name = "PDFFile"> PDF File
-                <input type = "checkbox" name = "HTMLFile"> HTML File
-                <input type = "checkbox" name = "TextFile"> Text File
-                <input type = "checkbox" name = "DocFile"> Doc File
-            </div>
-        </form>
-    </section> -->
-
-    <section class= "uploadFile">
+    <!-- Learned about tabbing in semantic here: https://stackoverflow.com/questions/21769214/using-the-tab-control-in-semantic-ui -->
+    <div class="ui pointing secondary demo menu" id = "tab-menu">
+        <a class="active blue item" data-tab="file-upload">File Upload</a>
+        <a class="blue item" data-tab="crawler-upload">Crawler Upload</a>
+    </div>
+    <section class= "uploadFile ui active tab segment" data-tab="file-upload">
         <span>Upload File</span>
-		
-
 
         <div class = "uploadSection">
             <form method="POST" action="upload" enctype = "multipart/form-data">
              	 <br />
-            
+
                 <div class = "uploadFilePath">
                     <!-- <button class = "uploadButton">Browse</button> -->
                     <input type = "file" name = "filePath" multiple required>
                 </div>
-                <!-- <div class = "uploadInput">
-                    <label class = "FN">File Name:<br><input type = "text" name = "fileName"></label>
-                    <label class = "FD">File Description:<br>
-                        <textarea></textarea>
-                    </label>
-                </div> -->
-                
+
                 <br />
                 <label for="courseCode">Course Code</label>
+                <br />
                 <input id="courseCode" type="text" placeholder="" name="courseCode">
                 <br />
                 <br />
-                
+
                 <button type = "submit" value = "submitUpload" id="upload-files-button">Upload</button>
+            </form>
+        </div>
+    </section>
+    <section class = "uploadFile ui tab segment" data-tab="crawler-upload">
+        <span>Crawler Upload</span>
+
+        <div class = "uploadSection">
+            <form method="POST" action="upload" enctype = "multipart/form-data">
+                <br />
+                <label for="crawlSite">Website to Crawl</label>
+                <br />
+                <input id="crawlSite" type="text" placeholder="" name="crawlSite">
+                <br />
+                <br />
+                <label for="crawlerCourseCode">Course Code</label>
+                <br />
+                <input id="crawlerCourseCode" type="text" placeholder="" name="crawlerCourseCode">
+                <br />
+                <br />
+                <button type = "submit" value = "submitUpload" id="crawler-upload-files-button">Upload</button>
+                <br />
             </form>
         </div>
     </section>
@@ -164,6 +153,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="./lib/semantic/semantic.min.js"></script>
     <script src="js/api.js"></script>
     <script src = "./js/uploader.js" type = "text/javascript"></script>
     <script src="./js/login.js"></script>

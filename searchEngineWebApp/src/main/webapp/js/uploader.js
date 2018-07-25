@@ -23,4 +23,8 @@
         });
     });
 
+    $(document).ready(function(){
+        $("#tab-menu .item").tab({history:false});
+    });
+
 })();
