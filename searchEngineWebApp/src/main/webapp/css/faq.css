@@ -1,0 +1,41 @@
+
+.faqSection {
+	overflow-y:scroll;
+	background-color: #FFFFFF;
+	width: 70%;
+    padding: 2% 5%;
+    position:absolute;
+    top:20%;
+    bottom:10%;
+}
+
+
+h1 { 
+    display: block;
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h3 { 
+    display: block;
+    font-size: 1.2em;
+    margin-top: 3em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+p.q {
+    margin-bottom: 0em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+p {
+	font-size:0.85em;
+}
