@@ -42,7 +42,7 @@ public class Crawler extends WebCrawler {
         this.currentUser = currentUser;
         this.courseCode = courseCode;
         
-        savedDocsFolder = new File(currentUser + File.separator + "tempDocs");
+        savedDocsFolder = new File(currentUser + "TempDocs");
         if (!savedDocsFolder.exists()) {
             savedDocsFolder.mkdirs();
         }

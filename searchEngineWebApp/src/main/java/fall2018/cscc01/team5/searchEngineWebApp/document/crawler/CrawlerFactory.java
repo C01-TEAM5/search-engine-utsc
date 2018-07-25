@@ -16,8 +16,8 @@ public class CrawlerFactory implements CrawlController.WebCrawlerFactory {
     
     @Override
     public WebCrawler newInstance() throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+
+        return new Crawler(currentUser, courseCode);
     }
 
 }

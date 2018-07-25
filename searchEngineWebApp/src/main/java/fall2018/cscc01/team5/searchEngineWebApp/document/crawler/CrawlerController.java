@@ -47,6 +47,7 @@ public class CrawlerController {
 		config.setMaxDepthOfCrawling(depth);
 		config.setMaxPagesToFetch(pages);
 		config.setIncludeBinaryContentInCrawling(true);
+		config.setMaxDownloadSize(5242880); //5 MB
 		
 		//Create the controller for the crawl
         PageFetcher pageFetcher = new PageFetcher(config);
