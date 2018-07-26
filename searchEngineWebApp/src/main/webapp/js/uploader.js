@@ -23,7 +23,7 @@
         });
     });
 
-    $("crawler-upload-files-button").click(function() {
+    $("#crawler-upload-files-button").click(function() {
         swal({
             title: "Processing!",
             text: "Please wait. This may take a few minutes.",

@@ -108,6 +108,9 @@
         <span>Upload File</span>
 
         <div class = "uploadSection">
+            Upload a single file to the system.
+            A course may be specified but is not required for upload.
+            Accepted filetypes include: .txt, .html, .pdf and .docx.
             <form method="POST" action="upload" enctype = "multipart/form-data">
              	 <br />
 
@@ -131,6 +134,10 @@
         <span>Crawler Upload</span>
 
         <div class = "uploadSection">
+            Crawls a provided website and uploads all relevant files into the system.
+            A course may be specified but is not required for crawling.
+            The number of pages visited is 30 from the URL provided. The depth of the crawl is 2.
+            The crawling process can take a few minutes to complete.
             <form method="POST" action="crawler">
                 <br />
                 <label for="crawlSite">Website to Crawl</label>
