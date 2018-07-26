@@ -1,7 +1,5 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document.crawler;
 
-import java.util.stream.Collectors;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -30,12 +28,13 @@ public class CrawlerServlet extends HttpServlet {
             return;
         }
         
-        System.out.println("Received POST Request");
-        System.out.println("User is "+currentUser+" and course is "+courseId);
-        System.out.println("URL to crawl is: "+crawlSite);
-        
-        
-        
+        try {
+            CrawlerController controller = new CrawlerController(crawlSite, 2, 30, currentUser, courseId);
+            controller.startCrawl();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
         resp.sendRedirect("/upload");
         
     }
