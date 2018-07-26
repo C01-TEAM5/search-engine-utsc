@@ -127,7 +127,13 @@
     		<artifactId>crawler4j</artifactId>
     		<version>4.4.0</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+		<dependency>
+    		<groupId>commons-validator</groupId>
+    		<artifactId>commons-validator</artifactId>
+    		<version>1.6</version>
+		</dependency>
+		
     </dependencies>
 
     <build>
