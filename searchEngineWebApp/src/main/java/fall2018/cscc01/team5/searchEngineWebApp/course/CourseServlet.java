@@ -48,6 +48,7 @@ public class CourseServlet extends HttpServlet {
         catch (InvalidKeySpecException e) {}
         catch (NoSuchAlgorithmException e) {}
         catch (DecoderException e) {}
+        catch (Exception e) {}
 
         String courseID = req.getParameter(Constants.SERVLET_PARAMETER_ID);
 

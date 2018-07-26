@@ -1,5 +1,5 @@
 (function(){
-    $(".signedIn").hide();
+    $(".isOwner").hide();
     $(".user-info input").prop('disabled', true);
     $(".user-info textarea").prop('disabled', true);
 
@@ -18,15 +18,16 @@
         }
     };
 
-    var userId = api.getCurrentUser();
-    var signedIn = false;
+    var userId = api.getUserId();
+    var isOwner = false;
     var editted = false;
     if (userId != null && getUrlParameter('id') === userId) {
-        $(".signedIn").show();
-        signedIn = true;
+        $(".isOwner").show();
+        $("#follow-user").hide();
+        isOwner = true;
     }
 
-    if (signedIn) {
+    if (isOwner) {
         $(".profile-image").hover(function(){
             $(".edit-image-container").css("display", "flex");
         });

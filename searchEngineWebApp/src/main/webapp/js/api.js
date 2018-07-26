@@ -27,7 +27,13 @@ var api = (function(){
 
     module.getCurrentUser = function() {
         var l = document.cookie.split("currentUserName=");
-        if (l.length > 1) return l[1];
+        if (l.length > 1) return l[1].split(';')[0];
+        return null;
+    };
+
+    module.getUserId = function() {
+        var l = document.cookie.split("currentUserId=");
+        if (l.length > 1) return l[1].split(';')[0];
         return null;
     };
 

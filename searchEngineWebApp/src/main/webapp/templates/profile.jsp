@@ -134,7 +134,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div class="user-info">
                     <div class="ui transparent input" id="input-username">
                         <input placeholder="Name..." type="text" value="${name}" id="username" disabled>
-                        <button class="ui icon button signedIn" id="edit-username">
+                        <button class="ui icon button isOwner" id="edit-username">
                             <i class="edit icon"></i>
                         </button>
                     </div>
@@ -145,11 +145,15 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </div>
                     <div class="ui transparent input" id="input-desc">
                         <textarea id="userDesc" disabled>${desc}</textarea>
-                        <button class="ui icon button signedIn" id="edit-desc">
+                        <button class="ui icon button isOwner" id="edit-desc">
                             <i class="edit icon"></i>
                         </button>
                     </div>
-                    <button class="circular ui icon button teal signedIn" id="save-profile-button"><i class="save icon"></i></button>
+                    <div class="profile-buttons">
+                        <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                        <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
+                    </div>
+                    
                 </div>
             </div>
             <div class="profile-row">
@@ -158,7 +162,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
             </h3>
             <c:if test="${permission == 3}">
-                <div class="ui raised segment signedIn">
+                <div class="ui raised segment isOwner">
                     <h3>Create a course</h3>
                     <hr>
                     <div class="ui action input">
@@ -211,7 +215,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="js/api.js"></script>
-    <script src="./js/profile.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/profile.js"></script>
 </body>
 </html>

@@ -62,6 +62,8 @@ public class UploadServlet extends HttpServlet {
         catch (InvalidKeySpecException e) {}
         catch (NoSuchAlgorithmException e) {}
         catch (DecoderException e) {}
+        catch (Exception e) {}
+
         String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         if (!currentUser.equals("") && AccountManager.exists(currentUser)) {
             // check upload request
