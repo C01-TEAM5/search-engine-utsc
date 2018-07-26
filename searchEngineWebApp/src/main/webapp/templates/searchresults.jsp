@@ -112,8 +112,26 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         <div class="separator"></div>
 
         <%-- filter --%>
-        <%-- <div id="chart_div"></div> --%>
-        ${htmlresult}
+        <div id="docxNum" class="hidden" hidden>${docxresult}</div>
+        <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
+        <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
+        <div id="txtNum" class="hidden" hidden>${txtresult}</div>
+        <div id="fileTypeFilter"></div>
+
+        <table id="OwnerData" class="hidden" hidden>
+            <%-- <tr><td>Owner</td><td>Occurence</td> --%>
+            <c:forEach var="o" items="${owner}">
+                <tr><td>${o.key}</td><td>${o.value}</td></tr>
+            </c:forEach>
+        </table>
+        <div id="fileOwnerFilter"></div>
+
+        <table id="CourseData" class="hidden" hidden>
+            <c:forEach var="c" items="${course}">
+                <tr><td>${c.key}</td><td>${c.value}</td></tr>
+            </c:forEach>
+        </table>
+        <div id="courseCodeFilter"></div>
 
         <div class="results-table">
             <c:forEach var="result" items="${searchResults}">

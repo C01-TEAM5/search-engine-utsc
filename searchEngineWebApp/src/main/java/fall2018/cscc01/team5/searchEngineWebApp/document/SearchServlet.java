@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class SearchServlet extends HttpServlet {
 
@@ -89,11 +90,10 @@ public class SearchServlet extends HttpServlet {
                 endIndex = totalResults;
             }
             
-            // get numb of different types
-            int htmlresult = 0;
-            int docxresult = 0;
-            int pdfresult = 0;
-            int txtresult = 0;
+            //filter data
+            int htmlresult = 0; int docxresult = 0; int pdfresult = 0; int txtresult = 0;
+            HashMap<String, Integer> owner = new HashMap<String, Integer>();
+            HashMap<String, Integer> course = new HashMap<String, Integer>();
             for (DocFile df: searchResults) {
             	if (df.getFileType().equals("html")) {
             		htmlresult += 1;
@@ -103,6 +103,18 @@ public class SearchServlet extends HttpServlet {
             		pdfresult += 1;
             	} else if (df.getFileType().equals("txt")) {
             		txtresult += 1;
+            	}	
+            	
+            	if (owner.containsKey(df.getOwner())) {
+            		owner.put(df.getOwner(), owner.get(df.getOwner())+1);
+            	} else {
+            		owner.put(df.getOwner(), 1);
+            	}
+            	
+            	if (course.containsKey(df.getCourseCode())) {
+            		course.put(df.getCourseCode(), course.get(df.getCourseCode())+1);
+            	} else {
+            		course.put(df.getCourseCode(), 1);
             	}
             }
             
@@ -116,6 +128,8 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("docxresult", docxresult);
             req.setAttribute("pdfresult", pdfresult);
             req.setAttribute("txtresult", txtresult);
+            req.setAttribute("owner", owner);
+            req.setAttribute("course", course);
             if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
