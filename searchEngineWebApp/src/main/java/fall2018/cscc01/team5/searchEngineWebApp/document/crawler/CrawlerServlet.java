@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
+
 public class CrawlerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -23,13 +25,19 @@ public class CrawlerServlet extends HttpServlet {
         
         //Check for valid website input
         if (!validator.isValid(crawlSite)) {
-            System.out.println("Invalid URL");
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         
+        //Check for valid Course input
+        if (!CourseManager.courseExists(courseId)) {
+        	resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        	return;
+        }
+        
+        //Crawl the website
         try {
-            CrawlerController controller = new CrawlerController(crawlSite, 2, 30, currentUser, courseId);
+            CrawlerController controller = new CrawlerController(crawlSite, 2, 40, currentUser, courseId);
             controller.startCrawl();
         } catch (Exception e) {
             e.printStackTrace();
