@@ -4,7 +4,7 @@ var api = (function(){
     function send(method, url, data, callback){
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
-            if (xhr.status !== 200) callback("[" + xhr.status + "] " + xhr.responseText, null);
+            if (xhr.status !== 200) callback(xhr.statusText, null);
             else{
                 try{
                     var x = JSON.parse(xhr.responseText);

@@ -52,13 +52,14 @@ public class AccountManager {
                 .append("hash", user.getHash())
                 .append("courses", user.getCourses())
                 .append("desc", user.getDescription())
+                .append("emailVerified", user.isEmailVerified())
                 .append("permission", user.getPermission());
 
         usersCollection.insertOne(doc);
         sendVerificationEmail(user);
     }
 
-    public static void sendVerificationEmail(User user) throws EmailException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public static void sendVerificationEmail(User user) throws EmailException {
 
         Email email = new SimpleEmail();
         email.setHostName("smtp.gmail.com");
@@ -73,8 +74,8 @@ public class AccountManager {
 
     }
 
-    private static String constructVerifyMsg (User u) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String verifyId = Validator.getSaltedHash(u.getEmail(), Validator.getSalt());
+    private static String constructVerifyMsg (User u) {
+        String verifyId = Validator.simpleEncrypt(u.getUsername());
 
         StringBuilder msg = new StringBuilder();
         msg.append("Hello " + u.getName() + ",");
@@ -139,6 +140,7 @@ public class AccountManager {
                 .append("hash", user.getHash())
                 .append("courses", user.getCourses())
                 .append("desc", user.getDescription())
+                .append("emailVerified", user.isEmailVerified())
                 .append("permission", user.getPermission());
 
         usersCollection.updateOne(Filters.eq("username", username), new Document("$set", doc));
@@ -162,6 +164,7 @@ public class AccountManager {
         user.setHash(doc.getString("hash"));
         user.setCourses((List<String>) doc.get("courses"));
         user.setDescription(doc.getString("desc"));
+        user.setEmailVerified(doc.getBoolean("emailVerified"));
 
         return user;
     }

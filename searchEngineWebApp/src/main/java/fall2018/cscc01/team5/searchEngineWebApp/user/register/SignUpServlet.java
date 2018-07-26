@@ -70,11 +70,10 @@ public class SignUpServlet extends HttpServlet {
             if (user != null) {
                 try {
                     AccountManager.register(user);
-                    Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(user.getUsername()));
-                    Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName());
-                    resp.addCookie(cookie);
-                    resp.addCookie(cookieName);
-
+//                    Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(user.getUsername()));
+//                    Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName());
+//                    resp.addCookie(cookie);
+//                    resp.addCookie(cookieName);
                     // successfully signed up
                     PrintWriter output = resp.getWriter();
                     output.print(gson.toJson("Success"));
