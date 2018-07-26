@@ -89,16 +89,38 @@ public class SearchServlet extends HttpServlet {
                 endIndex = totalResults;
             }
             
+            // get numb of different types
+            int htmlresult = 0;
+            int docxresult = 0;
+            int pdfresult = 0;
+            int txtresult = 0;
+            for (DocFile df: searchResults) {
+            	if (df.getFileType().equals("html")) {
+            		htmlresult += 1;
+            	} else if (df.getFileType().equals("docx")) {
+            		docxresult += 1;
+            	} else if (df.getFileType().equals("pdf")) {
+            		pdfresult += 1;
+            	} else if (df.getFileType().equals("txt")) {
+            		txtresult += 1;
+            	}
+            }
+            
             DocFile[] pageResults = Arrays.copyOfRange(searchResults, 
                     startIndex, endIndex);
             req.setAttribute("minPageDisplay", pageDisplay(currentPage, pagesRequired)[0]);
             req.setAttribute("maxPageDisplay", pageDisplay(currentPage, pagesRequired)[1]);
             req.setAttribute("searchResults", pageResults);
             req.setAttribute("totalResults", totalResults);
+            req.setAttribute("htmlresult", htmlresult);
+            req.setAttribute("docxresult", docxresult);
+            req.setAttribute("pdfresult", pdfresult);
+            req.setAttribute("txtresult", txtresult);
             if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noPageUri", noPageUri);
+            
         } catch (ParseException e) {
             e.printStackTrace();
         }

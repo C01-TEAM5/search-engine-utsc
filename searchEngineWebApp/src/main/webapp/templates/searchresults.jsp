@@ -18,6 +18,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <title>UTSC Document Search</title>
 </head>
+
 <body>
   <div id="search-background"></div>
 
@@ -104,11 +105,16 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
           </div>
     </div>
   </div>
+
     <!-- search results -->
-    <div class=search-results>
+    <div class="search-results">
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
-        
+
+        <%-- filter --%>
+        <%-- <div id="chart_div"></div> --%>
+        ${htmlresult}
+
         <div class="results-table">
             <c:forEach var="result" items="${searchResults}">
                 <div class="ui raised segment search-results-item">
@@ -119,17 +125,17 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
                         </div>
                         <div class="file-course">
-                            Course Code: 
+                            Course Code:
                             <c:if test="${result.courseCode.length() > 0}">
                                 <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                            </c:if> 
+                            </c:if>
                             <c:if test="${result.courseCode.length() == 0}">
                                 <div class="ui red horizontal label">NONE</div>
-                            </c:if> 
-                            
+                            </c:if>
+
                         </div>
                         <div class="file-owner">
-                            Owner: 
+                            Owner:
                             <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
                         </div>
                         <div class="content-snip">
@@ -166,7 +172,6 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 </c:if>
             </div>
         </div>
-
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -174,6 +179,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="../lib/semantic/semantic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <%-- filter --%>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="js/filter.js"></script>
     <script src="js/api.js"></script>
     <script src="./js/login.js"></script>
 </body>
