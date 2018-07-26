@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Validator;
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
@@ -49,8 +50,10 @@ public class SignInServlet extends HttpServlet {
         try {
             boolean success = AccountManager.login(map.get("username"), map.get("password"));
             if (success) {
-                Cookie cookie = new Cookie(Constants.CURRENT_USER, map.get("username"));
+                Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(map.get("username")));
+                Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, AccountManager.getUser(map.get("username")).getName());
                 resp.addCookie(cookie);
+                resp.addCookie(cookieName);
                 
                 // successfully signed in
                 PrintWriter output = resp.getWriter();

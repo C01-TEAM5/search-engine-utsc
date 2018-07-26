@@ -26,7 +26,7 @@ var api = (function(){
     var module = {};
 
     module.getCurrentUser = function() {
-        var l = document.cookie.split("currentUser=");
+        var l = document.cookie.split("currentUserName=");
         if (l.length > 1) return l[1];
         return null;
     };

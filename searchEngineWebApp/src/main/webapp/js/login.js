@@ -9,6 +9,7 @@
             setNotSignedIn();
         }
         else {
+            console.log("setting signed in");
             setSignedIn();
         }
 
@@ -180,6 +181,7 @@
         $(".user").html(api.getCurrentUser());
         $(".signedIn").css("display", "inline-block");
         $(".notSignedIn").css("display", "none");
+        console.log("set signed in");
     }
 
     var setNotSignedIn = function() {

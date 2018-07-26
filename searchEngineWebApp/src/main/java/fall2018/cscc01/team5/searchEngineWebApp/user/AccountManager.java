@@ -2,13 +2,17 @@ package fall2018.cscc01.team5.searchEngineWebApp.user;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.List;
 
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
+import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -35,7 +39,7 @@ public class AccountManager {
      *
      * @param user - an instance of User with information to create a database record
      */
-    public static void register(User user) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public static void register(User user) throws UsernameAlreadyExistsException, EmailAlreadyExistsException, EmailException, NoSuchAlgorithmException, InvalidKeySpecException {
 
         if (usersCollection.find(Filters.eq("username", user.getUsername())).first() != null)
             throw new UsernameAlreadyExistsException();
@@ -51,6 +55,51 @@ public class AccountManager {
                 .append("permission", user.getPermission());
 
         usersCollection.insertOne(doc);
+        sendVerificationEmail(user);
+    }
+
+    public static void sendVerificationEmail(User user) throws EmailException, InvalidKeySpecException, NoSuchAlgorithmException {
+
+        Email email = new SimpleEmail();
+        email.setHostName("smtp.gmail.com");
+        email.setSmtpPort(465);
+        email.setAuthenticator(new DefaultAuthenticator(Constants.EMAIL_USER, Constants.EMAIL_PASS));
+        email.setSSL(true);
+        email.setFrom(Constants.EMAIL_USER);
+        email.setSubject("Verify your email - Search Engine UTSC");
+        email.setMsg(constructVerifyMsg(user));
+        email.addTo(user.getEmail());
+        email.send();
+
+    }
+
+    private static String constructVerifyMsg (User u) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        String verifyId = Validator.getSaltedHash(u.getEmail(), Validator.getSalt());
+
+        StringBuilder msg = new StringBuilder();
+        msg.append("Hello " + u.getName() + ",");
+        msg.append(" ");
+        msg.append("You need to verify your email to use the Search Engine UTSC.");
+        msg.append("Please click the following link to verify your email.");
+        msg.append(Constants.EMAIL_VERIFY_PREFIX + verifyId);
+        msg.append(" ");
+        msg.append("Sincerely,");
+        msg.append("Search Engine UTSC Team");
+
+        return msg.toString();
+    }
+
+    /**
+     * Set the email verified status of this user to true
+     *
+     * @param u the user to verify email
+     * @throws InvalidUsernameException
+     * @throws EmailAlreadyExistsException
+     * @throws UsernameAlreadyExistsException
+     */
+    public static void verifyUserEmail(User u) throws InvalidUsernameException, EmailAlreadyExistsException, UsernameAlreadyExistsException {
+        u.setEmailVerified(true);
+        updateUser(u.getUsername(), u);
     }
 
     /**
@@ -67,7 +116,7 @@ public class AccountManager {
 
         Document doc = usersCollection.find(Filters.eq("username", username)).first();
         if (doc == null) throw new InvalidUsernameException();
-        if (!UserValidator.validatePassword(pass, doc.getString("hash"))) return false;
+        if (!Validator.validateHash(pass, doc.getString("hash"))) return false;
 
         return true;
     }
