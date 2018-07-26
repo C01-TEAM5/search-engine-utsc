@@ -52,7 +52,7 @@
 
     <servlet-mapping>
         <servlet-name>CrawlerServlet</servlet-name>
-        <url-pattern>/CrawlerServlet</url-pattern>
+        <url-pattern>/crawler</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
