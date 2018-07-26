@@ -7,11 +7,11 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <!--link rel="stylesheet" href="./css/main.css" type="text/css"-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
-    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <link rel="stylesheet" href="./css/results.css" type="text/css">
@@ -38,6 +38,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <button class = "btn notSignedIn registerButton">
                 Register</button>
 
+                <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
                 <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i>Upload</a>
                 <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                 <button class="btn signedIn" id="logoutButton">Logout</button>
@@ -210,7 +211,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="js/api.js"></script>
-    <script src="./js/login.js"></script>
     <script src="./js/profile.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 </html>

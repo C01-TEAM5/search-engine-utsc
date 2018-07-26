@@ -94,7 +94,7 @@ public class FileManager {
     /**
      * Download a file from the database given its id and filename
      * @param id the id of the file
-     * @param fileName the name of the file
+     * @param fileType the type of the file
      * 
      * @return the temporary path containing the file
      * @throws IOException

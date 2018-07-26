@@ -1,6 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistExcepti
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -51,7 +55,13 @@ public class UploadServlet extends HttpServlet {
     public void doPost (HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, java.io.IOException {
 
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
         String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         if (!currentUser.equals("") && AccountManager.exists(currentUser)) {
             // check upload request
@@ -187,15 +197,5 @@ public class UploadServlet extends HttpServlet {
             resp.sendRedirect("/upload?error");
         }
 
-    }
-
-    private String getCurrentUser(Cookie[] cookies) {
-        String res = "";
-        if (cookies == null) return res;
-        for (Cookie cookie: cookies) {
-            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
-        }
-
-        return res;
     }
 }

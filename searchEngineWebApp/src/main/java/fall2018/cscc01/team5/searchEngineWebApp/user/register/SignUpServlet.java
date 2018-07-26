@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Validator;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
@@ -69,9 +70,10 @@ public class SignUpServlet extends HttpServlet {
             if (user != null) {
                 try {
                     AccountManager.register(user);
-                    Cookie cookie = new Cookie(Constants.CURRENT_USER, user.getUsername());
-                    resp.addCookie(cookie);
-
+//                    Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(user.getUsername()));
+//                    Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName());
+//                    resp.addCookie(cookie);
+//                    resp.addCookie(cookieName);
                     // successfully signed up
                     PrintWriter output = resp.getWriter();
                     output.print(gson.toJson("Success"));
