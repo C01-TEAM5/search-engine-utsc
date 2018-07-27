@@ -142,10 +142,9 @@
     function setInstructors(data) {
         $("#instructors-list .custom-list").html("");
         data.forEach(function(id) {
-            console.log(id);
             api.getUser(id, function(err, result) {
                 if (err) {
-                    console.log(err);
+                    //console.log(err);
                 }
                 else {
                     $("#instructors-list .custom-list").append(`
@@ -163,7 +162,6 @@
                     `);
 
                     $("#"+id).click(function() {
-                        console.log("something");
                         api.removeInstructor($(".courseID").html(), $(this).attr("id"), function(err, res) {
                             if (err) {
                                 console.log(err);
@@ -181,10 +179,9 @@
     function setStudents(data) {
         $("#students-list .custom-list").html("");
         data.forEach(function(id) {
-            console.log(id);
             api.getUser(id, function(err, result) {
                 if (err) {
-                    console.log(err);
+                    //console.log(err);
                 }
                 else {
                     $("#students-list .custom-list").append(`
@@ -202,7 +199,6 @@
                     `);
 
                     $("#"+id).click(function() {
-                        console.log("something");
                         //$("#"+$(this).attr("id")+"-list-item").remove();
                         api.removeStudent($(".courseID").html(), $(this).attr("id"), function(err, res) {
                             if (err) {
@@ -219,13 +215,12 @@
     }
 
     function setFiles(data) {
-        console.log(data);
         $("#course-files-info #files-list .custom-list").html("");
         $(".courseNumSize").html(data.length);
         data.forEach(function(id) {
             api.getFile(id, function(err, result) {
                 if (err != null) {
-                    console.log(err);
+                    //console.log(err);
                 }
                 else {
                     $("#course-files-info #files-list .custom-list").append(`
@@ -269,13 +264,11 @@
     }
 
     function init() {
-        console.log($(".courseID").html());
         api.getCourse($(".courseID").html(), function(err, data) {
             if (err) {
                 console.log(err, "its in the init");
             }
             else {
-                console.log(data["instructors"]);
                 setInfo(data);
                 setInstructors(data["instructors"]);
                 isInstructor(data["instructors"]);

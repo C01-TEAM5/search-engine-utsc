@@ -2,9 +2,13 @@ package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -27,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +79,7 @@ public class FileServlet extends HttpServlet {
 
         try {
             DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
-            String path = "https://s3.amazonaws.com/search-engine-utsc/" + file.getId() + "." + file.getFileType();
+            String path = FileManager.buildPublicUrl(file.getId(), file.getFileType());
             req.setAttribute("path", path);
             req.setAttribute("fileName", file.getTitle());
             req.setAttribute("courseId", file.getCourseCode());
@@ -93,7 +99,13 @@ public class FileServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
 
         if (currentUser == null || currentUser == "") {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -103,7 +115,7 @@ public class FileServlet extends HttpServlet {
         DocFile file = null;
 
         try {
-            file = IndexHandler.getInstance().searchById(id, new String[]{"html", "pdf", "txt", "docx"})[0];
+            file = IndexHandler.getInstance().searchById(id, new String[] {"html", "pdf", "txt", "docx"})[0];
             if (!FileManager.fileExists(id, file.getFileType())) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "File does not exist");
                 return;
@@ -139,14 +151,31 @@ public class FileServlet extends HttpServlet {
         if (!newCourse.equals("") && !CourseManager.courseExists(newCourse)) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
             return;
+        } else if (CourseManager.courseExists(newCourse)) {
+            Course c;
+            try {
+                c = CourseManager.getCourse(newCourse);
+                c.addFile(file.getId());
+                CourseManager.updateCourse(newCourse, c);
+            } catch (CourseDoesNotExistException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid course");
+                return;
+            }
         }
 
         file.setTitle(newName);
+        if (CourseManager.courseExists(file.getCourseCode())) {
+            try {
+                Course oldC = CourseManager.getCourse(file.getCourseCode());
+                oldC.removeFile(file.getId());
+                CourseManager.updateCourse(file.getCourseCode(), oldC);
+            } catch (CourseDoesNotExistException e) {
+            }
+        }
         file.setCourseCode(newCourse);
         try {
             file.setPermissions(Integer.parseInt(newPerm));
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid params");
             return;
         }
@@ -164,15 +193,5 @@ public class FileServlet extends HttpServlet {
         PrintWriter output = resp.getWriter();
         output.print(new Gson().toJson(newId));
         output.flush();
-    }
-
-    private String getCurrentUser(Cookie[] cookies) {
-        String res = "";
-        if (cookies == null) return res;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
-        }
-
-        return res;
     }
 }

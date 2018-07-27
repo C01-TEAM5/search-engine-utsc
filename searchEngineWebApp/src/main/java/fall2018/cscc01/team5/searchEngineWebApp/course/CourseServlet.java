@@ -11,6 +11,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameExcept
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import javax.print.DocFlavor;
@@ -39,7 +41,14 @@ public class CourseServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
+
         String courseID = req.getParameter(Constants.SERVLET_PARAMETER_ID);
 
         if (courseID == null) {
@@ -303,15 +312,5 @@ public class CourseServlet extends HttpServlet {
         }
 
 
-    }
-
-    private String getCurrentUser(Cookie[] cookies) {
-        String res = "";
-        if (cookies == null) return res;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
-        }
-
-        return res;
     }
 }

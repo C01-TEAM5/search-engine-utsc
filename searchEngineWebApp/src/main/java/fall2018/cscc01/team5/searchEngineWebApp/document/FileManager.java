@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import com.amazonaws.ClientConfiguration;
 import org.apache.commons.io.FileUtils;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -41,6 +42,7 @@ public class FileManager {
      * @param fileType the type of this file
      * @param permission the permission level of this file
      * @param course the course this file belongs to
+     * @param id the DocFile id
      * @param fileStream the input stream containing the file contents
      * 
      * @return the id of the uploaded file
@@ -80,9 +82,20 @@ public class FileManager {
     }
     
     /**
+     * Build a AWS public link given the id and the filetype
+     * 
+     * @param id the id of the file
+     * @param fileType the type of the file
+     * @return a String representation of the a aws public url 
+     */
+    public static String buildPublicUrl(String id, String fileType) {
+        return Constants.AWS_PUBLIC_URL_PREFIX + id + "." + fileType;
+    }
+    
+    /**
      * Download a file from the database given its id and filename
      * @param id the id of the file
-     * @param fileName the name of the file
+     * @param fileType the type of the file
      * 
      * @return the temporary path containing the file
      * @throws IOException
@@ -96,6 +109,7 @@ public class FileManager {
         
         S3Object object = s3client.getObject(bucketName, id + "." + fileType);
         FileUtils.copyInputStreamToFile(object.getObjectContent(), new File(path));
+        object.close();
 
         return path;
     }
@@ -127,6 +141,7 @@ public class FileManager {
             file.setId(summary.getKey().split("\\.")[0]);
             file.setPath(download(summary.getKey().split("\\.")[0], type));
             ih.addDoc(file);
+            object.close();
         }
         cleanTemporaryDownloads();
     }
@@ -162,6 +177,8 @@ public class FileManager {
         metadata.addUserMetadata(Constants.INDEX_KEY_COURSE, file.getCourseCode());
         
         s3client.putObject(new PutObjectRequest(bucketName, id + "." + file.getFileType(), object.getObjectContent(), metadata));
+
+        object.close();
         
         return id;
     }
@@ -183,8 +200,10 @@ public class FileManager {
      */
     public static boolean fileExists(String fileId, String fileType) {
         try {
-            return s3client.getObject(bucketName, fileId + "." + fileType) != null;
-            //return false;
+            S3Object object = s3client.getObject(bucketName, fileId + "." + fileType);
+            boolean res = object != null;
+            object.close();
+            return res;
         }
         catch (Exception e) {
             return false;

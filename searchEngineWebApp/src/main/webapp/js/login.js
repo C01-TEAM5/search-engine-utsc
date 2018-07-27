@@ -4,11 +4,13 @@
     var permission = 2;
 
     var load = function() {
+        
         setNotSignedIn();
         if (api.getCurrentUser() == null || api.getCurrentUser() === "") {
             setNotSignedIn();
         }
         else {
+            console.log("setting signed in");
             setSignedIn();
         }
 
@@ -73,7 +75,7 @@
                     setNotSignedIn();
                     console.log(err);
                     swal.close();
-                    swal("Error!", "Invalid login info", "error");
+                    swal("Error!", "Failed to login. Make sure you have verified your email.", "error");
                 }
                 else {  //success when login 
                     //display==none for register and login
@@ -116,7 +118,7 @@
                     setNotSignedIn();
                     console.log(err);
                     swal.close();
-                    swal("Error!", "Invalid login info", "error");
+                    swal("Error!", "Unable to register. Please try again." + err, "error");
                 }
                 else { //success register 
                     //display==none for register and login
@@ -124,9 +126,12 @@
                     // document.getElementById("RegisterButton").style.display = "none";
                     // //display logout
                     // document.getElementById("logoutButton").style.display = "inline-block";
-                    setSignedIn();
+                    //setSignedIn();
+                    setNotSignedIn();
                     swal.close();
-                    location.reload(); 
+                    swal("Success!", "Please check your email for the verification email.", "success");
+                    popupregister.style.display = "none";
+                    //location.reload(); 
                 }
             });
             
@@ -156,30 +161,34 @@
             console.log(2);
         });
 
+        document.getElementById("r-pwd1").addEventListener("keyup", check);
+        document.getElementById("r-pwd2").addEventListener("keyup", check);
 
 
-        var check = function() {
-            if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
-                document.getElementById('message').style.color = 'green';
-                document.getElementById('message').innerHTML = 'Passwords match';
-                document.getElementById('RC').disabled = false;
-            } else {
-                document.getElementById('message').style.color = 'red';
-                document.getElementById('message').innerHTML = 'The provided passwords do not match';
-                document.getElementById('RC').disabled = true;
-            }
-        }
         parseURL();
+        
+    }
+
+    var check = function() {
+        if (document.getElementById("r-pwd1").value == document.getElementById("r-pwd2").value) {
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Passwords match';
+            document.getElementById('RC').disabled = false;
+        } else {
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'The provided passwords do not match';
+            document.getElementById('RC').disabled = true;
+        }
     }
 
     var setSignedIn = function() {
-        $(".user").html(api.getCurrentUser());
+        $(".userName").html(api.getCurrentUser());
         $(".signedIn").css("display", "inline-block");
         $(".notSignedIn").css("display", "none");
     }
 
     var setNotSignedIn = function() {
-        $(".user").html("");
+        $(".userName").html("");
         $(".notSignedIn").css("display", "inline-block");
         $(".signedIn").css("display", "none");
     }

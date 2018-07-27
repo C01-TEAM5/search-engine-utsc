@@ -6,6 +6,7 @@ public class Constants {
     
     public static final String AWS_ACCESS_KEY = "AKIAJV5UQ7TRTXC62K2Q";
     public static final String AWS_SECRET_KEY = "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";
+    public static final String AWS_PUBLIC_URL_PREFIX = "https://s3.amazonaws.com/search-engine-utsc/";    
 
     public static final String FILETYPE_DOCX = "docx";
     public static final String FILETYPE_HTML = "html";
@@ -14,6 +15,10 @@ public class Constants {
     
     public static final String FILE_PUBLIC_BASE_PATH = "src" + File.separator + "main" + File.separator + "webapp" + File.separator;
     public static final String FILE_PUBLIC_PATH = "tmp" + File.separator;
+
+    public static final String EMAIL_USER = "search.engine.utsc@gmail.com";
+    public static final String EMAIL_PASS = "Search.engine1";
+    public static final String EMAIL_VERIFY_PREFIX = "https://search-engine-utsc.herokuapp.com/verify-email?id=";
 
     public static final String INDEX_KEY_CONTENT = "Content";
     public static final String INDEX_KEY_FILENAME = "Filename";
@@ -42,10 +47,10 @@ public class Constants {
     public static final String[] VALIDDOCTYPES = {"pdf", "txt", "html", "docx"};
     
     public static final String CURRENT_USER = "currentUser";
+    public static final String CURRENT_USER_NAME = "currentUserName";
 
     public static final int PERMISSION_ALL = 0;
     public static final int PERMISSION_INSTRUCTOR = 3;
     public static final int PERMISSION_STUDENT = 2;
     public static final int PERMISSION_TA = 1;
-
 }
