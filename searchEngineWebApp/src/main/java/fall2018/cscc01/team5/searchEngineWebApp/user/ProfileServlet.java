@@ -245,14 +245,12 @@ public class ProfileServlet extends HttpServlet {
         }
 
         try {
-            if (id != null && id != "") {
-                currentUser = id;
-            }
-            else {
+            if (id == null || id == "") {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-            User user = AccountManager.getUser(currentUser);
+
+            User user = AccountManager.getUser(id);
             DocFile[] files = IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"html", "pdf", "txt", "docx"});
             req.setAttribute("userId", user.getUsername());
             req.setAttribute("name", user.getName());
@@ -265,6 +263,7 @@ public class ProfileServlet extends HttpServlet {
             req.setAttribute("htmlNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"html"}).length);
             req.setAttribute("pdfNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"pdf"}).length);
             req.setAttribute("txtNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"txt"}).length);
+            req.setAttribute("following", user.getFollowers().contains(currentUser));
 
             RequestDispatcher view = req.getRequestDispatcher("templates/profile.jsp");
             view.forward(req, resp);

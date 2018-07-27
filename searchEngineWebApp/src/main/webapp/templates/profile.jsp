@@ -149,8 +149,15 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             <i class="edit icon"></i>
                         </button>
                     </div>
-                    <div class="profile-buttons">
-                        <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                    <div class="profile-buttons" id="profile-buttons-container">
+                        <div id="follow-buttons">
+                            <c:if test="${following == true}">
+                                <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
+                            </c:if>
+                            <c:if test="${following == false}">
+                                <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                            </c:if>
+                        </div>
                         <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
                     </div>
                     

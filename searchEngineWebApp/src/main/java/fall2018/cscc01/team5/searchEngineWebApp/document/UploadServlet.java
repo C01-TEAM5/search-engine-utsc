@@ -19,6 +19,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
 import org.apache.commons.codec.DecoderException;
@@ -130,7 +131,11 @@ public class UploadServlet extends HttpServlet {
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
                             docFile.setPermissions(AccountManager.getPermission(currentUser));
                             
-                            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
+                            if (courseId != null ) {
+                                if (!CourseManager.courseExists(courseId.toLowerCase())){
+                                    resp.sendRedirect("/upload?error");
+                                    return;
+                                }
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
@@ -141,7 +146,11 @@ public class UploadServlet extends HttpServlet {
                                 CourseManager.updateCourse(courseId, c);
                                 
                             }
-                            else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
+                            else if (courseCode!= null) {
+                                if (courseCode != "" && !CourseManager.courseExists(courseCode.toLowerCase())){
+                                    resp.sendRedirect("/upload?error");
+                                    return;
+                                }
                                 courseCode = courseCode.toLowerCase();
                                 docFile.setCourseCode(courseCode);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
@@ -160,6 +169,13 @@ public class UploadServlet extends HttpServlet {
                             docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
+                            // inform all subscribers
+                            User user = AccountManager.getUser(currentUser);
+                            for (String id: user.getFollowers()) {
+                                User toInform = AccountManager.getUser(id);
+                                String msg = constructMsg(user, toInform, docFile);
+                                AccountManager.sendNotification(toInform, msg);
+                            }
                         }
                     }
                 }
@@ -198,6 +214,23 @@ public class UploadServlet extends HttpServlet {
             }
             resp.sendRedirect("/upload?error");
         }
+
+    }
+
+    private String constructMsg(User from, User to, DocFile docFile) {
+
+        StringBuilder res = new StringBuilder();
+        res.append("Hello " + to.getName() + ",");
+        res.append("\n");
+        res.append("\n");
+        res.append("One of your followers, " + from.getName() + ", has just uploaded a new file, " + docFile.getFilename());
+        res.append("\n");
+        res.append("\n");
+        res.append("Sincerely,");
+        res.append("\n");
+        res.append("Search Engine UTSC Team");
+
+        return res.toString();
 
     }
 }

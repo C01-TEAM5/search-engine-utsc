@@ -32,6 +32,7 @@
     align-items: center !important;
     padding: 5px !important;
     overflow: none !important;
+    overflow-y: auto !important;
 }
 
 .card .tag {
@@ -189,7 +190,7 @@ span {
     width: 97% !important;
 }
 
-#follow-user {
+#follow-user, #unfollow-user {
 
     margin-top: 15px !important;
     line-height: 18pt;
@@ -198,7 +199,7 @@ span {
     padding-right: 10px;
 }
 
-#follow-user i {
+#follow-user i, #unfollow-user i {
 
     padding: 0;
     margin-right: 5px !important;

@@ -113,6 +113,10 @@ var api = (function(){
         send("POST", "/file?id=" + id, {"name":name, "course":course, "permission":permission}, callback);
     }
 
+    module.followUser = function(id, unfollow, callback) {
+        send("POST", "/follow-user", {"id":id, "unfollow":unfollow}, callback);
+    }
+
     module.buildQuery = function buildQueryString(query, filters, perm) {
 
         var query = query.replace(" ","+");

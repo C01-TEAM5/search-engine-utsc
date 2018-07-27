@@ -123,6 +123,40 @@
         });
     });
 
+    $("#unfollow-user").on("click", unfollow);
+
+    $("#follow-user").on("click", follow);
+
+
+    function follow() {
+        console.log("clicking foloow");
+        api.followUser(getUrlParameter("id"), false, function(err, data){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                $("#follow-user").attr("id", "unfollow-user");
+                $("#unfollow-user").html(`<i class="address book outline icon"></i>Unfollow`);
+                $("#unfollow-user").unbind("click");
+                $("#unfollow-user").on("click", unfollow);
+            }
+        });
+    }
+
+    function unfollow() {
+        console.log("clicking unfoloow");
+        api.followUser(getUrlParameter("id"), true, function(err, data){
+            if (err) {
+
+            } else {
+                $("#unfollow-user").attr("id", "follow-user");
+                $("#follow-user").html(`<i class="address book outline icon"></i>Follow`);
+                $("#follow-user").unbind("click");
+                $("#follow-user").on("click", follow);
+            }
+        });
+    }
+
     function loadStats() {
         // code gotted from google developer site
 
