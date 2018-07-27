@@ -13,6 +13,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameExcept
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import javax.servlet.RequestDispatcher;
@@ -41,7 +43,13 @@ public class ProfileServlet extends HttpServlet {
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         boolean createCourse = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_CREATE_COURSE);
         boolean deleteFile = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_DELETE_FILE);
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
 
         if (currentUser == null || currentUser == "") {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -200,7 +208,13 @@ public class ProfileServlet extends HttpServlet {
 
         String id = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         boolean get = req.getParameterMap().containsKey(Constants.SERVLET_PARAMETER_GET);
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
 
         if (id == null || !AccountManager.exists(id.toLowerCase())) {
             if (currentUser == null || currentUser.equals("")) {
@@ -269,15 +283,5 @@ public class ProfileServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-    }
-
-    private String getCurrentUser(Cookie[] cookies) {
-        String res = "";
-        if (cookies == null) return res;
-        for (Cookie cookie: cookies) {
-            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
-        }
-
-        return res;
     }
 }
