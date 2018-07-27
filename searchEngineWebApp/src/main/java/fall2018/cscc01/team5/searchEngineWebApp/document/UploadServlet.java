@@ -121,7 +121,6 @@ public class UploadServlet extends HttpServlet {
                             fileSaveDir.mkdir();
                         }
 
-
                         File targetFile = new File(filePath + fileName);
                         //Only upload the file if it does not exist already
                         if (!targetFile.isFile()) {
@@ -146,8 +145,8 @@ public class UploadServlet extends HttpServlet {
                                 CourseManager.updateCourse(courseId, c);
                                 
                             }
-                            else if (courseCode!= null) {
-                                if (courseCode != "" && !CourseManager.courseExists(courseCode.toLowerCase())){
+                            else if (courseCode!= null && !courseCode.equalsIgnoreCase("")) {
+                                if (!CourseManager.courseExists(courseCode.toLowerCase())){
                                     resp.sendRedirect("/upload?error");
                                     return;
                                 }
