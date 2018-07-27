@@ -4,11 +4,11 @@
     height: 85%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    /* align-items: center;
+    justify-content: center; */
     background-color: rgba(255, 255, 255, 0.904);
     margin: 2%;
-    padding: 20px;
+    padding: 0px;
 }
 
 .results-table {
@@ -16,7 +16,7 @@
     height: 80%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-around;
 }
 
@@ -147,7 +147,7 @@ a {
         font-size: 24pt;
     }
 
-    .page-move-btn { 
+    .page-move-btn {
         font-size: 11pt;
     }
 

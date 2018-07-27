@@ -21,9 +21,7 @@ function drawChart() {
       ['TXT', parseInt($("#txtNum").html())]
   ]);
   // Set chart options
-  var fileTypeoptions = {'title':'File Type Statistics',
-                 'width':400,
-                 'height':300};
+  var fileTypeoptions = {'title':'File Type Statistics', 'width':300, 'height':180};
   // Instantiate and draw our chart, passing in some options.
   var fileTypechart = new google.visualization.PieChart(document.getElementById('fileTypeFilter'));
   fileTypechart.draw(fileTyepData, fileTypeoptions);
@@ -41,7 +39,7 @@ function drawChart() {
   }
   var len = OwnerTable.rows.length;
   console.log(len);
-  var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':400, 'height':300};
+  var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':300, 'height':180};
   var fileOwnerchart = new google.visualization.PieChart(document.getElementById('fileOwnerFilter'));
   fileOwnerchart.draw(fileOwnerData, fileOwneroptions);
 
@@ -53,7 +51,7 @@ function drawChart() {
   for (var i=0; i<CourseTable.rows.length; i++) {
        courseData.addRow([CourseTable.rows[i].cells[0].innerHTML, parseInt(CourseTable.rows[i].cells[1].innerHTML)]);
   }
-  var courseoptions = {'title' : 'Course Code Statistics', 'width':400, 'height':300};
+  var courseoptions = {'title' : 'Course Code Statistics', 'width':300, 'height':180};
   var coursechart = new google.visualization.PieChart(document.getElementById('courseCodeFilter'));
   coursechart.draw(courseData, courseoptions);
 
