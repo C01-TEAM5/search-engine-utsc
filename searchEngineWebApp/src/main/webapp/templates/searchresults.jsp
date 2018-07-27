@@ -10,6 +10,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <meta charset="UTF-8">
     <!--link rel="stylesheet" href="./css/main.css" type="text/css"-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
     <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
@@ -17,7 +18,6 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <title>UTSC Document Search</title>
 </head>
-
 <body>
   <div id="search-background"></div>
 
@@ -107,14 +107,14 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
   </div>
 
     <!-- search results -->
-    <div class="search-results">
+    <div class=search-results>
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
 
-
+        <%-- filter --%>
         <div class="ui grid">
-            <%-- filter --%>
-            <div class="eight wide column">
+            <div class="two column row">
+            <div class="column">
                 <div id="docxNum" class="hidden" hidden>${docxresult}</div>
                 <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
                 <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
@@ -136,99 +136,74 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div id="courseCodeFilter"></div>
             </div>
 
-            <div class="eight wide column">
-                <div class="results-table">
-                    <c:forEach var="result" items="${searchResults}">
-                        <div class="ui raised segment search-results-item">
-                            <i class="file alternate outline icon"></i>
-                            <div class="search-results-item-info">
-                                <div class="file-name">
-                                    <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
-                                    <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
-                                </div>
-                                <div class="file-course">
-                                    Course Code:
-                                    <c:if test="${result.courseCode.length() > 0}">
-                                        <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                                    </c:if>
-                                    <c:if test="${result.courseCode.length() == 0}">
-                                        <div class="ui red horizontal label">NONE</div>
-                                    </c:if>
-
-                                </div>
-                                <div class="file-owner">
-                                    Owner:
-                                    <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
-                                </div>
-                                <div class="content-snip">
-                                    ${result.contextString}
-                                </div>
+            <div class="column">
+            <div class="results-table">
+                <c:forEach var="result" items="${searchResults}">
+                    <div class="ui raised segment search-results-item">
+                        <i class="file alternate outline icon"></i>
+                        <div class="search-results-item-info">
+                            <div class="file-name">
+                                <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
+                                <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
                             </div>
+                            <div class="file-course">
+                                Course Code:
+                                <c:if test="${result.courseCode.length() > 0}">
+                                    <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
+                                </c:if>
+                                <c:if test="${result.courseCode.length() == 0}">
+                                    <div class="ui red horizontal label">NONE</div>
+                                </c:if>
 
-        <div class="results-table">
-            <c:forEach var="result" items="${searchResults}">
-                <div class="ui raised segment search-results-item">
-                    <i class="file alternate outline icon"></i>
-                    <div class="search-results-item-info">
-                        <div class="file-name">
-                            <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
-                            <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
+                            </div>
+                            <div class="file-owner">
+                                Owner:
+                                <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
+                            </div>
+                            <div class="content-snip">
+                                ${result.contextString}
+                            </div>
                         </div>
-                        <div class="file-course">
-                            Course Code:
-                            <c:if test="${result.courseCode.length() > 0}">
-                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                            </c:if>
-                            <c:if test="${result.courseCode.length() == 0}">
-                                <div class="ui red horizontal label">NONE</div>
-                            </c:if>
-
-                        </div>
-                        <div class="file-owner">
-                            Owner:
-                            <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
-                        </div>
-                        <div class="content-snip">
-                            ${result.contextString}
-
-                        </div>
-                    </c:forEach>
-                </div>
-
-                <!-- page number -->
-                <div class="pagination">
-                    <div class="page">
-                        <!-- previous link -->
-                        <c:if test="${currentPage != 1}">
-                            <td><a href="${noPageUri}page=${currentPage - 1}">
-                            <button class="page-move-btn">Previous</button></a></td>
-                        </c:if>
-                        <!-- page number -->
-                        <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
-                            <c:choose>
-                                <c:when test="${currentPage eq index}">
-                                    <td class="page-num" id="active-page">${index}</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                        <!-- next link -->
-                        <c:if test="${currentPage != totalPages}">
-                            <td><a href="${noPageUri}page=${currentPage + 1}">
-                            <button class="page-move-btn">Next</button></a><td>
-                        </c:if>
                     </div>
+                </c:forEach>
+            </div>
+
+            <!-- page number -->
+            <div class="pagination">
+                <div class="page">
+                    <!-- previous link -->
+                    <c:if test="${currentPage != 1}">
+                        <td><a href="${noPageUri}page=${currentPage - 1}">
+                        <button class="page-move-btn">Previous</button></a></td>
+                    </c:if>
+                    <!-- page number -->
+                    <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
+                        <c:choose>
+                            <c:when test="${currentPage eq index}">
+                                <td class="page-num" id="active-page">${index}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <!-- next link -->
+                    <c:if test="${currentPage != totalPages}">
+                        <td><a href="${noPageUri}page=${currentPage + 1}">
+                        <button class="page-move-btn">Next</button></a><td>
+                    </c:if>
                 </div>
             </div>
+        </div>
+
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../lib/semantic/semantic.min.js"></script>
-    <%-- filter --%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/filter.js"></script>
     <script src="js/api.js"></script>
