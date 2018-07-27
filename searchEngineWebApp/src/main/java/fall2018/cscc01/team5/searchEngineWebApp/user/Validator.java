@@ -3,11 +3,10 @@ package fall2018.cscc01.team5.searchEngineWebApp.user;
 import java.security.SecureRandom;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.jasypt.util.text.StrongTextEncryptor;
 
 import java.security.spec.InvalidKeySpecException;
 import java.security.NoSuchAlgorithmException;
@@ -81,9 +80,8 @@ public class Validator {
      * @return
      */
     public static String simpleEncrypt(String toEncrypt) {
-        StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
-        textEncryptor.setPassword("SUPERDUPERSECRETPASSWORD");
-        String res = textEncryptor.encrypt(toEncrypt);
+
+        String res = Base64.encodeBase64String((toEncrypt + "SUPERDUPERSECTRET").getBytes());
 
         return  res;
     }
@@ -98,9 +96,7 @@ public class Validator {
      * @throws NoSuchAlgorithmException
      */
     public static String simpleDecode (String hash) {
-        StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
-        textEncryptor.setPassword("SUPERDUPERSECRETPASSWORD");
-        String res = textEncryptor.decrypt(hash);
+        String res = new String(Base64.decodeBase64(hash.getBytes())).split("SUPERDUPERSECTRET")[0];
 
         return res;
     }
