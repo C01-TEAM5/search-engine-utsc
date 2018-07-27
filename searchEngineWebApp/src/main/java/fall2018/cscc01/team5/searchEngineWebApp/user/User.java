@@ -17,6 +17,7 @@ public class User {
     private int permission;
     private String desc;
     private boolean emailVerified;
+    private List<String> followers;
 
     public User(String username, String email, String name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.username = username;
@@ -27,6 +28,42 @@ public class User {
         this.courses = new ArrayList<String>();
         this.desc = "";
         emailVerified = false;
+        followers = new ArrayList<>();
+    }
+
+    /**
+     * Return this users list of followers
+     * @return a list of user Ids
+     */
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+    /**
+     * Change this users list of followers
+     * @param followers the new list of followers
+     */
+    public void setFollowers(List<String> followers) {
+        this.followers = followers;
+    }
+
+    /**
+     * Add a user to the follower list
+     * @param id a userID of a user
+     * @return true if successful
+     */
+    public boolean addFollower(String id) {
+        if (this.followers.contains(id)) return true;
+        return this.followers.add(id);
+    }
+
+    /**
+     * Remove a user  from this users follower list
+     * @param id the userId of a user
+     * @return true if successful
+     */
+    public boolean removeFollower(String id) {
+        return this.followers.remove(id);
     }
 
     /**

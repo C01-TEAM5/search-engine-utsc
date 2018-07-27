@@ -31,7 +31,8 @@
     justify-content: flex-start !important;
     align-items: center !important;
     padding: 5px !important;
-    overflow: auto;
+    overflow: none !important;
+    overflow-y: auto !important;
 }
 
 .card .tag {
@@ -48,16 +49,17 @@
 }
 
 .user-info {
-    width: 100%;
-    height: 95%;
-    min-height: 250px;
+    width: 90%;
+    height: 90%;
+    min-height: 0px;
     border-left: 1px solid #ddd;
     padding-left: 20px;
+    overflow: none;
 }
 
 #userDesc {
     width: 100% !important;
-    height: 100px !important;
+    height: 90px !important;
     border-radius: 5px;
     border: 1px solid #ddd;
     padding: 10px;
@@ -68,7 +70,7 @@
 }
 
 .user-info .input {
-    width: 100% !important;
+    width: 97% !important;
     color: black !important;
     -webkit-text-fill-color: black;
 }
@@ -146,12 +148,8 @@ span {
 }
 
 #save-profile-button {
-    position: absolute !important;
-    z-index: 3 !important;
-    top: 80% !important;
-    left: 93% !important;
-    margin: 0 !important;
-    width: auto !important;
+    margin-top: 15px !important;
+    margin-left: 25px;
 }
 
 #save-profile-button i {
@@ -174,13 +172,40 @@ span {
     margin-bottom: 10px;
 }
 
+.profile-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .stats {
     width:100%;
     height: 31%;
     overflow: hidden;
 }
 
-@media (max-width: 1600px) {
+#input-desc {
+    padding: 0 !important;
+    width: 97% !important;
+}
+
+#follow-user, #unfollow-user {
+
+    margin-top: 15px !important;
+    line-height: 18pt;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#follow-user i, #unfollow-user i {
+
+    padding: 0;
+    margin-right: 5px !important;
+}
+
+@media (max-width: 1650px) {
     .profile-container {
         padding: 20px;
         width: 100%;
