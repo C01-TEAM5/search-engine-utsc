@@ -109,7 +109,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <div class=search-results>
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
-        
+
         <div class="results-table">
             <c:forEach var="result" items="${searchResults}">
                 <div class="ui raised segment search-results-item">
@@ -120,17 +120,17 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
                         </div>
                         <div class="file-course">
-                            Course Code: 
+                            Course Code:
                             <c:if test="${result.courseCode.length() > 0}">
                                 <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                            </c:if> 
+                            </c:if>
                             <c:if test="${result.courseCode.length() == 0}">
                                 <div class="ui red horizontal label">NONE</div>
-                            </c:if> 
-                            
+                            </c:if>
+
                         </div>
                         <div class="file-owner">
-                            Owner: 
+                            Owner:
                             <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
                         </div>
                         <div class="content-snip">

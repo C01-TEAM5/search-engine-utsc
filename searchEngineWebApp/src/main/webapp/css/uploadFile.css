@@ -1,5 +1,6 @@
+
 .uploadFile {
-    background-color: #FFFFFF;
+    background-color: #FFFFFF !important;
     padding: 3% 5%;
     position:absolute;
     top:30%;
@@ -47,4 +48,13 @@
 input {
     width: 500px;
     height: 25px;
+}
+
+#tab-menu {
+    position:absolute;
+    top:30%;
+}
+
+.item {
+    background-color: #FFFFFF !important;
 }
