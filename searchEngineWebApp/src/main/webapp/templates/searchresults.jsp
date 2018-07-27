@@ -33,6 +33,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             <button class = "btn notSignedIn registerButton">
             Register</button>
 
+            <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
             <a class="btn signedIn" id="uploadButton" href="/upload">Upload</a>
             <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
             <button class="btn signedIn" id="logoutButton">Logout</button>
@@ -84,10 +85,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                           <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
 
                           <label for="userpsw">Password</label>
-                          <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
+                          <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
 
                           <label for="confirmpsw">Confirm Password</label>
-                          <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                          <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                           <span id = "message"></span><br>
 
                           <div class="btn-container">

@@ -7,6 +7,8 @@ import java.io.InputStream;
 import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 /**
@@ -59,7 +61,6 @@ public class Uploader {
         fileInfo.setPath(FileManager.download(fileInfo.getId(), fileInfo.getFileType()));
         IndexHandler indexHandler = IndexHandler.getInstance();
         indexHandler.addDoc(fileInfo);
-        
     }
     
     /**

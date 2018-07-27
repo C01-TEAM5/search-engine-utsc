@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.User;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Validator;
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
@@ -49,9 +51,19 @@ public class SignInServlet extends HttpServlet {
         try {
             boolean success = AccountManager.login(map.get("username"), map.get("password"));
             if (success) {
-                Cookie cookie = new Cookie(Constants.CURRENT_USER, map.get("username"));
+                User user = AccountManager.getUser(map.get("username"));
+                if (!user.isEmailVerified()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Email not verified");
+                    return;
+                }
+
+                Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(map.get("username")));
+                Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName());
+                Cookie cookieId = new Cookie(Constants.CURRENT_USER_ID, user.getUsername());
                 resp.addCookie(cookie);
-                
+                resp.addCookie(cookieName);
+                resp.addCookie(cookieId);
+
                 // successfully signed in
                 PrintWriter output = resp.getWriter();
                 output.print(gson.toJson("Success"));

@@ -26,6 +26,16 @@
     </servlet>
 
     <servlet>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.VerifyEmailServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FollowUserServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.FollowUserServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>CourseServlet</servlet-name>
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.course.CourseServlet</servlet-class>
     </servlet>
@@ -38,6 +48,16 @@
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <url-pattern>/verify-email</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FollowUserServlet</servlet-name>
+        <url-pattern>/follow-user</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

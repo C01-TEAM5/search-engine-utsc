@@ -43,7 +43,7 @@ public class CrawlerController {
 		this.permissions = AccountManager.getPermission(currentUser);
 		
 		CrawlConfig config = new CrawlConfig();
-		config.setCrawlStorageFolder("/temp");
+		config.setCrawlStorageFolder("temp");
 		config.setMaxDepthOfCrawling(depth);
 		config.setMaxPagesToFetch(pages);
 		config.setIncludeBinaryContentInCrawling(true);

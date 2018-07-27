@@ -28,6 +28,7 @@
                 Register</button>
 
                 <div class="signedIn header-info">Welcome! <span class="user"></span></div>
+
                 <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                 <button class="btn signedIn" id="logoutButton">Logout</button>
             </div>
@@ -78,10 +79,15 @@
                               <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
 
                               <label for="userpsw">Password</label>
+<<<<<<< HEAD
                               <input id = "r-pwd1" onkeyup="check()" type="password" placeholder="Enter Password" name="registerpsw" required>
 
+=======
+                              <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
+
+>>>>>>> origin/bug-fix
                               <label for="confirmpsw">Confirm Password</label>
-                              <input id = "r-pwd2" onkeyup="check()" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                              <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
                               <span id = "message"></span><br>
 
                               <div class="btn-container">
@@ -108,6 +114,10 @@
         <span>Upload File</span>
 
         <div class = "uploadSection">
+            <br />
+            Upload a single file to the system.<br />
+            A course may be specified but is not required for upload.<br />
+            Accepted filetypes include: .txt, .html, .pdf and .docx.<br />
             <form method="POST" action="upload" enctype = "multipart/form-data">
              	 <br />
 
@@ -131,6 +141,14 @@
         <span>Crawler Upload</span>
 
         <div class = "uploadSection">
+            <br />
+            Crawls a provided website and uploads all relevant files into the system.
+            <br />
+            A course may be specified but is not required for crawling.
+            <br />
+            The number of pages visited is 30 from the URL provided. The depth of the crawl is 2.
+            <br />
+            The crawling process can take a few minutes to complete.
             <form method="POST" action="crawler">
                 <br />
                 <label for="crawlSite">Website to Crawl</label>
