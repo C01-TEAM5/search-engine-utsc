@@ -1,5 +1,5 @@
 package fall2018.cscc01.team5.searchEngineWebApp.user;
-/*
+
 import static org.junit.Assert.fail;
 
 import java.security.NoSuchAlgorithmException;
@@ -108,4 +108,4 @@ public class AccountManagerTest {
             Assert.assertEquals(AccountManager.getPermission(users[i].getUsername()), Constants.PERMISSION_INSTRUCTOR);
         }
     }
-}*/
+}
