@@ -48,6 +48,7 @@ public class Constants {
     
     public static final String CURRENT_USER = "currentUser";
     public static final String CURRENT_USER_NAME = "currentUserName";
+    public static final String CURRENT_USER_ID = "currentUserId";
 
     public static final int PERMISSION_ALL = 0;
     public static final int PERMISSION_INSTRUCTOR = 3;

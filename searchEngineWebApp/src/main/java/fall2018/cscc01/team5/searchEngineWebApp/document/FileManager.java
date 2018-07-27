@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import com.amazonaws.ClientConfiguration;
 import org.apache.commons.io.FileUtils;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -108,6 +109,7 @@ public class FileManager {
         
         S3Object object = s3client.getObject(bucketName, id + "." + fileType);
         FileUtils.copyInputStreamToFile(object.getObjectContent(), new File(path));
+        object.close();
 
         return path;
     }
@@ -139,6 +141,7 @@ public class FileManager {
             file.setId(summary.getKey().split("\\.")[0]);
             file.setPath(download(summary.getKey().split("\\.")[0], type));
             ih.addDoc(file);
+            object.close();
         }
         cleanTemporaryDownloads();
     }
@@ -174,6 +177,8 @@ public class FileManager {
         metadata.addUserMetadata(Constants.INDEX_KEY_COURSE, file.getCourseCode());
         
         s3client.putObject(new PutObjectRequest(bucketName, id + "." + file.getFileType(), object.getObjectContent(), metadata));
+
+        object.close();
         
         return id;
     }
@@ -195,8 +200,10 @@ public class FileManager {
      */
     public static boolean fileExists(String fileId, String fileType) {
         try {
-            return s3client.getObject(bucketName, fileId + "." + fileType) != null;
-            //return false;
+            S3Object object = s3client.getObject(bucketName, fileId + "." + fileType);
+            boolean res = object != null;
+            object.close();
+            return res;
         }
         catch (Exception e) {
             return false;

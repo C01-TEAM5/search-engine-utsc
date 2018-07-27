@@ -27,7 +27,13 @@ var api = (function(){
 
     module.getCurrentUser = function() {
         var l = document.cookie.split("currentUserName=");
-        if (l.length > 1) return l[1];
+        if (l.length > 1) return l[1].split(';')[0];
+        return null;
+    };
+
+    module.getUserId = function() {
+        var l = document.cookie.split("currentUserId=");
+        if (l.length > 1) return l[1].split(';')[0];
         return null;
     };
 
@@ -105,6 +111,10 @@ var api = (function(){
 
     module.updateFile = function(id, name, course, permission, callback) {
         send("POST", "/file?id=" + id, {"name":name, "course":course, "permission":permission}, callback);
+    }
+
+    module.followUser = function(id, unfollow, callback) {
+        send("POST", "/follow-user", {"id":id, "unfollow":unfollow}, callback);
     }
 
     module.buildQuery = function buildQueryString(query, filters, perm) {
