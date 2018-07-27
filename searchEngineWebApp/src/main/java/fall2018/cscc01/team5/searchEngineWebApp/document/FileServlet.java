@@ -106,6 +106,7 @@ public class FileServlet extends HttpServlet {
         catch (InvalidKeySpecException e) {}
         catch (NoSuchAlgorithmException e) {}
         catch (DecoderException e) {}
+        catch (Exception e) {}
 
         if (currentUser == null || currentUser == "") {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

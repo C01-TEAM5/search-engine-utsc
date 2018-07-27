@@ -53,12 +53,37 @@ public class AccountManager {
                 .append("courses", user.getCourses())
                 .append("desc", user.getDescription())
                 .append("emailVerified", user.isEmailVerified())
+                .append("followers", user.getFollowers())
                 .append("permission", user.getPermission());
 
         usersCollection.insertOne(doc);
         sendVerificationEmail(user);
     }
 
+    /**
+     * Send a user a msg
+     * @param u the user to send a msg
+     * @param msg the msg
+     */
+    public static void sendNotification(User u, String msg) throws EmailException {
+
+        Email email = new SimpleEmail();
+        email.setHostName("smtp.gmail.com");
+        email.setSmtpPort(465);
+        email.setAuthenticator(new DefaultAuthenticator(Constants.EMAIL_USER, Constants.EMAIL_PASS));
+        email.setSSL(true);
+        email.setFrom(Constants.EMAIL_USER);
+        email.setSubject("New Notification - Search Engine UTSC");
+        email.setMsg(msg);
+        email.addTo(u.getEmail());
+        email.send();
+    }
+
+    /**
+     * Send a email verification to a user
+     * @param user the user to send the email verification
+     * @throws EmailException
+     */
     public static void sendVerificationEmail(User user) throws EmailException {
 
         Email email = new SimpleEmail();
@@ -79,12 +104,17 @@ public class AccountManager {
 
         StringBuilder msg = new StringBuilder();
         msg.append("Hello " + u.getName() + ",");
-        msg.append(" ");
+        msg.append("\n");
+        msg.append("\n");
         msg.append("You need to verify your email to use the Search Engine UTSC.");
+        msg.append("\n");
         msg.append("Please click the following link to verify your email.");
+        msg.append("\n");
         msg.append(Constants.EMAIL_VERIFY_PREFIX + verifyId);
-        msg.append(" ");
+        msg.append("\n");
+        msg.append("\n");
         msg.append("Sincerely,");
+        msg.append("\n");
         msg.append("Search Engine UTSC Team");
 
         return msg.toString();
@@ -141,6 +171,7 @@ public class AccountManager {
                 .append("courses", user.getCourses())
                 .append("desc", user.getDescription())
                 .append("emailVerified", user.isEmailVerified())
+                .append("followers", user.getFollowers())
                 .append("permission", user.getPermission());
 
         usersCollection.updateOne(Filters.eq("username", username), new Document("$set", doc));
@@ -163,6 +194,7 @@ public class AccountManager {
         user.setPermissions((Integer) doc.get("permission"));
         user.setHash(doc.getString("hash"));
         user.setCourses((List<String>) doc.get("courses"));
+        user.setFollowers((List<String>) doc.get("followers"));
         user.setDescription(doc.getString("desc"));
         user.setEmailVerified(doc.getBoolean("emailVerified"));
 

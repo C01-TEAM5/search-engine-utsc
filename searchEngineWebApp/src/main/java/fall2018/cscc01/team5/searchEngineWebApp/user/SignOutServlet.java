@@ -32,10 +32,12 @@ public class SignOutServlet extends HttpServlet {
         resp.setContentType("application/json");
         Cookie cookie=new Cookie(Constants.CURRENT_USER,"");
         Cookie cookieName =new Cookie(Constants.CURRENT_USER_NAME,"");
+        Cookie cookieId =new Cookie(Constants.CURRENT_USER_ID,"");
         cookie.setMaxAge(0);
         cookieName.setMaxAge(0);
         resp.addCookie(cookie);
         resp.addCookie(cookieName);
+        resp.addCookie(cookieId);
 
         // successfully signed out
         Gson gson = new Gson();
