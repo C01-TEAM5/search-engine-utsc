@@ -80,7 +80,6 @@ public class UploadServlet extends HttpServlet {
 
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
-            //factory.setSizeThreshold(maxMemSize); // maximum size that will be stored in memory
             ServletFileUpload upload = new ServletFileUpload(factory);
             upload.setSizeMax(maxSize); // maximum file size to be uploaded.
 
@@ -109,72 +108,39 @@ public class UploadServlet extends HttpServlet {
                     if (!item.isFormField()) {
                         // gets file data
                         String fileName = item.getName();
-                        String filePath = Constants.FILE_PUBLIC_PATH + currentUser + File.separator;
-                        String contentType = item.getContentType();
-                        boolean isInMemory = item.isInMemory();
-                        long sizeInBytes = item.getSize();
+                        String filePath = Uploader.getUploadPath(currentUser);
+                        //Get file InputStream
+                        InputStream initialStream = item.getInputStream();
 
-                        
-                        // creates the save directory if it does not exists
-                        File fileSaveDir = new File(filePath);
-                        if (!fileSaveDir.exists()) {
-                            fileSaveDir.mkdir();
+                        //Set up DocFile to uploaded
+                        DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
+                        docFile.setPermissions(AccountManager.getPermission(currentUser));
+
+                        //Set course information if it exists (courseCode comes from upload form, courseID from course page)
+                        if (courseId != null) {
+                            courseId = courseId.toLowerCase();
+                            if (!CourseManager.courseExists(courseId)) {
+                                resp.sendRedirect("/upload?error");
+                                return;
+                            }
+                            docFile.setCourseCode(courseId);
                         }
-
-                        File targetFile = new File(filePath + fileName);
-                        //Only upload the file if it does not exist already
-                        if (!targetFile.isFile()) {
-                            InputStream initialStream = item.getInputStream();
-
-                            // writes data to indexHandler
-                            DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
-                            docFile.setPermissions(AccountManager.getPermission(currentUser));
-                            
-                            if (courseId != null ) {
-                                if (!CourseManager.courseExists(courseId.toLowerCase())){
-                                    resp.sendRedirect("/upload?error");
-                                    return;
-                                }
-                                courseId = courseId.toLowerCase();
-                                docFile.setCourseCode(courseId);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), courseId, docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                                Course c = CourseManager.getCourse(courseId);
-                                c.addFile(docFile.getId());
-                                CourseManager.updateCourse(courseId, c);
-                                
+                        else if (!courseCode.equalsIgnoreCase("")) {
+                            courseCode = courseCode.toLowerCase();
+                            if (!CourseManager.courseExists(courseCode)) {
+                                resp.sendRedirect("/upload?error");
+                                return;
                             }
-                            else if (courseCode!= null && !courseCode.equalsIgnoreCase("")) {
-                                if (!CourseManager.courseExists(courseCode.toLowerCase())){
-                                    resp.sendRedirect("/upload?error");
-                                    return;
-                                }
-                                courseCode = courseCode.toLowerCase();
-                                docFile.setCourseCode(courseCode);
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), courseCode, docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                                Course c = CourseManager.getCourse(courseCode);
-                                c.addFile(docFile.getId());
-                                CourseManager.updateCourse(courseCode, c);
-                            }
-                            else {
-                                String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
-                                        docFile.getPermission(), docFile.getCourseCode(), docFile.getId(), initialStream);
-                                docFile.setId(fileId);
-                            }
-                            
-                            docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
-                            IndexHandler indexHandler = IndexHandler.getInstance();
-                            indexHandler.addDoc(docFile);
-                            // inform all subscribers
-                            User user = AccountManager.getUser(currentUser);
-                            for (String id: user.getFollowers()) {
-                                User toInform = AccountManager.getUser(id);
-                                String msg = constructMsg(user, toInform, docFile);
-                                AccountManager.sendNotification(toInform, msg);
-                            }
+                            docFile.setCourseCode(courseCode);
+                        }
+                        
+                        //Upload the file and index it
+                        Uploader.handleUpload(docFile, initialStream);
+                        User user = AccountManager.getUser(currentUser);
+                        for (String id: user.getFollowers()) {
+                            User toInform = AccountManager.getUser(id);
+                            String msg = constructMsg(user, toInform, docFile);
+                            AccountManager.sendNotification(toInform, msg);
                         }
                     }
                 }
@@ -189,9 +155,7 @@ public class UploadServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-//            PrintWriter output = resp.getWriter();
-//            output.print(new Gson().toJson("Success"));
-//            output.flush();
+
             if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
                 PrintWriter output = resp.getWriter();
                 try {

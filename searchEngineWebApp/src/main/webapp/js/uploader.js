@@ -23,4 +23,17 @@
         });
     });
 
+    $("#crawler-upload-files-button").click(function() {
+        swal({
+            title: "Processing!",
+            text: "Please wait. This may take a few minutes.",
+            icon: "./media/icons/loading.gif",
+            buttons: false
+        });
+    });
+
+    $(document).ready(function(){
+        $("#tab-menu .item").tab({history:false});
+    });
+
 })();

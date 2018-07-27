@@ -111,6 +111,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
 
+
         <div class="ui grid">
             <%-- filter --%>
             <div class="eight wide column">
@@ -163,6 +164,33 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                     ${result.contextString}
                                 </div>
                             </div>
+
+        <div class="results-table">
+            <c:forEach var="result" items="${searchResults}">
+                <div class="ui raised segment search-results-item">
+                    <i class="file alternate outline icon"></i>
+                    <div class="search-results-item-info">
+                        <div class="file-name">
+                            <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
+                            <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
+                        </div>
+                        <div class="file-course">
+                            Course Code:
+                            <c:if test="${result.courseCode.length() > 0}">
+                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
+                            </c:if>
+                            <c:if test="${result.courseCode.length() == 0}">
+                                <div class="ui red horizontal label">NONE</div>
+                            </c:if>
+
+                        </div>
+                        <div class="file-owner">
+                            Owner:
+                            <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
+                        </div>
+                        <div class="content-snip">
+                            ${result.contextString}
+
                         </div>
                     </c:forEach>
                 </div>
