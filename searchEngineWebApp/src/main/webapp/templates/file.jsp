@@ -28,6 +28,7 @@
                     <button class = "btn notSignedIn registerButton">
                     Register</button>
         
+                    <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
                     <a class="btn signedIn" id="uploadButton" href="/upload">Upload</a>
                     <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                     <button class="btn signedIn" id="logoutButton">Logout</button>
@@ -165,7 +166,7 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../lib/semantic/semantic.min.js"></script>
         <script src="../js/api.js"></script>
-        <script src="../js/login.js"></script>
         <script src="../js/file.js"></script>
+        <script src="../js/login.js"></script>
     </body>
 </html>

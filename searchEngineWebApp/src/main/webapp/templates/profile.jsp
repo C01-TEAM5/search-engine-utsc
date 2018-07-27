@@ -7,11 +7,11 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <!--link rel="stylesheet" href="./css/main.css" type="text/css"-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
-    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
     <link rel="stylesheet" href="./css/results.css" type="text/css">
@@ -38,6 +38,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <button class = "btn notSignedIn registerButton">
                 Register</button>
 
+                <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
                 <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i>Upload</a>
                 <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                 <button class="btn signedIn" id="logoutButton">Logout</button>
@@ -133,7 +134,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div class="user-info">
                     <div class="ui transparent input" id="input-username">
                         <input placeholder="Name..." type="text" value="${name}" id="username" disabled>
-                        <button class="ui icon button signedIn" id="edit-username">
+                        <button class="ui icon button isOwner" id="edit-username">
                             <i class="edit icon"></i>
                         </button>
                     </div>
@@ -144,11 +145,22 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </div>
                     <div class="ui transparent input" id="input-desc">
                         <textarea id="userDesc" disabled>${desc}</textarea>
-                        <button class="ui icon button signedIn" id="edit-desc">
+                        <button class="ui icon button isOwner" id="edit-desc">
                             <i class="edit icon"></i>
                         </button>
                     </div>
-                    <button class="circular ui icon button teal signedIn" id="save-profile-button"><i class="save icon"></i></button>
+                    <div class="profile-buttons" id="profile-buttons-container">
+                        <div id="follow-buttons">
+                            <c:if test="${following == true}">
+                                <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
+                            </c:if>
+                            <c:if test="${following == false}">
+                                <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                            </c:if>
+                        </div>
+                        <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
+                    </div>
+                    
                 </div>
             </div>
             <div class="profile-row">
@@ -157,7 +169,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
             </h3>
             <c:if test="${permission == 3}">
-                <div class="ui raised segment signedIn">
+                <div class="ui raised segment isOwner">
                     <h3>Create a course</h3>
                     <hr>
                     <div class="ui action input">

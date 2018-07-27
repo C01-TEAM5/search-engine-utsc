@@ -6,16 +6,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
-import fall2018.cscc01.team5.searchEngineWebApp.user.User;
-import fall2018.cscc01.team5.searchEngineWebApp.user.UserValidator;
-import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
-import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
-import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
-import org.apache.commons.codec.DecoderException;
 import org.bson.Document;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 public class CourseManager {

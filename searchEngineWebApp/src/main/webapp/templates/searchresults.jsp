@@ -34,6 +34,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             <button class = "btn notSignedIn registerButton">
             Register</button>
 
+            <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
             <a class="btn signedIn" id="uploadButton" href="/upload">Upload</a>
             <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
             <button class="btn signedIn" id="logoutButton">Logout</button>

@@ -1,6 +1,8 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +19,10 @@ import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -51,7 +56,15 @@ public class UploadServlet extends HttpServlet {
     public void doPost (HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, java.io.IOException {
 
-        String currentUser = getCurrentUser(req.getCookies());
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
+        catch (Exception e) {}
+
         String courseId = req.getParameter(Constants.SERVLET_PARAMETER_ID);
         if (!currentUser.equals("") && AccountManager.exists(currentUser)) {
             // check upload request
@@ -108,7 +121,6 @@ public class UploadServlet extends HttpServlet {
                             fileSaveDir.mkdir();
                         }
 
-
                         File targetFile = new File(filePath + fileName);
                         //Only upload the file if it does not exist already
                         if (!targetFile.isFile()) {
@@ -118,7 +130,11 @@ public class UploadServlet extends HttpServlet {
                             DocFile docFile = new DocFile(fileName, fileName, currentUser, filePath + fileName, true);
                             docFile.setPermissions(AccountManager.getPermission(currentUser));
                             
-                            if (courseId != null && CourseManager.courseExists(courseId.toLowerCase())) {
+                            if (courseId != null ) {
+                                if (!CourseManager.courseExists(courseId.toLowerCase())){
+                                    resp.sendRedirect("/upload?error");
+                                    return;
+                                }
                                 courseId = courseId.toLowerCase();
                                 docFile.setCourseCode(courseId);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
@@ -129,7 +145,11 @@ public class UploadServlet extends HttpServlet {
                                 CourseManager.updateCourse(courseId, c);
                                 
                             }
-                            else if (courseCode != "" && CourseManager.courseExists(courseCode.toLowerCase())) {
+                            else if (courseCode!= null && !courseCode.equalsIgnoreCase("")) {
+                                if (!CourseManager.courseExists(courseCode.toLowerCase())){
+                                    resp.sendRedirect("/upload?error");
+                                    return;
+                                }
                                 courseCode = courseCode.toLowerCase();
                                 docFile.setCourseCode(courseCode);
                                 String fileId = FileManager.upload(fileName, currentUser, true, fileName, docFile.getFileType(), 
@@ -148,6 +168,13 @@ public class UploadServlet extends HttpServlet {
                             docFile.setPath(FileManager.download(docFile.getId(), docFile.getFileType()));
                             IndexHandler indexHandler = IndexHandler.getInstance();
                             indexHandler.addDoc(docFile);
+                            // inform all subscribers
+                            User user = AccountManager.getUser(currentUser);
+                            for (String id: user.getFollowers()) {
+                                User toInform = AccountManager.getUser(id);
+                                String msg = constructMsg(user, toInform, docFile);
+                                AccountManager.sendNotification(toInform, msg);
+                            }
                         }
                     }
                 }
@@ -189,13 +216,20 @@ public class UploadServlet extends HttpServlet {
 
     }
 
-    private String getCurrentUser(Cookie[] cookies) {
-        String res = "";
-        if (cookies == null) return res;
-        for (Cookie cookie: cookies) {
-            if (cookie.getName().equals("currentUser")) res = cookie.getValue();
-        }
+    private String constructMsg(User from, User to, DocFile docFile) {
 
-        return res;
+        StringBuilder res = new StringBuilder();
+        res.append("Hello " + to.getName() + ",");
+        res.append("\n");
+        res.append("\n");
+        res.append("One of your followers, " + from.getName() + ", has just uploaded a new file, " + docFile.getFilename());
+        res.append("\n");
+        res.append("\n");
+        res.append("Sincerely,");
+        res.append("\n");
+        res.append("Search Engine UTSC Team");
+
+        return res.toString();
+
     }
 }
