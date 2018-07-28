@@ -131,6 +131,10 @@
 			<p>You can upload files once logged in to your account. Uploaded files will be tagged to your account and the specified course code you entered (course is optional field).</p>
 			<p class ="q"> Can I upload multiple files at once?</p>
 			<p>Yes, file uploading supports multiple files at once</p>
+			<p class ="q"> How do I crawl a website?</p>
+			<p>The upload crawler requires you to provide a website link, from where it will search for any html, docx, pdf or txt files accessible from the link. All links from crawled in the upload will be stored to the database. For a timely execution, crawls are limited to a maximum of 30 pages and a depth of 2.</p>
+			<p class ="q"> Why does my upload crawler take so long to run?</p>
+			<p>The crawler is executed through an external java library. To ensure accuracy the crawler runs multiple wait threads for each page before closing to ensure no data is missed. Crawling can take several minutes to complete so please be patient with its upload process.</p>
 			
 			
 			<h3>Downloading Files</h3>
