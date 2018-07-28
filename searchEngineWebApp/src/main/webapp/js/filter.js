@@ -1,10 +1,3 @@
-var query = document.getElementById("query").innerHTML;
-console.log(query);
-var perm = document.getElementById("perm").innerHTML;
-console.log(perm);
-var type = document.getElementById("type").innerHTML;
-console.log(type);
-
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart']});
 
@@ -32,14 +25,13 @@ function drawChart() {
   // Instantiate and draw our chart, passing in some options.
   var fileTypechart = new google.visualization.PieChart(document.getElementById('fileTypeFilter'));
   // click filter
-  function selectTypeHandler() {
+  function selectHandler() {
       var selectType = fileTypechart.getSelection()[0];
       if (selectType) {
           var type = fileTyepData.getValue(selectType.row, 0);
-          // filter document type
+          // pass type to search-form
           if (type=="PDF") {
-              console.log(type);
-              //console.log(query);
+              // console.log(type);
               document.getElementById("searchPdf").checked = true;
           } else if (type=="TXT") {
               document.getElementById("searchTxt").checked = true;
@@ -48,20 +40,12 @@ function drawChart() {
           } else if (type=="DOCX") {
               document.getElementById("searchDocx").checked = true;
           }
-      }
-      // query string
-      document.getElementById("search").value = query;
-      // owner type
-      if (perm=="0") {
-          document.getElementById("perm-all").click();
-      } else if (perm=="3") {
-          document.getElementById("perm-instructor").click();
-      } else if (perm=="2") {
-          document.getElementById("perm-student").click();
+          console.log(window.search.value);
+          document.getElementById("search").value = "*";
       }
       document.getElementById("submit").click();
   }
-  google.visualization.events.addListener(fileTypechart, 'select', selectTypeHandler);
+  google.visualization.events.addListener(fileTypechart, 'select', selectHandler);
   fileTypechart.draw(fileTyepData, fileTypeoptions);
 
 
@@ -77,33 +61,6 @@ function drawChart() {
   // console.log(len);
   var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':300, 'height':180};
   var fileOwnerchart = new google.visualization.PieChart(document.getElementById('fileOwnerFilter'));
-  function selectOwnerHandler() {
-      var selectOwner = fileOwnerchart.getSelection()[0];
-      if (selectOwner) {
-          var owner = fileOwnerData.getValue(selectOwner.row, 0);
-          document.getElementById("search").value = query + " owner:" + owner;
-      }
-      // owner type
-      if (perm=="0") {
-          document.getElementById("perm-all").click();
-      } else if (perm=="3") {
-          document.getElementById("perm-instructor").click();
-      } else if (perm=="2") {
-          document.getElementById("perm-student").click();
-      }
-      // file type
-      if (parseInt($("#docxNum").html()) > 0) {
-            document.getElementById("searchDocx").checked = true;
-      } else  if (parseInt($("#htmlNum").html()) > 0) {
-            document.getElementById("searchHtml").checked = true;
-      } else if (parseInt($("#pdfNum").html()) > 0) {
-            document.getElementById("searchPdf").checked = true;
-      } else  if (parseInt($("#txtNum").html()) > 0) {
-            document.getElementById("searchTxt").checked = true;
-      }
-      document.getElementById("submit").click();
-  }
-  google.visualization.events.addListener(fileOwnerchart, 'select', selectOwnerHandler);
   fileOwnerchart.draw(fileOwnerData, fileOwneroptions);
 
 
@@ -117,33 +74,6 @@ function drawChart() {
   }
   var courseoptions = {'title' : 'Course Code Statistics', 'width':300, 'height':180};
   var coursechart = new google.visualization.PieChart(document.getElementById('courseCodeFilter'));
-  function selectCourseHandler() {
-      var selectCourse = coursechart.getSelection()[0];
-      if (selectCourse) {
-          var course = courseData.getValue(selectCourse.row, 0);
-          document.getElementById("search").value = "courseCode:" + course;
-      }
-      // owner type
-      if (perm=="0") {
-          document.getElementById("perm-all").click();
-      } else if (perm=="3") {
-          document.getElementById("perm-instructor").click();
-      } else if (perm=="2") {
-          document.getElementById("perm-student").click();
-      }
-      // file type
-      if (parseInt($("#docxNum").html()) > 0) {
-            document.getElementById("searchDocx").checked = true;
-      } else  if (parseInt($("#htmlNum").html()) > 0) {
-            document.getElementById("searchHtml").checked = true;
-      } else if (parseInt($("#pdfNum").html()) > 0) {
-            document.getElementById("searchPdf").checked = true;
-      } else  if (parseInt($("#txtNum").html()) > 0) {
-            document.getElementById("searchTxt").checked = true;
-      }
-      document.getElementById("submit").click();
-  }
-  google.visualization.events.addListener(coursechart, 'select', selectCourseHandler);
   coursechart.draw(courseData, courseoptions);
 
 }
