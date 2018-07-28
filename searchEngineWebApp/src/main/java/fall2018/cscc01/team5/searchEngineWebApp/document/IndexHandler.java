@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -27,7 +28,32 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.bson.types.ObjectId;
 
+import com.github.mongoutils.collections.DBObjectSerializer;
+import com.github.mongoutils.collections.MongoConcurrentMap;
+import com.github.mongoutils.collections.SimpleFieldDBObjectSerializer;
+import com.github.mongoutils.lucene.MapDirectory;
+import com.github.mongoutils.lucene.MapDirectoryEntry;
+import com.github.mongoutils.lucene.MapDirectoryEntrySerializer;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 public class IndexHandler {
+    
+    private static MongoClientURI uri = new MongoClientURI(
+            "mongodb+srv://user01:CWu73Dl13bTLZ5uD@search-engine-oslo6.mongodb.net/");
+
+    private static MongoClient mongoClient = new MongoClient(uri);
+    private static MongoDatabase database = mongoClient.getDatabase("search-engine");
+    private static MongoCollection<org.bson.Document> indexCollection = database.getCollection("index");
+    
+    private static DBObjectSerializer<String> keySerializer = new SimpleFieldDBObjectSerializer<String>("key");
+    private static DBObjectSerializer<MapDirectoryEntry> valueSerializer = new MapDirectoryEntrySerializer("value");
+    private static ConcurrentMap<String, MapDirectoryEntry> store = new MongoConcurrentMap<String, MapDirectoryEntry>(
+            indexCollection, keySerializer, valueSerializer);
 
     private static IndexHandler indexHandler;
 
@@ -42,7 +68,7 @@ public class IndexHandler {
      */
     private IndexHandler () throws IOException {
         analyzer = new StandardAnalyzer();
-        indexDir = new RAMDirectory();
+        indexDir = new MapDirectory(store);
         //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
@@ -88,7 +114,7 @@ public class IndexHandler {
         }
 
         // Create the new document, add in DocID fields and UploaderID fields
-        Document newDocument = new Document();
+        org.apache.lucene.document.Document newDocument = new Document();
 
         Field docIDField = new StringField(Constants.INDEX_KEY_ID, newFile.getId(), Store.YES);
         Field docPathField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);
