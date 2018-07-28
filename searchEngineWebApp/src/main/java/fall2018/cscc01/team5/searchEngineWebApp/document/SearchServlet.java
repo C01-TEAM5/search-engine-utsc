@@ -74,9 +74,10 @@ public class SearchServlet extends HttpServlet {
         //Perform search, only send the results we want shown on page to jsp
         try {
             DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+            //if get coursecode param, then filter searchresult...
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
-
+            
             //Set the start index we want to show, if an invalid page was
             //entered into the URL, just go to the first one
             int startIndex = (currentPage-1)*resultsPerPage;          
@@ -130,6 +131,9 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("txtresult", txtresult);
             req.setAttribute("owner", owner);
             req.setAttribute("course", course);
+            req.setAttribute("query", query);
+            req.setAttribute("filterquery", filterQuery);
+            req.setAttribute("perm", permParam);
             if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
