@@ -130,6 +130,9 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("txtresult", txtresult);
             req.setAttribute("owner", owner);
             req.setAttribute("course", course);
+            req.setAttribute("query", query);
+            req.setAttribute("filterquery", filterQuery );
+            req.setAttribute("perm", permParam);
             if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
