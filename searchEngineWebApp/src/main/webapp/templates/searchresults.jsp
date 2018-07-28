@@ -111,10 +111,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
 
-        <%-- filter --%>
         <div class="ui grid">
             <div class="two column row">
             <div class="column">
+                <%-- filter --%>
                 <div id="docxNum" class="hidden" hidden>${docxresult}</div>
                 <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
                 <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
@@ -134,6 +134,39 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </c:forEach>
                 </table>
                 <div id="courseCodeFilter"></div>
+
+                <div class = "search-form" hidden>
+                    <form>
+                        <div class="uploader-filter">
+                            <button id="perm-all" type="button" class="active">All</button>
+                            <button id="perm-instructor" type="button">Instructor</button>
+                            <button id="perm-student" type="button">Student</button>
+                        </div>
+                        <input type="search" placeholder="Search a keyword" id="search">
+                        <button type="submit" id="submit">Go</button>
+                        <div class="search-filters">
+                            <div class="search-check">
+                                <input type="checkbox" id="searchTxt">
+                                <label for="txt">.txt</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchPdf">
+                                <label for="pdf">.pdf</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchHtml">
+                                <label for="html">.html</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchDocx">
+                                <label for="docx">.docx</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="column">
@@ -205,8 +238,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="js/filter.js"></script>
+    <script src="js/filter.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
     <script src="./js/login.js"></script>
 </body>
 </html>

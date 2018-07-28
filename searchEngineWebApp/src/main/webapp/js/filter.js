@@ -24,7 +24,30 @@ function drawChart() {
   var fileTypeoptions = {'title':'File Type Statistics', 'width':300, 'height':180};
   // Instantiate and draw our chart, passing in some options.
   var fileTypechart = new google.visualization.PieChart(document.getElementById('fileTypeFilter'));
+  // click filter
+  function selectHandler() {
+      var selectType = fileTypechart.getSelection()[0];
+      if (selectType) {
+          var type = fileTyepData.getValue(selectType.row, 0);
+          // pass type to search-form
+          if (type=="PDF") {
+              // console.log(type);
+              document.getElementById("searchPdf").checked = true;
+          } else if (type=="TXT") {
+              document.getElementById("searchTxt").checked = true;
+          } else if (type=="HTML") {
+              document.getElementById("searchHtml").checked = true;
+          } else if (type=="DOCX") {
+              document.getElementById("searchDocx").checked = true;
+          }
+          console.log(window.search.value);
+          document.getElementById("search").value = "*";
+      }
+      document.getElementById("submit").click();
+  }
+  google.visualization.events.addListener(fileTypechart, 'select', selectHandler);
   fileTypechart.draw(fileTyepData, fileTypeoptions);
+
 
   //File Owner
   var fileOwnerData = new google.visualization.DataTable();
@@ -33,15 +56,13 @@ function drawChart() {
   var OwnerTable = document.getElementById('OwnerData');
   for (var i=0; i<OwnerTable.rows.length; i++) {
        fileOwnerData.addRow([OwnerTable.rows[i].cells[0].innerHTML, parseInt(OwnerTable.rows[i].cells[1].innerHTML)]);
-       //fileOwnerData.addRow(['sdfs', 12]);
-       console.log(OwnerTable.rows[i].cells[0].innerHTML);
-       console.log(parseInt(OwnerTable.rows[i].cells[1].innerHTML));
   }
   var len = OwnerTable.rows.length;
-  console.log(len);
+  // console.log(len);
   var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':300, 'height':180};
   var fileOwnerchart = new google.visualization.PieChart(document.getElementById('fileOwnerFilter'));
   fileOwnerchart.draw(fileOwnerData, fileOwneroptions);
+
 
   //Course Code
   var courseData = new google.visualization.DataTable();
