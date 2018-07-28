@@ -135,6 +135,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 </table>
                 <div id="courseCodeFilter"></div>
 
+                <div id="query" class="hidden" hidden>${query}</div>
+                <div id="type" class="hidden" hidden>${filterquery}</div>
+                <div id="perm" class="hidden" hidden>${perm}</div>
                 <div class = "search-form" hidden>
                     <form>
                         <div class="uploader-filter">
