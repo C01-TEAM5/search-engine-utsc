@@ -4,9 +4,7 @@
 	background-color: #FFFFFF;
 	width: 70%;
     padding: 2% 5%;
-    position:absolute;
-    top:15%;
-    bottom:5%;
+    height: 90%;
 }
 
 
@@ -38,4 +36,10 @@ p.q {
 
 p {
 	font-size:0.85em;
+}
+
+@media(max-width: 1600px) {
+    .faqSection {
+        width: 95%;
+    }
 }

@@ -47,7 +47,7 @@ public class IndexHandlerTest {
     
     @Before
     public void init() throws IOException {
-        indexHandler = IndexHandler.getInstance();
+        indexHandler = IndexHandler.getTestInstance();
         
         try {
             generateTxt();

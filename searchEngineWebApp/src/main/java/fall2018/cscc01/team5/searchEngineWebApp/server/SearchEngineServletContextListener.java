@@ -26,7 +26,7 @@ public class SearchEngineServletContextListener implements ServletContextListene
         System.out.println("[DEBUG] Creating new index");
         try {
             final IndexHandler ih = IndexHandler.getInstance();
-            FileManager.indexFiles(ih);
+            //FileManager.indexFiles(ih);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e);

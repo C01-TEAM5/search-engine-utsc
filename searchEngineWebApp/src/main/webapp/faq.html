@@ -5,6 +5,7 @@
     <title>FAQ page</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
     <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
@@ -19,20 +20,16 @@
 
             <!-- sign in/out & register button -->
             <div class = "header-choices">
-                <button class = "btn notSignedIn loginButton">
-                Login</button>
+                <button class = "btn notSignedIn loginButton"><i class="user outline icon"></i> Login</button>
 
-                <button class = "btn notSignedIn registerButton">
-                Register</button>
+                <button class = "btn notSignedIn registerButton"><i class="edit outline icon"></i>Register</button>
                 
-                
-                <div class="signedIn header-info">Welcome! <span class="user"></span></div>
-                <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
-                <button class="btn signedIn" id="logoutButton">Logout</button>
-            
-            	<button class = "btn help helpButton" onClick="location.href='faq.html'">
-                Help</button>
-                
+                <div class="signedIn header-info"><span class="userName"></span></div>
+                <button class = "btn help helpButton" onClick="location.href='faq.html'">
+                        <i class="question circle outline icon"></i>Help</button>
+                <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i>Upload</a>
+                <a class="btn signedIn" id="profileButton" href="/profile"><i class="user outline icon"></i>Profile</a>
+                <button class="btn signedIn" id="logoutButton"><i class="sign out alternate icon"></i>Logout</button>
             </div>
 
 
@@ -105,7 +102,7 @@
     </div>
 
 
-	<div class = "faqSection">
+	<div class = "faqSection ui raised segment">
 		<form>
 			<h1>Frequently Asked Questions</h1>
 			
@@ -167,6 +164,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="../lib/semantic/semantic.min.js"></script>
     <script src="js/api.js"></script>
     <script src = "./js/uploader.js" type = "text/javascript"></script>
     <script src="./js/login.js"></script>

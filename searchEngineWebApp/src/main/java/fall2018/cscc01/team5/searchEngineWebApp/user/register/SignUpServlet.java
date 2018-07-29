@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -51,13 +54,19 @@ public class SignUpServlet extends HttpServlet {
         // makes new user assuming list order
         // username, email, name, password
         User user = null;
+        String username = Jsoup.clean(map.get("username"), Whitelist.basic());
+        String email = Jsoup.clean(map.get("email"), Whitelist.basic());
+        String name = Jsoup.clean(map.get("name"), Whitelist.basic());
+        String password = Jsoup.clean(map.get("password"), Whitelist.basic());
+        String permission = Jsoup.clean(map.get("permission"), Whitelist.basic());
+
         try {
            user = new User(
-                    map.get("username"),
-                    map.get("email"), 
-                    map.get("name"), 
-                    map.get("password"));
-           user.setPermissions(Integer.parseInt(map.get("permission")));
+                    username,
+                    email, 
+                    name, 
+                    password);
+           user.setPermissions(Integer.parseInt(permission));
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "bad user values");
             e.printStackTrace();

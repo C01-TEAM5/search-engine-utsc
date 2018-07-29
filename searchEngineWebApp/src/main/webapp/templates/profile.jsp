@@ -32,40 +32,36 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 
             <!-- sign in/out & register button -->
             <div class = "header-choices">
-                <button class = "btn notSignedIn loginButton">
-                Login</button>
+                <button class = "btn notSignedIn loginButton"><i class="user outline icon"></i> Login</button>
 
-                <button class = "btn notSignedIn registerButton">
-                Register</button>
-
-                <div class="signedIn header-info">Welcome! <span class="userName"></span></div>
-                <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i>Upload</a>
-                <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
-                <button class="btn signedIn" id="logoutButton">Logout</button>
-            
-            	<button class = "btn help helpButton" onClick="location.href='faq.html'">
-                Help</button>
+                <button class = "btn notSignedIn registerButton"><i class="edit outline icon"></i>Register</button>
                 
+                <div class="signedIn header-info"><span class="userName"></span></div>
+                <button class = "btn help helpButton" onClick="location.href='faq.html'">
+                        <i class="question circle outline icon"></i>Help</button>
+                <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i>Upload</a>
+                <a class="btn signedIn" id="profileButton" href="/profile"><i class="user outline icon"></i>Profile</a>
+                <button class="btn signedIn" id="logoutButton"><i class="sign out alternate icon"></i>Logout</button>
             </div>
 
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                    <div class="container-logins">
-                        <label for="username">Username</label>
-                        <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                <div class="container-logins">
+                    <label for="username">Username</label>
+                    <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
 
-                        <label for="psw">Password</label>
-                        <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                    <label for="psw">Password</label>
+                    <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
 
-                        <div class="btn-container">
-                            <button id = "SC" class = "loginButton" type="submit">Login</button>
+                    <div class="btn-container">
+                        <button id = "SC" class = "loginButton" type="submit">Login</button>
 
-                            <button type="button"
-                            onclick="document.getElementById('SIB').style.display='none'"
-                            class="cancelbtn">Cancel</button>
-                        </div>
+                        <button type="button"
+                        onclick="document.getElementById('SIB').style.display='none'"
+                        class="cancelbtn">Cancel</button>
                     </div>
+                </div>
                 </form>
             </div>
 
@@ -73,45 +69,46 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             <!-- the register pop up window -->
             <div id="RIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                    <div class="container-logins">
-                        <div class="row">
-                            <div class = "register-type col-sm-5">
-                                <section class="typeinfo"> toggle register type info</section>
-                                <div class="registerchoices">
-                                    <button type = "button" class="registertypebutton" id="permission-instructor">Create Instructor Account</button>
-                                    <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
-                                </div>
+                <div class="container-logins">
+                    <div class="row">
+                        <div class = "register-type col-sm-5">
+                            <section class="typeinfo"> toggle register type info</section>
+                            <div class="registerchoices">
+                                <button type = "button" class="registertypebutton" id="permission-instructor">Create Instructor Account</button>
+                                <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
                             </div>
+                        </div>
 
-                            <div class = "register-info col-sm-7">
-                                <label for="uemail">User Email</label>
-                                <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
+                        <div class = "register-info col-sm-7">
+                            <label for="uemail">User Email</label>
+                            <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
 
-                                <label for="uname">Name</label>
-                                <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
+                            <label for="uname">Name</label>
+                            <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
 
-                                <label for="username">Username</label>
-                                <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
+                            <label for="username">Username</label>
+                            <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
 
-                                <label for="userpsw">Password</label>
-                                <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
+                            <label for="userpsw">Password</label>
+                            <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
 
-                                <label for="confirmpsw">Confirm Password</label>
-                                <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
-                                <span id = "message"></span><br>
+                            <label for="confirmpsw">Confirm Password</label>
+                            <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                            <span id = "message"></span><br>
 
-                                <div class="btn-container">
-                                    <button id ="RC" class = "loginButton" type="submit" >Register</button>
+                            <div class="btn-container">
+                                <button id ="RC" class = "loginButton" type="submit" >Register</button>
 
-                                    <button type="button"
-                                    onclick="document.getElementById('RIB').style.display='none'"
-                                    class="cancelbtn">Cancel</button>
-                                </div>
+                                <button type="button"
+                                onclick="document.getElementById('RIB').style.display='none'"
+                                class="cancelbtn">Cancel</button>
                             </div>
                         </div>
                     </div>
+                </div>
                 </form>
             </div>
+
         </div>
     </div>
 

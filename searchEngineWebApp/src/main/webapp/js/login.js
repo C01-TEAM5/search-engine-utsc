@@ -182,7 +182,7 @@
     }
 
     var setSignedIn = function() {
-        $(".userName").html(api.getCurrentUser());
+        $(".userName").html(api.getCurrentUser().replace(/"/g, ''));
         $(".signedIn").css("display", "inline-block");
         $(".notSignedIn").css("display", "none");
     }
