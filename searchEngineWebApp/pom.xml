@@ -35,20 +35,20 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>7.3.1</version>
+            <version>6.6.5</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>7.3.1</version>
+            <version>6.6.5</version>
         </dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-highlighter -->
 		<dependency>
     		<groupId>org.apache.lucene</groupId>
     		<artifactId>lucene-highlighter</artifactId>
-    		<version>7.4.0</version>
+    		<version>6.6.5</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency>
@@ -139,13 +139,35 @@
             <artifactId>commons-email</artifactId>
             <version>1.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.mongoutils/mongo-lucene -->
+
+        <!-- https://mvnrepository.com/artifact/org.lumongo/lumongo-client -->
         <dependency>
-            <groupId>com.github.mongoutils</groupId>
-            <artifactId>mongo-lucene</artifactId>
-            <version>1.1</version>
+            <groupId>org.lumongo</groupId>
+            <artifactId>lumongo-client</artifactId>
+            <version>0.52</version>
         </dependency>
-        
+
+        <!-- https://mvnrepository.com/artifact/org.lumongo/lumongo-storage -->
+        <dependency>
+            <groupId>org.lumongo</groupId>
+            <artifactId>lumongo-storage</artifactId>
+            <version>0.52</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.lumongo/lumongo-common -->
+        <dependency>
+            <groupId>org.lumongo</groupId>
+            <artifactId>lumongo-common</artifactId>
+            <version>0.52</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.lumongo/lumongo-cluster -->
+        <dependency>
+            <groupId>org.lumongo</groupId>
+            <artifactId>lumongo-cluster</artifactId>
+            <version>0.52</version>
+        </dependency>
+
     </dependencies>
 
     <build>
