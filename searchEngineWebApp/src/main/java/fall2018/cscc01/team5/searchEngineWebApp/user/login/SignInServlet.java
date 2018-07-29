@@ -58,7 +58,7 @@ public class SignInServlet extends HttpServlet {
                 }
 
                 Cookie cookie = new Cookie(Constants.CURRENT_USER, Validator.simpleEncrypt(map.get("username")));
-                Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName());
+                Cookie cookieName = new Cookie(Constants.CURRENT_USER_NAME, user.getName().replaceAll(" ", "%20"));
                 Cookie cookieId = new Cookie(Constants.CURRENT_USER_ID, user.getUsername());
                 resp.addCookie(cookie);
                 resp.addCookie(cookieName);
