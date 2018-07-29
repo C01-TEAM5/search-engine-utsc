@@ -65,33 +65,34 @@ function drawChart() {
   fileTypechart.draw(fileTyepData, fileTypeoptions);
 
 
-  //File Owner
-  var fileOwnerData = new google.visualization.DataTable();
-  fileOwnerData.addColumn('string', 'File Owner');
-  fileOwnerData.addColumn('number', 'Occurence');
-  var OwnerTable = document.getElementById('OwnerData');
-  for (var i=0; i<OwnerTable.rows.length; i++) {
-       fileOwnerData.addRow([OwnerTable.rows[i].cells[0].innerHTML, parseInt(OwnerTable.rows[i].cells[1].innerHTML)]);
-  }
-  var len = OwnerTable.rows.length;
-  // console.log(len);
-  var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':300, 'height':180};
-  var fileOwnerchart = new google.visualization.PieChart(document.getElementById('fileOwnerFilter'));
-  function selectOwnerHandler() {
-      var selectOwner = fileOwnerchart.getSelection()[0];
-      if (selectOwner) {
-          var owner = fileOwnerData.getValue(selectOwner.row, 0);
-          document.getElementById("search").value = query + " owner:" + owner;
+  // File perm
+  // Create the data table.
+  var filePermData = new google.visualization.DataTable();
+  filePermData.addColumn('string', 'File Uploader Type');
+  filePermData.addColumn('number', 'Occurence');
+  filePermData.addRows([
+      ['All', parseInt($("#perall").html())],
+      ['Instructor', parseInt($("#perminstructor").html())],
+      ['Student', parseInt($("#permstudent").html())],
+  ]);
+  // Set chart options
+  var filePermoptions = {'title':'File Uploader Type Statistics', 'width':300, 'height':180};
+  // Instantiate and draw our chart, passing in some options.
+  var filePermchart = new google.visualization.PieChart(document.getElementById('filePermFilter'));
+  // click filter
+  function selectPermHandler() {
+      var selectPerm = filePermchart.getSelection()[0];
+      if (selectPerm) {
+          var p = filePermData.getValue(selectPerm.row, 0);
+          if (p=="All") {
+              document.getElementById("perm-all").click();
+          } else if (p=="Instructor") {
+              document.getElementById("perm-instructor").click();
+          } else if (p=="Student") {
+              document.getElementById("perm-student").click();
+          }
       }
-      // owner type
-      if (perm=="0") {
-          document.getElementById("perm-all").click();
-      } else if (perm=="3") {
-          document.getElementById("perm-instructor").click();
-      } else if (perm=="2") {
-          document.getElementById("perm-student").click();
-      }
-      // file type
+      document.getElementById("search").value = query;
       if (parseInt($("#docxNum").html()) > 0) {
             document.getElementById("searchDocx").checked = true;
       } else  if (parseInt($("#htmlNum").html()) > 0) {
@@ -103,47 +104,89 @@ function drawChart() {
       }
       document.getElementById("submit").click();
   }
-  google.visualization.events.addListener(fileOwnerchart, 'select', selectOwnerHandler);
-  fileOwnerchart.draw(fileOwnerData, fileOwneroptions);
+  google.visualization.events.addListener(filePermchart, 'select', selectPermHandler);
+  filePermchart.draw(filePermData, filePermoptions);
+
+
+  //File Owner
+  // var fileOwnerData = new google.visualization.DataTable();
+  // fileOwnerData.addColumn('string', 'File Owner');
+  // fileOwnerData.addColumn('number', 'Occurence');
+  // var OwnerTable = document.getElementById('OwnerData');
+  // for (var i=0; i<OwnerTable.rows.length; i++) {
+  //      fileOwnerData.addRow([OwnerTable.rows[i].cells[0].innerHTML, parseInt(OwnerTable.rows[i].cells[1].innerHTML)]);
+  // }
+  // var len = OwnerTable.rows.length;
+  // // console.log(len);
+  // var fileOwneroptions = {'title' : 'File Owner Statistics', 'width':300, 'height':180};
+  // var fileOwnerchart = new google.visualization.PieChart(document.getElementById('fileOwnerFilter'));
+  // function selectOwnerHandler() {
+  //     var selectOwner = fileOwnerchart.getSelection()[0];
+  //     if (selectOwner) {
+  //         var owner = fileOwnerData.getValue(selectOwner.row, 0);
+  //         document.getElementById("search").value = query+ ":owner:" + owner;
+  //     }
+  //     // owner type
+  //     if (perm=="0") {
+  //         document.getElementById("perm-all").click();
+  //     } else if (perm=="3") {
+  //         document.getElementById("perm-instructor").click();
+  //     } else if (perm=="2") {
+  //         document.getElementById("perm-student").click();
+  //     }
+  //     // file type
+  //     if (parseInt($("#docxNum").html()) > 0) {
+  //           document.getElementById("searchDocx").checked = true;
+  //     } else  if (parseInt($("#htmlNum").html()) > 0) {
+  //           document.getElementById("searchHtml").checked = true;
+  //     } else if (parseInt($("#pdfNum").html()) > 0) {
+  //           document.getElementById("searchPdf").checked = true;
+  //     } else  if (parseInt($("#txtNum").html()) > 0) {
+  //           document.getElementById("searchTxt").checked = true;
+  //     }
+  //     document.getElementById("submit").click();
+  // }
+  // google.visualization.events.addListener(fileOwnerchart, 'select', selectOwnerHandler);
+  // fileOwnerchart.draw(fileOwnerData, fileOwneroptions);
 
 
   //Course Code
-  var courseData = new google.visualization.DataTable();
-  courseData.addColumn('string', 'Course Code');
-  courseData.addColumn('number', 'Occurence');
-  var CourseTable = document.getElementById('CourseData');
-  for (var i=0; i<CourseTable.rows.length; i++) {
-       courseData.addRow([CourseTable.rows[i].cells[0].innerHTML, parseInt(CourseTable.rows[i].cells[1].innerHTML)]);
-  }
-  var courseoptions = {'title' : 'Course Code Statistics', 'width':300, 'height':180};
-  var coursechart = new google.visualization.PieChart(document.getElementById('courseCodeFilter'));
-  function selectCourseHandler() {
-      var selectCourse = coursechart.getSelection()[0];
-      if (selectCourse) {
-          var course = courseData.getValue(selectCourse.row, 0);
-          document.getElementById("search").value = "courseCode:" + course;
-      }
-      // owner type
-      if (perm=="0") {
-          document.getElementById("perm-all").click();
-      } else if (perm=="3") {
-          document.getElementById("perm-instructor").click();
-      } else if (perm=="2") {
-          document.getElementById("perm-student").click();
-      }
-      // file type
-      if (parseInt($("#docxNum").html()) > 0) {
-            document.getElementById("searchDocx").checked = true;
-      } else  if (parseInt($("#htmlNum").html()) > 0) {
-            document.getElementById("searchHtml").checked = true;
-      } else if (parseInt($("#pdfNum").html()) > 0) {
-            document.getElementById("searchPdf").checked = true;
-      } else  if (parseInt($("#txtNum").html()) > 0) {
-            document.getElementById("searchTxt").checked = true;
-      }
-      document.getElementById("submit").click();
-  }
-  google.visualization.events.addListener(coursechart, 'select', selectCourseHandler);
-  coursechart.draw(courseData, courseoptions);
+  // var courseData = new google.visualization.DataTable();
+  // courseData.addColumn('string', 'Course Code');
+  // courseData.addColumn('number', 'Occurence');
+  // var CourseTable = document.getElementById('CourseData');
+  // for (var i=0; i<CourseTable.rows.length; i++) {
+  //      courseData.addRow([CourseTable.rows[i].cells[0].innerHTML, parseInt(CourseTable.rows[i].cells[1].innerHTML)]);
+  // }
+  // var courseoptions = {'title' : 'Course Code Statistics', 'width':300, 'height':180};
+  // var coursechart = new google.visualization.PieChart(document.getElementById('courseCodeFilter'));
+  // function selectCourseHandler() {
+  //     var selectCourse = coursechart.getSelection()[0];
+  //     if (selectCourse) {
+  //         var course = courseData.getValue(selectCourse.row, 0);
+  //         document.getElementById("search").value = query+ ":courseCode:" + course;
+  //     }
+  //     // owner type
+  //     if (perm=="0") {
+  //         document.getElementById("perm-all").click();
+  //     } else if (perm=="3") {
+  //         document.getElementById("perm-instructor").click();
+  //     } else if (perm=="2") {
+  //         document.getElementById("perm-student").click();
+  //     }
+  //     // file type
+  //     if (parseInt($("#docxNum").html()) > 0) {
+  //           document.getElementById("searchDocx").checked = true;
+  //     } else  if (parseInt($("#htmlNum").html()) > 0) {
+  //           document.getElementById("searchHtml").checked = true;
+  //     } else if (parseInt($("#pdfNum").html()) > 0) {
+  //           document.getElementById("searchPdf").checked = true;
+  //     } else  if (parseInt($("#txtNum").html()) > 0) {
+  //           document.getElementById("searchTxt").checked = true;
+  //     }
+  //     document.getElementById("submit").click();
+  // }
+  // google.visualization.events.addListener(coursechart, 'select', selectCourseHandler);
+  // coursechart.draw(courseData, courseoptions);
 
 }

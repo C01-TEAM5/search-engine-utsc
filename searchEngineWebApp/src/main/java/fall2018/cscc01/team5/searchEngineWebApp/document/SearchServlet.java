@@ -62,7 +62,9 @@ public class SearchServlet extends HttpServlet {
         String filterParam = req.getParameter("filters");
         if (filterParam==null) {
             filterParam = "";
-        }        
+        } 
+        
+    	System.out.println(filterParam);
         String[] filterQuery = filterParam.split(",");
         
         //Get permission level for search. If none, search all types of docs.
@@ -72,8 +74,9 @@ public class SearchServlet extends HttpServlet {
         }        
         
         //Perform search, only send the results we want shown on page to jsp
-        try {
-            DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+        try { 
+        	DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+      
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
 
@@ -92,6 +95,7 @@ public class SearchServlet extends HttpServlet {
             
             //filter data
             int htmlresult = 0; int docxresult = 0; int pdfresult = 0; int txtresult = 0;
+            int permall = 0; int perminstructor = 0; int permstudent = 0;
             HashMap<String, Integer> owner = new HashMap<String, Integer>();
             HashMap<String, Integer> course = new HashMap<String, Integer>();
             for (DocFile df: searchResults) {
@@ -105,6 +109,15 @@ public class SearchServlet extends HttpServlet {
             		txtresult += 1;
             	}	
             	
+            	//System.out.println(df.getPermission());
+            	if (df.getPermission()==0) {
+            		permall += 1; 
+            	} else if (df.getPermission()==3) {
+            		perminstructor += 1;
+            	} else if (df.getPermission()==2) {
+            		permstudent += 1;
+            	}
+            	
             	if (owner.containsKey(df.getOwner())) {
             		owner.put(df.getOwner(), owner.get(df.getOwner())+1);
             	} else {
@@ -117,6 +130,7 @@ public class SearchServlet extends HttpServlet {
             		course.put(df.getCourseCode(), 1);
             	}
             }
+           
             
             DocFile[] pageResults = Arrays.copyOfRange(searchResults, 
                     startIndex, endIndex);
@@ -128,6 +142,9 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("docxresult", docxresult);
             req.setAttribute("pdfresult", pdfresult);
             req.setAttribute("txtresult", txtresult);
+            req.setAttribute("a", permall);
+            req.setAttribute("i", perminstructor);
+            req.setAttribute("s", permstudent);
             req.setAttribute("owner", owner);
             req.setAttribute("course", course);
             req.setAttribute("query", query);
@@ -211,9 +228,9 @@ public class SearchServlet extends HttpServlet {
     private DocFile[] performSearch (String queryString, String[] filterString, String permString) throws ParseException, IOException {
     	
         
-        IndexHandler handler = IndexHandler.getInstance();          
+        IndexHandler handler = IndexHandler.getInstance();  
         DocFile[] docFileResults = handler.search(queryString, Integer.parseInt(permString), filterString);
-
+        
 		return docFileResults;
     	
     }

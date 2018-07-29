@@ -121,19 +121,24 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div id="txtNum" class="hidden" hidden>${txtresult}</div>
                 <div id="fileTypeFilter"></div>
 
-                <table id="OwnerData" class="hidden" hidden>
+                <div id="permall" class="hidden" hidden>${a}</div>
+                <div id="perminstructor" class="hidden" hidden>${i}</div>
+                <div id="permstudent" class="hidden" hidden>${s}</div>
+                <div id="filePermFilter"></div>
+
+                <%-- <table id="OwnerData" class="hidden" hidden>
                     <c:forEach var="o" items="${owner}">
                         <tr><td>${o.key}</td><td>${o.value}</td></tr>
                     </c:forEach>
                 </table>
-                <div id="fileOwnerFilter"></div>
+                <div id="fileOwnerFilter"></div> --%>
 
-                <table id="CourseData" class="hidden" hidden>
+                <%-- <table id="CourseData" class="hidden" hidden>
                     <c:forEach var="c" items="${course}">
                         <tr><td>${c.key}</td><td>${c.value}</td></tr>
                     </c:forEach>
                 </table>
-                <div id="courseCodeFilter"></div>
+                <div id="courseCodeFilter"></div> --%>
 
                 <div id="query" class="hidden" hidden>${query}</div>
                 <div id="type" class="hidden" hidden>${filterquery}</div>
