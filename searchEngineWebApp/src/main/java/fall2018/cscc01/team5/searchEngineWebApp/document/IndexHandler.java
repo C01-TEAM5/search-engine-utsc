@@ -246,7 +246,7 @@ public class IndexHandler {
         }
         return result;
     }
-
+    
     /**
      * Checks to see if a DocFile is valid. A valid DocFile is any file with the following extensions: .pdf, .txt,
      * .docx, .html
@@ -332,7 +332,7 @@ public class IndexHandler {
 
         return searchResponse(searchExec(masterQuery), masterQuery);
     }
-
+    
     /**
      * Accept a list of queries and filters and return a list of DocFile that
      * matches

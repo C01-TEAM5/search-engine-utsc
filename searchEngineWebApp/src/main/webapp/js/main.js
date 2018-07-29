@@ -13,18 +13,18 @@
         const searchTxt = document.getElementById("searchTxt");
         const searchPdf = document.getElementById("searchPdf");
         const searchHtml = document.getElementById("searchHtml");
-        const searchDocx = document.getElementById("searchDocx");        
+        const searchDocx = document.getElementById("searchDocx");
 
         function submitter (event) {
-        	
+
             event.preventDefault();
 
             var filterList = [];
             const expandSearch = true;
             const searchQuery = search.value;
-            
+
             if (search.value=="") return;
-          
+
             if (!searchTxt.checked && !searchPdf.checked &&
             		!searchHtml.checked && !searchDocx.checked){
             	filterList.push(".txt");
@@ -36,7 +36,7 @@
             if (searchPdf.checked) {filterList.push(".pdf")}
             if (searchHtml.checked) {filterList.push(".html")}
             if (searchDocx.checked) {filterList.push(".docx")}
-            
+
             var queryString = api.buildQuery(searchQuery,filterList,perm);
             document.location.href="/search?query="+queryString;
 
@@ -50,11 +50,11 @@
         $(".uploader-filter button").click(function(){
             $(".uploader-filter button").removeClass("active");
             $(this).addClass("active");
-            
+
             perm = 0;
-            
+
             if (this.id == "perm-all") {
-            	perm = 0;	
+            	perm = 0;
             } else if (this.id == "perm-instructor") {
             	perm = 3;
             } else if (this.id == "perm-student") {

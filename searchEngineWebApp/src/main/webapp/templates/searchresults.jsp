@@ -109,69 +109,139 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
           </div>
     </div>
   </div>
+
     <!-- search results -->
     <div class=search-results>
         <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
         <div class="separator"></div>
 
-        <div class="results-table">
-            <c:forEach var="result" items="${searchResults}">
-                <div class="ui raised segment search-results-item">
-                    <i class="file alternate outline icon"></i>
-                    <div class="search-results-item-info">
-                        <div class="file-name">
-                            <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
-                            <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
-                        </div>
-                        <div class="file-course">
-                            Course Code:
-                            <c:if test="${result.courseCode.length() > 0}">
-                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                            </c:if>
-                            <c:if test="${result.courseCode.length() == 0}">
-                                <div class="ui red horizontal label">NONE</div>
-                            </c:if>
+        <div class="ui grid">
+            <div class="two column row">
+            <div class="column">
+                <%-- filter --%>
+                <div id="docxNum" class="hidden" hidden>${docxresult}</div>
+                <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
+                <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
+                <div id="txtNum" class="hidden" hidden>${txtresult}</div>
+                <div id="fileTypeFilter"></div>
 
+                <div id="permall" class="hidden" hidden>${a}</div>
+                <div id="perminstructor" class="hidden" hidden>${i}</div>
+                <div id="permstudent" class="hidden" hidden>${s}</div>
+                <div id="filePermFilter"></div>
+
+                <%-- <table id="OwnerData" class="hidden" hidden>
+                    <c:forEach var="o" items="${owner}">
+                        <tr><td>${o.key}</td><td>${o.value}</td></tr>
+                    </c:forEach>
+                </table>
+                <div id="fileOwnerFilter"></div> --%>
+
+                <%-- <table id="CourseData" class="hidden" hidden>
+                    <c:forEach var="c" items="${course}">
+                        <tr><td>${c.key}</td><td>${c.value}</td></tr>
+                    </c:forEach>
+                </table>
+                <div id="courseCodeFilter"></div> --%>
+
+                <div id="query" class="hidden" hidden>${query}</div>
+                <div id="type" class="hidden" hidden>${filterquery}</div>
+                <div id="perm" class="hidden" hidden>${perm}</div>
+                <div class = "search-form" hidden>
+                    <form>
+                        <div class="uploader-filter">
+                            <button id="perm-all" type="button" class="active">All</button>
+                            <button id="perm-instructor" type="button">Instructor</button>
+                            <button id="perm-student" type="button">Student</button>
                         </div>
-                        <div class="file-owner">
-                            Owner:
-                            <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
+                        <input type="search" placeholder="Search a keyword" id="search">
+                        <button type="submit" id="submit">Go</button>
+                        <div class="search-filters">
+                            <div class="search-check">
+                                <input type="checkbox" id="searchTxt">
+                                <label for="txt">.txt</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchPdf">
+                                <label for="pdf">.pdf</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchHtml">
+                                <label for="html">.html</label>
+                            </div>
+
+                            <div class="search-check">
+                                <input type="checkbox" id="searchDocx">
+                                <label for="docx">.docx</label>
+                            </div>
                         </div>
-                        <div class="content-snip">
-                            ${result.contextString}
+                    </form>
+                </div>
+            </div>
+
+            <div class="column">
+            <div class="results-table">
+                <c:forEach var="result" items="${searchResults}">
+                    <div class="ui raised segment search-results-item">
+                        <i class="file alternate outline icon"></i>
+                        <div class="search-results-item-info">
+                            <div class="file-name">
+                                <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
+                                <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
+                            </div>
+                            <div class="file-course">
+                                Course Code:
+                                <c:if test="${result.courseCode.length() > 0}">
+                                    <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
+                                </c:if>
+                                <c:if test="${result.courseCode.length() == 0}">
+                                    <div class="ui red horizontal label">NONE</div>
+                                </c:if>
+
+                            </div>
+                            <div class="file-owner">
+                                Owner:
+                                <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
+                            </div>
+                            <div class="content-snip">
+                                ${result.contextString}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
-        </div>
-
-        <!-- page number -->
-        <div class="pagination">
-            <div class="page">
-                <!-- previous link -->
-                <c:if test="${currentPage != 1}">
-                    <td><a href="${noPageUri}page=${currentPage - 1}">
-                    <button class="page-move-btn">Previous</button></a></td>
-                </c:if>
-                <!-- page number -->
-                <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
-                    <c:choose>
-                        <c:when test="${currentPage eq index}">
-                            <td class="page-num" id="active-page">${index}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                        </c:otherwise>
-                    </c:choose>
                 </c:forEach>
-                <!-- next link -->
-                <c:if test="${currentPage != totalPages}">
-                    <td><a href="${noPageUri}page=${currentPage + 1}">
-                    <button class="page-move-btn">Next</button></a><td>
-                </c:if>
+            </div>
+
+            <!-- page number -->
+            <div class="pagination">
+                <div class="page">
+                    <!-- previous link -->
+                    <c:if test="${currentPage != 1}">
+                        <td><a href="${noPageUri}page=${currentPage - 1}">
+                        <button class="page-move-btn">Previous</button></a></td>
+                    </c:if>
+                    <!-- page number -->
+                    <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
+                        <c:choose>
+                            <c:when test="${currentPage eq index}">
+                                <td class="page-num" id="active-page">${index}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <!-- next link -->
+                    <c:if test="${currentPage != totalPages}">
+                        <td><a href="${noPageUri}page=${currentPage + 1}">
+                        <button class="page-move-btn">Next</button></a><td>
+                    </c:if>
+                </div>
             </div>
         </div>
 
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -179,7 +249,10 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script src="../lib/semantic/semantic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/filter.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
     <script src="./js/login.js"></script>
 </body>
 </html>
