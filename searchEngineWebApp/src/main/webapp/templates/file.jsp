@@ -32,6 +32,10 @@
                     <a class="btn signedIn" id="uploadButton" href="/upload">Upload</a>
                     <a class="btn signedIn" id="profileButton" href="/profile">Profile</a>
                     <button class="btn signedIn" id="logoutButton">Logout</button>
+                
+	                <button class = "btn help helpButton" onClick="location.href='faq.html'">
+	                Help</button>
+                
                 </div>
           
                 <!-- the sign in pop up window -->
