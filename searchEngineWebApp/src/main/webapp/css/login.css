@@ -1,7 +1,8 @@
 .btn, .loginButton, .cancelbtn {
+    transition-duration: 0.2s !important;
     font-family: 'Open Sans', sans-serif !important;
     width: auto;
-    background-color: #121e61;
+    background: none;
     font-size: 15px;
     color: white;
     padding: 9px 12px;
@@ -29,12 +30,10 @@
 }
 
 .registertypebutton:focus {
-    background-color: #121e61;
     color: white;
 }
 
 .active-permission {
-    background-color: #121e61;
     color: white;
 }
 
