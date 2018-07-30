@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class SearchServlet extends HttpServlet {
 
@@ -61,7 +62,9 @@ public class SearchServlet extends HttpServlet {
         String filterParam = req.getParameter("filters");
         if (filterParam==null) {
             filterParam = "";
-        }        
+        } 
+        
+    	System.out.println(filterParam);
         String[] filterQuery = filterParam.split(",");
         
         //Get permission level for search. If none, search all types of docs.
@@ -71,8 +74,9 @@ public class SearchServlet extends HttpServlet {
         }        
         
         //Perform search, only send the results we want shown on page to jsp
-        try {
-            DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+        try { 
+        	DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+      
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
 
@@ -89,16 +93,65 @@ public class SearchServlet extends HttpServlet {
                 endIndex = totalResults;
             }
             
+            //filter data
+            int htmlresult = 0; int docxresult = 0; int pdfresult = 0; int txtresult = 0;
+            int permall = 0; int perminstructor = 0; int permstudent = 0;
+            HashMap<String, Integer> owner = new HashMap<String, Integer>();
+            HashMap<String, Integer> course = new HashMap<String, Integer>();
+            for (DocFile df: searchResults) {
+            	if (df.getFileType().equals("html")) {
+            		htmlresult += 1;
+            	} else if (df.getFileType().equals("docx")) {
+            		docxresult += 1;
+            	} else if (df.getFileType().equals("pdf")) {
+            		pdfresult += 1;
+            	} else if (df.getFileType().equals("txt")) {
+            		txtresult += 1;
+            	}	
+            	
+            	//System.out.println(df.getPermission());
+            	if (df.getPermission()==3) {
+            		perminstructor += 1;
+            	} else if (df.getPermission()==2) {
+            		permstudent += 1;
+            	}
+            	
+            	if (owner.containsKey(df.getOwner())) {
+            		owner.put(df.getOwner(), owner.get(df.getOwner())+1);
+            	} else {
+            		owner.put(df.getOwner(), 1);
+            	}
+            	
+            	if (course.containsKey(df.getCourseCode())) {
+            		course.put(df.getCourseCode(), course.get(df.getCourseCode())+1);
+            	} else {
+            		course.put(df.getCourseCode(), 1);
+            	}
+            }
+           
+            
             DocFile[] pageResults = Arrays.copyOfRange(searchResults, 
                     startIndex, endIndex);
             req.setAttribute("minPageDisplay", pageDisplay(currentPage, pagesRequired)[0]);
             req.setAttribute("maxPageDisplay", pageDisplay(currentPage, pagesRequired)[1]);
             req.setAttribute("searchResults", pageResults);
             req.setAttribute("totalResults", totalResults);
+            req.setAttribute("htmlresult", htmlresult);
+            req.setAttribute("docxresult", docxresult);
+            req.setAttribute("pdfresult", pdfresult);
+            req.setAttribute("txtresult", txtresult);
+            req.setAttribute("perminstructorresult", perminstructor);
+            req.setAttribute("permstudentresult", permstudent);
+            req.setAttribute("owner", owner);
+            req.setAttribute("course", course);
+            req.setAttribute("query", query);
+            req.setAttribute("filterquery", filterQuery );
+            req.setAttribute("perm", permParam);
             if (pagesRequired==0) pagesRequired=1;
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noPageUri", noPageUri);
+            
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -172,9 +225,9 @@ public class SearchServlet extends HttpServlet {
     private DocFile[] performSearch (String queryString, String[] filterString, String permString) throws ParseException, IOException {
     	
         
-        IndexHandler handler = IndexHandler.getInstance();          
+        IndexHandler handler = IndexHandler.getInstance();  
         DocFile[] docFileResults = handler.search(queryString, Integer.parseInt(permString), filterString);
-
+        
 		return docFileResults;
     	
     }
