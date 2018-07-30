@@ -21,7 +21,6 @@
             <!-- sign in/out & register button -->
             <div class = "header-choices">
                 <a class = "btn notSignedIn loginButton"><i class="user outline icon"></i><span class="tooltiptext">Login</span></a>
-
                 <a class = "btn notSignedIn registerButton"><i class="edit outline icon"></i><span class="tooltiptext">Register</span></a>
                 
                 <div class="signedIn header-info"><span class="userName"></span></div>
@@ -60,6 +59,7 @@
                 <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i><span class="tooltiptext">Upload</span></a>
                 <a class="btn signedIn" id="profileButton" href="/profile"><i class="user outline icon"></i><span class="tooltiptext">Profile</span></a>
                 <a class="btn signedIn" id="logoutButton"><i class="sign out alternate icon"></i><span class="tooltiptext">Logout</span></a>
+
             </div>
 
             <!-- the sign in pop up window -->
