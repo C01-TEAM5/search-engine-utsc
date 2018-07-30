@@ -1,16 +1,125 @@
 .btn, .loginButton, .cancelbtn {
+    transition-duration: 0.2s !important;
     font-family: 'Open Sans', sans-serif !important;
     width: auto;
-    background-color: #121e61;
+    background: none;
     font-size: 15px;
     color: white;
-    padding: 9px 12px;
-    margin: 8px 0;
+    margin-right: 5px;
     border: none;
     cursor: pointer;
-    margin: 5px;
     text-decoration: none;
     text-align: center;
+}
+
+form .loginButton, form .cancelbtn {
+    background: #33A2FF;
+    padding: 10px;
+}
+
+.header-choices a {
+    color: white !important;
+    width: auto !important;
+    padding: 5px;
+    text-align: center !important;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    width: 100px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.btn:hover .tooltiptext {
+    visibility: visible;
+}
+
+.dropdown {
+    z-index: 25 !important;
+}
+
+.dropdown .menu {
+    width: 350px !important;
+    max-width: 350px !important;
+    max-height: 400px !important;
+    overflow: hidden !important;
+    overflow-y: auto !important;
+    margin-top: 5px !important;
+    padding: 2px !important;
+    z-index: 25 !important;
+    overflow: visible !important;
+}
+
+.dropdown .menu * {
+    z-index: 25 !important;
+}
+
+.dropdown .menu a {
+    color: black !important;
+}
+
+.dropdown .menu .btn {
+    color: black !important;
+    padding: 3px !important;
+}
+
+.dropdown:hover .menu {
+    background: white !important;
+}
+
+.dropdown .menu:hover {
+    background: white !important;
+}
+
+.notification-item {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid #aaa !important;
+}
+
+.notification-status {
+    border-radius: 50% !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    max-width: 1px !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    max-height: 1px !important;
+    padding: 5px !important;
+    top: 3px !important;
+    left: 22px !important;
+    margin: 0 !important;
+}
+
+.notification-msg {
+    width: 60%;
+    max-width: 200px;
+    min-height: 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+    font-size: 9pt;
+    text-align: left;
+    white-space: normal;      /* CSS3 */   
+}
+
+.btn.ui.dropdown {
 }
 
 .registertypebutton  {
@@ -29,12 +138,11 @@
 }
 
 .registertypebutton:focus {
-    background-color: #121e61;
     color: white;
 }
 
 .active-permission {
-    background-color: #121e61;
+    background:  #33A2FF;
     color: white;
 }
 

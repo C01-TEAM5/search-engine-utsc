@@ -14,6 +14,8 @@
             setSignedIn();
         }
 
+        $('.ui.dropdown').dropdown();
+
         var popuplogin = document.getElementById('SIB');
         var popupregister = document.getElementById('RIB');
 
@@ -46,6 +48,53 @@
         $(".loginButton").click(function(){
             console.log(document.URL);
             showLogin();
+        });
+
+        $(".item").click(function() {});
+
+        $(".notification-item").click(function(){
+            var id = $(this).attr("id");
+            api.openNotification(id, function(err, data) {
+                if (err) {
+                    swal("Error", "an error occured while opening notification", "error");
+                }
+                else {
+                    $("#" + id + " .notification-status").remove();
+                    if ($(".dropdown .menu .notification-status").length == 0) {
+                        $(".dropdown .notification-status").remove();
+                    }
+                }
+            });
+        });
+
+        $(".notification-link").click(function(){
+            var id = $(this).attr("id").split("-link")[0];
+            api.openNotification(id, function(err, data) {
+                if (err) {
+                    swal("Error", "an error occured while opening notification", "error");
+                }
+                else {
+                    $("#" + id + " .notification-status").remove();
+                    if ($(".dropdown .menu .notification-status").length == 0) {
+                        $(".dropdown .notification-status").remove();
+                    }
+                }
+            });
+        });
+
+        $(".notification-delete").click(function() {
+            var id = $(this).attr("id").split("-delete")[0];
+            api.deleteNotification(id, function(err, data) {
+                if (err) {
+                    swal("Error", "an error occured while opening notification", "error");
+                }
+                else {
+                    $("#" + id).remove();
+                    if ($(".dropdown .menu .notification-status").length == 0) {
+                        $(".dropdown .notification-status").remove();
+                    }
+                }
+            });
         });
 
         document.getElementById("RIB").addEventListener("submit", function(e){
@@ -182,7 +231,7 @@
     }
 
     var setSignedIn = function() {
-        $(".userName").html(api.getCurrentUser());
+        $(".userName").html(api.getCurrentUser().replace(/"/g, ''));
         $(".signedIn").css("display", "inline-block");
         $(".notSignedIn").css("display", "none");
     }

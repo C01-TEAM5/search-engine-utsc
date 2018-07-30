@@ -19,6 +19,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.Notification;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
@@ -48,7 +50,26 @@ public class UploadServlet extends HttpServlet {
     protected void doGet (HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         //throw new ServletException("GET method used with " + getClass().getName()+": POST method required.");
-        RequestDispatcher view = req.getRequestDispatcher("upload.html");
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
+        catch (Exception e) {}
+
+        if (currentUser != null && AccountManager.exists(currentUser)) {
+            req.setAttribute("loggedIn", true);
+            req.setAttribute("notifications", NotificationManager.getNotifications(currentUser));
+            req.setAttribute("hasNew", NotificationManager.hasNew(currentUser));
+        }
+        else {
+            req.setAttribute("loggedIn", false);
+            req.setAttribute("hasNew", false);
+        }
+
+        RequestDispatcher view = req.getRequestDispatcher("upload.jsp");
         view.forward(req, resp);
     }
 
@@ -138,9 +159,10 @@ public class UploadServlet extends HttpServlet {
                         Uploader.handleUpload(docFile, initialStream);
                         User user = AccountManager.getUser(currentUser);
                         for (String id: user.getFollowers()) {
-                            User toInform = AccountManager.getUser(id);
-                            String msg = constructMsg(user, toInform, docFile);
-                            AccountManager.sendNotification(toInform, msg);
+                            //User toInform = AccountManager.getUser(id);
+                            String msg = constructMsg(user, docFile);
+                            NotificationManager.addNotification(new Notification(id, msg, "/file?id=" + docFile.getId()));
+                            //AccountManager.sendNotification(toInform, msg);
                         }
                     }
                 }
@@ -180,18 +202,10 @@ public class UploadServlet extends HttpServlet {
 
     }
 
-    private String constructMsg(User from, User to, DocFile docFile) {
+    private String constructMsg(User from, DocFile docFile) {
 
         StringBuilder res = new StringBuilder();
-        res.append("Hello " + to.getName() + ",");
-        res.append("\n");
-        res.append("\n");
         res.append("One of your followers, " + from.getName() + ", has just uploaded a new file, " + docFile.getFilename());
-        res.append("\n");
-        res.append("\n");
-        res.append("Sincerely,");
-        res.append("\n");
-        res.append("Search Engine UTSC Team");
 
         return res.toString();
 

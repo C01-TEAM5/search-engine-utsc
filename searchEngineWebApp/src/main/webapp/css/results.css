@@ -1,14 +1,14 @@
 .search-results {
     text-align: center;
-    width: 60%;
-    height: 85%;
+    width: 63% !important;
+    height: 100% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.904);
-    margin: 2%;
-    padding: 0px;
+    padding: 10px !important;
+
 }
 
 .results-table {
@@ -100,7 +100,7 @@ a {
 
 .pagination {
     position: absolute;
-    z-index: 200;
+    z-index: 2;
     top: 90%;
 }
 
@@ -124,10 +124,83 @@ a {
 	font-weight: bold;
 }
 
-@media (max-width: 1600px) {
+.search-results-containter {
+    padding: 35px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
+}
 
+.filters-containter {
+    
+    width: 35%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    background: red;
+    padding: 10px !important;
+    z-index: 10 !important;
+    margin: 0 !important;
+}
+
+#show-filters {
+    padding: 5px !important;
+    background: white !important;
+    border: 1px solid #999 !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+}
+
+.mobile {
+    display: none !important;
+}
+
+#show-filters i {
+    margin:0 !important;
+    padding: 0 !important;
+}
+
+.filter-graphs {
+    z-index: 10 !important;
+}
+
+@media (max-width: 1600px) {
+    .mobile {
+        display: block !important;
+    }
+    
     .search-results {
         width: 98%;
+    }
+
+    .filter-graphs {
+        display: none;
+        z-index: 10 !important;
+    }
+
+    .filters-containter {
+        z-index: 10;
+        position: absolute !important;
+        width: auto;
+        height: auto;
+        max-height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    .search-results-containter {
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding-top: 10px;
     }
 
     .search-results-item {
