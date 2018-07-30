@@ -1,33 +1,37 @@
 package fall2018.cscc01.team5.searchEngineWebApp.document;
 
+import com.mongodb.*;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.*;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
 import org.apache.lucene.search.vectorhighlight.FieldQuery;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.spans.SpanTermQuery;
 import org.apache.lucene.store.Directory;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.Version;
-import org.bson.types.ObjectId;
+import org.lumongo.storage.lucene.DistributedDirectory;
+import org.lumongo.storage.lucene.MongoDirectory;
 
 public class IndexHandler {
+    
+    private static MongoClientURI uri = new MongoClientURI(
+            "mongodb+srv://user01:CWu73Dl13bTLZ5uD@search-engine-oslo6.mongodb.net/");
+
+    private static MongoClient mongoClient = new MongoClient(uri);
 
     private static IndexHandler indexHandler;
 
@@ -37,12 +41,13 @@ public class IndexHandler {
     private IndexWriter writer;           // Index Writer
     //private String storePath;             // The path where the index will be stored
     private int hitsPerPage = 1000000;
+
     /**
      * Construct a new IndexHandler. This class represents the indexer for the search engine. Index is stored in RAM.
      */
-    private IndexHandler () throws IOException {
+    private IndexHandler (boolean test) throws IOException {
         analyzer = new StandardAnalyzer();
-        indexDir = new RAMDirectory();
+        indexDir = test ? new RAMDirectory() : new DistributedDirectory(new MongoDirectory(mongoClient, "search-engine", "index"));
         //storePath = storedPath;
         config = new IndexWriterConfig(analyzer);
 
@@ -57,7 +62,6 @@ public class IndexHandler {
         }
     }
 
-
     /**
      * Return the shared instance of this index handler.
      *
@@ -65,9 +69,13 @@ public class IndexHandler {
      */
     public static IndexHandler getInstance () throws IOException {
         if (indexHandler == null) {
-            indexHandler = new IndexHandler();
+            indexHandler = new IndexHandler(false);
         }
         return indexHandler;
+    }
+
+    public static  IndexHandler getTestInstance() throws  IOException {
+        return  new IndexHandler(true);
     }
 
     /**
@@ -88,7 +96,7 @@ public class IndexHandler {
         }
 
         // Create the new document, add in DocID fields and UploaderID fields
-        Document newDocument = new Document();
+        org.apache.lucene.document.Document newDocument = new Document();
 
         Field docIDField = new StringField(Constants.INDEX_KEY_ID, newFile.getId(), Store.YES);
         Field docPathField = new StringField(Constants.INDEX_KEY_PATH, newFile.getPath(), Store.YES);

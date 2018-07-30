@@ -52,7 +52,7 @@ public class IndexHandlerSearchTest {
     @BeforeClass
     public static void indexSetup() throws IOException, DocumentException {
 
-        index = IndexHandler.getInstance();
+        index = IndexHandler.getTestInstance();
 
         generateTxtFiles();
         generateHtmlFiles();
