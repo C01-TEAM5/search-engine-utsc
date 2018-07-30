@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationManager;
+import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
+import org.apache.commons.codec.DecoderException;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.google.gson.Gson;
@@ -18,6 +22,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -101,6 +107,24 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("noPageUri", noPageUri);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
+        catch (Exception e) {}
+        if (currentUser != null && AccountManager.exists(currentUser)) {
+            req.setAttribute("loggedIn", true);
+            req.setAttribute("notifications", NotificationManager.getNotifications(currentUser));
+            req.setAttribute("hasNew", NotificationManager.hasNew(currentUser));
+        }
+        else {
+            req.setAttribute("loggedIn", false);
+            req.setAttribute("hasNew", false);
         }
     
         RequestDispatcher viewResults = req.getRequestDispatcher("templates/searchresults.jsp");

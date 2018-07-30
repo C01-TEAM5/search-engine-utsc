@@ -9,6 +9,7 @@ import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
 import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.document.FileManager;
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
@@ -264,6 +265,15 @@ public class ProfileServlet extends HttpServlet {
             req.setAttribute("pdfNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"pdf"}).length);
             req.setAttribute("txtNum", IndexHandler.getInstance().searchByUser(user.getUsername(), new String[]{"txt"}).length);
             req.setAttribute("following", user.getFollowers().contains(currentUser));
+            if (currentUser != null && AccountManager.exists(currentUser)) {
+                req.setAttribute("loggedIn", true);
+                req.setAttribute("notifications", NotificationManager.getNotifications(currentUser));
+                req.setAttribute("hasNew", NotificationManager.hasNew(currentUser));
+            }
+            else {
+                req.setAttribute("loggedIn", false);
+                req.setAttribute("hasNew", false);
+            }
 
             RequestDispatcher view = req.getRequestDispatcher("templates/profile.jsp");
             view.forward(req, resp);

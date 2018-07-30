@@ -6,6 +6,7 @@ import com.mongodb.client.result.UpdateResult;
 import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.document.IndexHandler;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.user.login.InvalidUsernameException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
@@ -304,6 +305,25 @@ public class CourseServlet extends HttpServlet {
                 req.setAttribute("courseName", course.getName());
                 req.setAttribute("courseDesc", course.getDescription());
                 req.setAttribute("numStudentsEnrolled", Integer.toString(course.getSize()));
+
+                String currentUser = null;
+                try {
+                    currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+                }
+                catch (InvalidKeySpecException e) {}
+                catch (NoSuchAlgorithmException e) {}
+                catch (DecoderException e) {}
+                catch (Exception e) {}
+                if (currentUser != null && AccountManager.exists(currentUser)) {
+                    req.setAttribute("loggedIn", true);
+                    req.setAttribute("notifications", NotificationManager.getNotifications(currentUser));
+                    req.setAttribute("hasNew", NotificationManager.hasNew(currentUser));
+                }
+                else {
+                    req.setAttribute("loggedIn", false);
+                    req.setAttribute("hasNew", false);
+                }
+
                 RequestDispatcher view = req.getRequestDispatcher("templates/course.jsp");
                 view.forward(req, resp);
             } catch (CourseDoesNotExistException e) {
