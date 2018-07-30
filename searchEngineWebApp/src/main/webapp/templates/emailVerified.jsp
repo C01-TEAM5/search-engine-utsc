@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </c:if>
-                <a class = "btn help helpButton" onClick="location.href='faq.html'">
+                <a class = "btn help helpButton" href="/help">
                         <i class="question circle outline icon"></i><span class="tooltiptext">Help</span></a>
                 <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i><span class="tooltiptext">Upload</span></a>
                 <a class="btn signedIn" id="profileButton" href="/profile"><i class="user outline icon"></i><span class="tooltiptext">Profile</span></a>

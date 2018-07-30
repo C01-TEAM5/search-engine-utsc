@@ -51,6 +51,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>HelpServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.server.HelpServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationServlet</servlet-class>
     </servlet>
@@ -58,6 +63,11 @@
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/notifications</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelpServlet</servlet-name>
+        <url-pattern>/help</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
