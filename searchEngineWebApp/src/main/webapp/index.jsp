@@ -21,7 +21,6 @@
             <!-- sign in/out & register button -->
             <div class = "header-choices">
                 <a class = "btn notSignedIn loginButton"><i class="user outline icon"></i><span class="tooltiptext">Login</span></a>
-
                 <a class = "btn notSignedIn registerButton"><i class="edit outline icon"></i><span class="tooltiptext">Register</span></a>
                 
                 <div class="signedIn header-info"><span class="userName"></span></div>
@@ -60,6 +59,7 @@
                 <a class="btn signedIn" id="uploadButton" href="/upload"><i class="upload icon"></i><span class="tooltiptext">Upload</span></a>
                 <a class="btn signedIn" id="profileButton" href="/profile"><i class="user outline icon"></i><span class="tooltiptext">Profile</span></a>
                 <a class="btn signedIn" id="logoutButton"><i class="sign out alternate icon"></i><span class="tooltiptext">Logout</span></a>
+
             </div>
 
             <!-- the sign in pop up window -->
@@ -167,7 +167,11 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<<<<<<< HEAD:searchEngineWebApp/src/main/webapp/index.jsp
     <script src="../lib/semantic/semantic.min.js"></script>
+=======
+    <!-- <script src="js/searchinfo.js"></script> -->
+>>>>>>> master:searchEngineWebApp/src/main/webapp/index.html
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/login.js"></script>

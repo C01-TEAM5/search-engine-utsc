@@ -8,7 +8,7 @@
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.904);
     margin: 2%;
-    padding: 20px;
+    padding: 0px;
 }
 
 .results-table {
@@ -147,7 +147,7 @@ a {
         font-size: 24pt;
     }
 
-    .page-move-btn { 
+    .page-move-btn {
         font-size: 11pt;
     }
 
