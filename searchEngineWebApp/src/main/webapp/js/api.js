@@ -27,7 +27,7 @@ var api = (function(){
 
     module.getCurrentUser = function() {
         var l = document.cookie.split("currentUserName=");
-        if (l.length > 1) return l[1].replace("%20", " ").split(';')[0];
+        if (l.length > 1) return l[1].replace(/%20/g, " ").split(';')[0];
         return null;
     };
 
@@ -115,6 +115,14 @@ var api = (function(){
 
     module.followUser = function(id, unfollow, callback) {
         send("POST", "/follow-user", {"id":id, "unfollow":unfollow}, callback);
+    }
+
+    module.openNotification = function(id, callback) {
+        send("POST", "/notifications", {"id":id, "clear":true}, callback);
+    }
+
+    module.deleteNotification = function(id, callback) {
+        send("POST", "/notifications", {"id":id, "delete":true}, callback);
     }
 
     module.buildQuery = function buildQueryString(query, filters, perm) {
