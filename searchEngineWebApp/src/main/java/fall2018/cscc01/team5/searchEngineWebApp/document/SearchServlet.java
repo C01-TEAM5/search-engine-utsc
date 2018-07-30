@@ -179,7 +179,6 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("loggedIn", false);
             req.setAttribute("hasNew", false);
         }
-    
         RequestDispatcher viewResults = req.getRequestDispatcher("templates/searchresults.jsp");
         viewResults.forward(req, resp);
         
