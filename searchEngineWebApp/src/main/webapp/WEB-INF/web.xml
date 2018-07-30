@@ -45,9 +45,34 @@
         <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.document.crawler.CrawlerServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>IndexServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.server.IndexServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>HelpServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.server.HelpServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
-        <servlet-name>SearchServlet</servlet-name>
-        <url-pattern>/search</url-pattern>
+        <servlet-name>NotificationServlet</servlet-name>
+        <url-pattern>/notifications</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelpServlet</servlet-name>
+        <url-pattern>/help</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

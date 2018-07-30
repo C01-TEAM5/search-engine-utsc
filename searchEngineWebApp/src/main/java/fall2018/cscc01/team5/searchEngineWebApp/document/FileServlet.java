@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
+import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.NotificationManager;
 import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 import fall2018.cscc01.team5.searchEngineWebApp.util.ServletUtil;
 import org.apache.commons.codec.DecoderException;
@@ -88,6 +90,24 @@ public class FileServlet extends HttpServlet {
             req.setAttribute("fileType", file.getFileType());
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        String currentUser = null;
+        try {
+            currentUser = ServletUtil.getDecodedCookie(req.getCookies());
+        }
+        catch (InvalidKeySpecException e) {}
+        catch (NoSuchAlgorithmException e) {}
+        catch (DecoderException e) {}
+        catch (Exception e) {}
+        if (currentUser != null && AccountManager.exists(currentUser)) {
+            req.setAttribute("loggedIn", true);
+            req.setAttribute("notifications", NotificationManager.getNotifications(currentUser));
+            req.setAttribute("hasNew", NotificationManager.hasNew(currentUser));
+        }
+        else {
+            req.setAttribute("loggedIn", false);
+            req.setAttribute("hasNew", false);
         }
 
         RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");

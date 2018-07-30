@@ -1,23 +1,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!--  learned pagination from:
-https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
 <head>
-
-    <meta charset="UTF-8">
-    <!--link rel="stylesheet" href="./css/main.css" type="text/css"-->
+    <meta charset= "UTF-8">
+    <title>Upload page</title>
+    <!-- <link rel= "stylesheet" href= "./css/main.css"> -->
+    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../lib/semantic/semantic.min.css">
-    <link rel="stylesheet" href="./css/reset.css" type="text/css">
     <link rel="stylesheet" href="./css/index.css" type="text/css">
-    <link rel="stylesheet" href="./css/results.css" type="text/css">
     <link rel= "stylesheet" href= "./css/login.css" type="text/css">
-    <title>UTSC Document Search</title>
+    <link rel= "stylesheet" href= "./css/uploadFile.css" type="text/css">
 </head>
+
 <body>
     <div id="search-background"></div>
 
@@ -69,7 +67,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container-logins">
                     <label for="username">Username</label>
                     <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
@@ -85,13 +83,13 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         class="cancelbtn">Cancel</button>
                     </div>
                 </div>
-                </form>
+              </form>
             </div>
 
 
             <!-- the register pop up window -->
             <div id="RIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container-logins">
                     <div class="row">
                         <div class = "register-type col-sm-5">
@@ -129,83 +127,80 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </div>
                     </div>
                 </div>
-                </form>
+              </form>
             </div>
 
         </div>
     </div>
 
-    <!-- search results -->
-    <div class=search-results>
-        <div class="ui orange horrizontal label total-results" style="z-index: 100;">${totalResults} results found</div>
-        <div class="separator"></div>
+    <!-- Learned about tabbing in semantic here: https://stackoverflow.com/questions/21769214/using-the-tab-control-in-semantic-ui -->
+    <div class="ui pointing secondary demo menu" id = "tab-menu">
+        <a class="active blue item" data-tab="file-upload">File Upload</a>
+        <a class="blue item" data-tab="crawler-upload">Crawler Upload</a>
+    </div>
+    <section class= "uploadFile ui active tab segment" data-tab="file-upload">
+        <span>Upload File</span>
 
-        <div class="results-table">
-            <c:forEach var="result" items="${searchResults}">
-                <div class="ui raised segment search-results-item">
-                    <i class="file alternate outline icon"></i>
-                    <div class="search-results-item-info">
-                        <div class="file-name">
-                            <a href="/file?id=${result.id}"><c:out value="${result.title}"/></a>
-                            <div class="ui teal tag label"><c:out value="${result.fileType}"/></div>
-                        </div>
-                        <div class="file-course">
-                            Course Code:
-                            <c:if test="${result.courseCode.length() > 0}">
-                                <a class="ui blue horizontal label" href="/course?id=${result.courseCode}"><c:out value="${fn:toUpperCase(result.courseCode)}"/></a>
-                            </c:if>
-                            <c:if test="${result.courseCode.length() == 0}">
-                                <div class="ui red horizontal label">NONE</div>
-                            </c:if>
+        <div class = "uploadSection">
+            <br />
+            Upload a single file to the system.<br />
+            A course may be specified but is not required for upload.<br />
+            Accepted filetypes include: .txt, .html, .pdf and .docx.<br />
+            <form method="POST" action="upload" enctype = "multipart/form-data">
+             	 <br />
 
-                        </div>
-                        <div class="file-owner">
-                            Owner:
-                            <a href="/profile?id=${result.owner}"><c:out value="${fn:toUpperCase(result.owner)}"/></a>
-                        </div>
-                        <div class="content-snip">
-                            ${result.contextString}
-                        </div>
-                    </div>
+                <div class = "uploadFilePath">
+                    <!-- <button class = "uploadButton">Browse</button> -->
+                    <input type = "file" name = "filePath" multiple required>
                 </div>
-            </c:forEach>
-        </div>
 
-        <!-- page number -->
-        <div class="pagination">
-            <div class="page">
-                <!-- previous link -->
-                <c:if test="${currentPage != 1}">
-                    <td><a href="${noPageUri}page=${currentPage - 1}">
-                    <button class="page-move-btn">Previous</button></a></td>
-                </c:if>
-                <!-- page number -->
-                <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
-                    <c:choose>
-                        <c:when test="${currentPage eq index}">
-                            <td class="page-num" id="active-page">${index}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-                <!-- next link -->
-                <c:if test="${currentPage != totalPages}">
-                    <td><a href="${noPageUri}page=${currentPage + 1}">
-                    <button class="page-move-btn">Next</button></a><td>
-                </c:if>
-            </div>
-        </div>
+                <br />
+                <label for="courseCode">Course Code</label>
+                <br />
+                <input id="courseCode" type="text" placeholder="" name="courseCode">
+                <br />
+                <br />
 
-    </div>
+                <button type = "submit" value = "submitUpload" id="upload-files-button">Upload</button>
+            </form>
+        </div>
+    </section>
+    <section class = "uploadFile ui tab segment" data-tab="crawler-upload">
+        <span>Crawler Upload</span>
+
+        <div class = "uploadSection">
+            <br />
+            Crawls a provided website and uploads all relevant files into the system.
+            <br />
+            A course may be specified but is not required for crawling.
+            <br />
+            The number of pages visited is 30 from the URL provided. The depth of the crawl is 2.
+            <br />
+            The crawling process can take a few minutes to complete.
+            <form method="POST" action="crawler">
+                <br />
+                <label for="crawlSite">Website to Crawl</label>
+                <br />
+                <input type="text" placeholder="" name="crawlSite" id="crawlSite">
+                <br />
+                <br />
+                <label for="crawlerCourseCode">Course Code</label>
+                <br />
+                <input type="text" placeholder="" name="crawlerCourseCode" id="crawlerCourseCode">
+                <br />
+                <br />
+                <button type = "submit" value = "submitUpload" id="crawler-upload-files-button">Upload</button>
+                <br />
+            </form>
+        </div>
+    </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="../lib/semantic/semantic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="./lib/semantic/semantic.min.js"></script>
     <script src="js/api.js"></script>
+    <script src = "./js/uploader.js" type = "text/javascript"></script>
     <script src="./js/login.js"></script>
 </body>
-</html>
