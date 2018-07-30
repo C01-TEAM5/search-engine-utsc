@@ -5,6 +5,12 @@ console.log(perm);
 var type = document.getElementById("type").innerHTML;
 console.log(type);
 
+
+$("#show-filters").click(function() {
+    
+    $(".filter-graphs").toggle();
+});
+
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart']});
 
@@ -29,7 +35,7 @@ function drawChart1() {
       ['TXT', parseInt($("#txtNum").html())]
   ]);
   // Set chart options
-  var fileTypeoptions = {'title':'File Type Statistics', 'width':300, 'height':180};
+  var fileTypeoptions = {'title':'File Type Statistics', 'width':600, 'height':360};
   // Instantiate and draw our chart, passing in some options.
   var fileTypechart = new google.visualization.PieChart(document.getElementById('fileTypeFilter'));
   // click filter
@@ -79,7 +85,7 @@ function drawChart2() {
       ['Student', parseInt($("#permstudent").html())],
   ]);
   // Set chart options
-  var filePermoptions = {'title':'File Uploader Type Statistics', 'width':300, 'height':180};
+  var filePermoptions = {'title':'File Uploader Type Statistics', 'width':600, 'height':360};
   // Instantiate and draw our chart, passing in some options.
   var filePermchart = new google.visualization.PieChart(document.getElementById('filePermFilter'));
   // click filter

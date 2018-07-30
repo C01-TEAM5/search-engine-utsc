@@ -167,11 +167,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<<<<<<< HEAD:searchEngineWebApp/src/main/webapp/index.jsp
     <script src="../lib/semantic/semantic.min.js"></script>
-=======
-    <!-- <script src="js/searchinfo.js"></script> -->
->>>>>>> master:searchEngineWebApp/src/main/webapp/index.html
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/login.js"></script>
