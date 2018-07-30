@@ -61,6 +61,11 @@
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/notifications</url-pattern>
     </servlet-mapping>
