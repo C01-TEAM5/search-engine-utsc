@@ -125,9 +125,8 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div id="txtNum" class="hidden" hidden>${txtresult}</div>
                 <div id="fileTypeFilter"></div>
 
-                <div id="permall" class="hidden" hidden>${a}</div>
-                <div id="perminstructor" class="hidden" hidden>${i}</div>
-                <div id="permstudent" class="hidden" hidden>${s}</div>
+                <div id="perminstructor" class="hidden" hidden>${perminstructorresult}</div>
+                <div id="permstudent" class="hidden" hidden>${permstudentresult}</div>
                 <div id="filePermFilter"></div>
 
                 <%-- <table id="OwnerData" class="hidden" hidden>

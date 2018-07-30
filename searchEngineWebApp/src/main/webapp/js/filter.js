@@ -75,7 +75,6 @@ function drawChart2() {
   filePermData.addColumn('string', 'File Uploader Type');
   filePermData.addColumn('number', 'Occurence');
   filePermData.addRows([
-      ['All', parseInt($("#perall").html())],
       ['Instructor', parseInt($("#perminstructor").html())],
       ['Student', parseInt($("#permstudent").html())],
   ]);
@@ -88,9 +87,7 @@ function drawChart2() {
       var selectPerm = filePermchart.getSelection()[0];
       if (selectPerm) {
           var p = filePermData.getValue(selectPerm.row, 0);
-          if (p=="All") {
-              document.getElementById("perm-all").click();
-          } else if (p=="Instructor") {
+          if (p=="Instructor") {
               document.getElementById("perm-instructor").click();
           } else if (p=="Student") {
               document.getElementById("perm-student").click();

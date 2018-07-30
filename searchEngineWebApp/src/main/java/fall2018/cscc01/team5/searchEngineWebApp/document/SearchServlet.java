@@ -110,9 +110,7 @@ public class SearchServlet extends HttpServlet {
             	}	
             	
             	//System.out.println(df.getPermission());
-            	if (df.getPermission()==0) {
-            		permall += 1; 
-            	} else if (df.getPermission()==3) {
+            	if (df.getPermission()==3) {
             		perminstructor += 1;
             	} else if (df.getPermission()==2) {
             		permstudent += 1;
@@ -142,9 +140,8 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("docxresult", docxresult);
             req.setAttribute("pdfresult", pdfresult);
             req.setAttribute("txtresult", txtresult);
-            req.setAttribute("a", permall);
-            req.setAttribute("i", perminstructor);
-            req.setAttribute("s", permstudent);
+            req.setAttribute("perminstructorresult", perminstructor);
+            req.setAttribute("permstudentresult", permstudent);
             req.setAttribute("owner", owner);
             req.setAttribute("course", course);
             req.setAttribute("query", query);
