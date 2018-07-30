@@ -1,14 +1,14 @@
 .search-results {
     text-align: center;
-    width: 65%;
-    height: 100%;
+    width: 63% !important;
+    height: 100% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.904);
-    margin: 2%;
-    padding: 0px;
+    padding: 10px !important;
+
 }
 
 .results-table {
@@ -145,6 +145,7 @@ a {
     background: red;
     padding: 10px !important;
     z-index: 10 !important;
+    margin: 0 !important;
 }
 
 #show-filters {

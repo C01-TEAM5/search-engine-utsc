@@ -138,7 +138,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <div class="search-results-containter">
         
         <!-- search results -->
-        <div class=search-results>
+        <div class="search-results">
             <div id="docxNum" class="hidden" hidden>${docxresult}</div>
             <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
             <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
