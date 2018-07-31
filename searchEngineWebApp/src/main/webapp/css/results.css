@@ -1,13 +1,15 @@
 .search-results {
     text-align: center;
-    width: 63% !important;
+    width: 70% !important;
     height: 100% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: rgba(255, 255, 255, 0.904);
     padding: 10px !important;
+    overflow: hidden;
+    overflow-y: auto;
 
 }
 
@@ -17,7 +19,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .page-move-btn {
@@ -127,7 +131,7 @@ a {
 .search-results-containter {
     padding: 35px;
     width: 100%;
-    height: 100%;
+    height: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -136,11 +140,11 @@ a {
 
 .filters-containter {
     
-    width: 35%;
+    width: 28%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-end;
     background: red;
     padding: 10px !important;
@@ -149,15 +153,24 @@ a {
 }
 
 #show-filters {
+    z-index: 11 !important;
+    position: absolute !important;
     padding: 5px !important;
-    background: white !important;
+    background: #33A2FF !important;
     border: 1px solid #999 !important;
-    width: 30px !important;
-    min-width: 30px !important;
-    max-width: 30px !important;
-    height: 30px !important;
-    min-height: 30px !important;
-    max-height: 30px !important;
+    width: 5px !important;
+    min-width: 5px !important;
+    max-width: 5px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin : 0 !important;
+    border-radius: 2px !important;
+}
+
+#filter-header {
+    width: 90% !important;
+    margin-right: 20px !important;
 }
 
 .mobile {
@@ -171,6 +184,8 @@ a {
 
 .filter-graphs {
     z-index: 10 !important;
+    width: 100%;
+    margin-right: 10px;
 }
 
 @media (max-width: 1600px) {
@@ -179,7 +194,8 @@ a {
     }
     
     .search-results {
-        width: 98%;
+        width: 95% !important;
+        margin-left: 2% !important;
     }
 
     .filter-graphs {
@@ -189,16 +205,18 @@ a {
 
     .filters-containter {
         z-index: 10;
-        position: absolute !important;
         width: auto;
-        height: auto;
+        height: 100%;
         max-height: 100%;
         overflow: hidden;
         overflow-y: auto;
+        padding: 20px !important;
+        padding-right: 0px !important;
+        padding-left: 10px !important;
     }
 
     .search-results-containter {
-        justify-content: flex-end;
+        justify-content: flex-start;
         align-items: flex-start;
         padding-top: 10px;
     }
