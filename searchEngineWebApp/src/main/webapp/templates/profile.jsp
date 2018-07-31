@@ -237,7 +237,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 
                             </div>
                         </div>
-                        <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
+                        <button class="ui secondaryColor button remove-file-button signedIn" id="${result.id}">Remove</button>
                     </div>
                 </c:forEach>
             </div>
