@@ -61,7 +61,6 @@ form .loginButton, form .cancelbtn {
     margin-top: 5px !important;
     padding: 2px !important;
     z-index: 25 !important;
-    overflow: visible !important;
 }
 
 .dropdown .menu * {

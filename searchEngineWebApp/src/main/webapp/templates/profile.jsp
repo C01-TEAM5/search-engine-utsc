@@ -237,7 +237,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 
                             </div>
                         </div>
-                        <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
+                        <button class="ui secondaryColor button remove-file-button signedIn" id="${result.id}">Remove</button>
                     </div>
                 </c:forEach>
             </div>
@@ -251,7 +251,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="../lib/semantic/semantic.min.js"></script>
     <script src="js/api.js"></script>
-    <script src="./js/profile.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/profile.js"></script>
 </body>
 </html>

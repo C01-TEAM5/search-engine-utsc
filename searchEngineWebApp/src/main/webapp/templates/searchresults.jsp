@@ -134,11 +134,8 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             </div>
 
     </div>
-
     <div class="search-results-containter">
-        
-        <!-- search results -->
-        <div class="search-results">
+        <div class="filters-containter ui raised segment">
             <div id="docxNum" class="hidden" hidden>${docxresult}</div>
             <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
             <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
@@ -158,7 +155,47 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <tr><td>${c.key}</td><td>${c.value}</td></tr>
                 </c:forEach>
             </table>
+            <h3 id="filter-header" class="ui green raised segment header filter-graphs">Filters</h3>
+            <div id="fileTypeFilter" class="filter-graphs"></div>  
+            <div id="filePermFilter" class="filter-graphs"></div>                
+            <div id="fileOwnerFilter" class="filter-graphs"></div>                 
+            <div id="courseCodeFilter" class="filter-graphs"></div>
+            <button id="show-filters" class="ui white button mobile"></button>  
+            <div class = "search-form" hidden>
+                <form>
+                    <div class="uploader-filter">
+                        <button id="perm-all" type="button" class="active">All</button>
+                        <button id="perm-instructor" type="button">Instructor</button>
+                        <button id="perm-student" type="button">Student</button>
+                    </div>
+                    <input type="search" placeholder="Search a keyword" id="search">
+                    <button type="submit" id="submit">Go</button>
+                    <div class="search-filters">
+                        <div class="search-check">
+                            <input type="checkbox" id="searchTxt">
+                            <label for="txt">.txt</label>
+                        </div>
 
+                        <div class="search-check">
+                            <input type="checkbox" id="searchPdf">
+                            <label for="pdf">.pdf</label>
+                        </div>
+
+                        <div class="search-check">
+                            <input type="checkbox" id="searchHtml">
+                            <label for="html">.html</label>
+                        </div>
+
+                        <div class="search-check">
+                            <input type="checkbox" id="searchDocx">
+                            <label for="docx">.docx</label>
+                        </div>
+                    </div>
+                </form>
+            </div>                        
+        </div>
+        <!-- search results -->
+        <div class="search-results">
             <div class="ui orange horrizontal label total-results" style="z-index: 2;">${totalResults} results found</div>
             <div class="separator"></div>
             <div class="results-table">
@@ -233,46 +270,6 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 </div>
             </div>
         </div>
-        <div class="filters-containter ui raised segment">
-            <button id="show-filters" class="ui white button mobile"><i class="bars icon"></i></button>
-            <div id="fileTypeFilter" class="filter-graphs"></div>  
-            <div id="filePermFilter" class="filter-graphs"></div>                
-            <div id="fileOwnerFilter" class="filter-graphs"></div>                 
-            <div id="courseCodeFilter" class="filter-graphs"></div>  
-            <div class = "search-form" hidden>
-                <form>
-                    <div class="uploader-filter">
-                        <button id="perm-all" type="button" class="active">All</button>
-                        <button id="perm-instructor" type="button">Instructor</button>
-                        <button id="perm-student" type="button">Student</button>
-                    </div>
-                    <input type="search" placeholder="Search a keyword" id="search">
-                    <button type="submit" id="submit">Go</button>
-                    <div class="search-filters">
-                        <div class="search-check">
-                            <input type="checkbox" id="searchTxt">
-                            <label for="txt">.txt</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchPdf">
-                            <label for="pdf">.pdf</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchHtml">
-                            <label for="html">.html</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchDocx">
-                            <label for="docx">.docx</label>
-                        </div>
-                    </div>
-                </form>
-            </div>                        
-        </div>
-
     </div>
         
 
