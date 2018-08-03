@@ -60,7 +60,7 @@ public class CrawlerServlet extends HttpServlet {
         Thread crawlThread = new Thread(new CrawlRunner(crawlSite,currentUser,courseId));
         crawlThread.start();
         
-        resp.sendRedirect("/upload");
+        resp.sendRedirect("/upload?crawler-success");
         
     }
   
