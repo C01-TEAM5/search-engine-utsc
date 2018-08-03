@@ -10,6 +10,7 @@
     padding: 10px !important;
     overflow: hidden;
     overflow-y: auto;
+    padding-bottom: 5px !important;
 
 }
 
@@ -103,9 +104,9 @@ a {
 }
 
 .pagination {
-    position: absolute;
     z-index: 2;
-    top: 90%;
+    margin: 5px;
+    padding: 5px;
 }
 
 .pagination button:hover {
@@ -113,8 +114,7 @@ a {
 }
 
 .total-results {
-    position: absolute !important;
-    top: 17% !important;
+    
 }
 
 .content-snip {
@@ -135,7 +135,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center !important; 
 }
 
 .filters-containter {
@@ -217,7 +217,7 @@ a {
 
     .search-results-containter {
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: !important;
         padding-top: 10px;
     }
 

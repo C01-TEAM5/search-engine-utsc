@@ -79,8 +79,10 @@ public class SearchServlet extends HttpServlet {
         }        
         
         //Perform search, only send the results we want shown on page to jsp
-        try { 
+        try {
+            long startTime = System.nanoTime();
         	DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+        	long endTime = System.nanoTime();
       
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
@@ -156,7 +158,8 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noPageUri", noPageUri);
-            
+            req.setAttribute("time", (double)(endTime - startTime) / 1000000000.0);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -133,7 +133,7 @@
             <div class="file-container-item">
                 <div class="file-info ui raised segment">
                     <div class="buttons-container">
-                        <a class="ui blue button" href="${path}" download><i class="download icon"></i>Download</a>
+                        <a class="ui blue button" href="${path}" download><i class="cloud download icon"></i>Download</a>
                         <button class="ui blue button isOwner" id="remove-file-button"><i class="trash icon"></i>Delete</a>
                     </div>
                     <a class="ui teal label" href="/profile?id=${owner}">
