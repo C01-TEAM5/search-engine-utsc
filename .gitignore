@@ -13,4 +13,5 @@ file-upload*/
 *src/main/webapp/tmp/
 tmp/
 tmp/*
-
+temp/
+temp/*

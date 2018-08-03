@@ -176,7 +176,7 @@
             <br />
             The number of pages visited is 30 from the URL provided. The depth of the crawl is 2.
             <br />
-            The crawling process can take a few minutes to complete.
+            The crawling process will take place in the background and send a notification on completion.
             <form method="POST" action="crawler">
                 <br />
                 <label for="crawlSite">Website to Crawl</label>

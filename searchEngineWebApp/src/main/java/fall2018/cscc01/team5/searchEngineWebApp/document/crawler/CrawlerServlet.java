@@ -57,17 +57,11 @@ public class CrawlerServlet extends HttpServlet {
             //resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
         
-        //Crawl the website
-        try {
-            CrawlerController controller = new CrawlerController(crawlSite, 2, 40, currentUser, courseId);
-            controller.startCrawl();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-            
+        Thread crawlThread = new Thread(new CrawlRunner(crawlSite,currentUser,courseId));
+        crawlThread.start();
+        
         resp.sendRedirect("/upload");
         
     }
-   
+  
 }
-
