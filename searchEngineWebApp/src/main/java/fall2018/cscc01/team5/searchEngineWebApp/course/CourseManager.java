@@ -73,6 +73,7 @@ public class CourseManager {
      * @param code the code of the course
      */
     public static Course getCourse(String code) throws CourseDoesNotExistException {
+        
         Document doc = coursesCollection.find(Filters.eq("code", code)).first();
         if (doc == null) throw new CourseDoesNotExistException();
 
@@ -87,6 +88,7 @@ public class CourseManager {
     }
 
     public static boolean courseExists(String code) {
+        code = code.toLowerCase();
         return coursesCollection.find(Filters.eq("code", code)).first() != null;
     }
 
