@@ -217,7 +217,7 @@ a {
 
     .search-results-containter {
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: center !important;
         padding-top: 10px;
     }
 

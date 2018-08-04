@@ -24,8 +24,8 @@ public class CrawlRunner implements Runnable {
     
     @Override
     public void run() {
-        String msg = "You have started a crawl on " + crawlSite + ". You will be notified when it has completed.";
-        NotificationManager.addNotification(new Notification(currentUser, msg, "/profile?id=" + currentUser));
+        //String msg = "You have started a crawl on " + crawlSite + ". You will be notified when it has completed.";
+        //NotificationManager.addNotification(new Notification(currentUser, msg, "/profile?id=" + currentUser));
         
         //Crawl the website
         try {

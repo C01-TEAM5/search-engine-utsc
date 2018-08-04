@@ -160,7 +160,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             <div id="filePermFilter" class="filter-graphs"></div>                
             <div id="fileOwnerFilter" class="filter-graphs"></div>                 
             <div id="courseCodeFilter" class="filter-graphs"></div>
-            <button id="show-filters" class="ui white button mobile"></button>  
+            <button id="show-filters" class="ui white button mobile"><i class="carret right icon"></i></button>  
             <div class = "search-form" hidden>
                 <form>
                     <div class="uploader-filter">
@@ -196,9 +196,11 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
         </div>
         <!-- search results -->
         <div class="search-results">
-            <div class="ui orange horrizontal label total-results" style="z-index: 2;">${totalResults} results found</div>
-            <div class="separator"></div>
             <div class="results-table">
+                <div class="ui orange horrizontal label total-results">
+                    <strong>${totalResults}</strong> results found in <strong>${time}</strong> seconds
+                </div>
+                <!-- <div class="separator"></div> -->
                 <c:forEach var="result" items="${searchResults}">
                     <div class="ui raised segment search-results-item">
                         <i class="file alternate outline icon"></i>
@@ -235,40 +237,41 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </div>
                     </div>
                 </c:forEach>
+                <div class="pagination">
+                    <div class="page">
+                        <!-- previous link -->
+                        <c:if test="${currentPage != 1}">
+                            <td>
+                                <a href="${noPageUri}page=${currentPage - 1}">
+                                    <button class="page-move-btn">Previous</button>
+                                </a>
+                            </td>
+                        </c:if>
+                        <!-- page number -->
+                        <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
+                            <c:choose>
+                                <c:when test="${currentPage eq index}">
+                                    <td class="page-num" id="active-page">${index}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <!-- next link -->
+                        <c:if test="${currentPage != totalPages}">
+                            <td>
+                                <a href="${noPageUri}page=${currentPage + 1}">
+                                    <button class="page-move-btn">Next</button>
+                                </a>
+                                <td>
+                        </c:if>
+                    </div>
+                </div>
             </div>
 
             <!-- page number -->
-            <div class="pagination">
-                <div class="page">
-                    <!-- previous link -->
-                    <c:if test="${currentPage != 1}">
-                        <td>
-                            <a href="${noPageUri}page=${currentPage - 1}">
-                                <button class="page-move-btn">Previous</button>
-                            </a>
-                        </td>
-                    </c:if>
-                    <!-- page number -->
-                    <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
-                        <c:choose>
-                            <c:when test="${currentPage eq index}">
-                                <td class="page-num" id="active-page">${index}</td>
-                            </c:when>
-                            <c:otherwise>
-                                <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                    <!-- next link -->
-                    <c:if test="${currentPage != totalPages}">
-                        <td>
-                            <a href="${noPageUri}page=${currentPage + 1}">
-                                <button class="page-move-btn">Next</button>
-                            </a>
-                            <td>
-                    </c:if>
-                </div>
-            </div>
+            
         </div>
     </div>
         
