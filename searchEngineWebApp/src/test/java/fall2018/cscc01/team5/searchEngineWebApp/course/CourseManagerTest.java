@@ -1,4 +1,4 @@
-/*package fall2018.cscc01.team5.searchEngineWebApp.course;
+package fall2018.cscc01.team5.searchEngineWebApp.course;
 
 import static org.junit.Assert.*;
 import org.bson.Document;
@@ -12,9 +12,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
-import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
-import fall2018.cscc01.team5.searchEngineWebApp.user.User;
-import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 
 public class CourseManagerTest {
 
@@ -127,4 +124,3 @@ public class CourseManagerTest {
     }
 
 }
-*/

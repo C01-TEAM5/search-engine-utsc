@@ -2,8 +2,6 @@ package fall2018.cscc01.team5.searchEngineWebApp.document.crawler;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-
-import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.user.Notifications.Notification;
