@@ -39,11 +39,11 @@ public class AccountManagerTest {
     @Before
     public void setUp () throws Exception {
 
-        users[0] = new User("user0", "user0@gmail.com", "user0", "testpw");
-        users[1] = new User("user1", "user1@gmail.com", "user1", "testpw");
-        users[2] = new User("user2", "user2@gmail.com", "user2", "testpw");
-        users[3] = new User("user3", "user3@gmail.com", "user3", "testpw");
-        users[4] = new User("user4", "user4@gmail.com", "user4", "testpw");
+        users[0] = new User("auser0", "auser0@gmail.com", "auser0", "testpw");
+        users[1] = new User("auser1", "auser1@gmail.com", "auser1", "testpw");
+        users[2] = new User("auser2", "auser2@gmail.com", "auser2", "testpw");
+        users[3] = new User("auser3", "auser3@gmail.com", "auser3", "testpw");
+        users[4] = new User("auser4", "auser4@gmail.com", "auser4", "testpw");
 
         for (int i = 0; i < users.length; i++) {
             usersCollection.deleteOne(Filters.eq("username", users[i].getUsername()));

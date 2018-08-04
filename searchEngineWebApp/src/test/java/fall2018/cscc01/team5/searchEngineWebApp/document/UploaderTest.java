@@ -51,7 +51,7 @@ public class UploaderTest {
     @Before 
     public void setup() throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameAlreadyExistsException, EmailAlreadyExistsException, EmailException, IOException{
         //Use user0 for testing
-        testUser = new User("user0", "user0@gmail.com", "user0", "testpw");
+        testUser = new User("uuser0", "uuser0@gmail.com", "uuser0", "testpw");
         usersCollection.deleteOne(Filters.eq("username", testUser.getUsername()));
         AccountManager.register(testUser);  
         
