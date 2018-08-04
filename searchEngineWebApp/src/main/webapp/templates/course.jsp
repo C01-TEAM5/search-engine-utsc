@@ -316,7 +316,7 @@
                                 <form class="" enctype = "multipart/form-data" id="couse-file-upload-form">
                                     <input type="file" id="courses-upload" style="display:none">
                                 </form>
-                                <input placeholder="a" type="text" id="courses-upload-text" disabled multiple>
+                                <input placeholder="File..." type="text" id="courses-upload-text" disabled multiple>
                                 <button class="ui button" id="courses-upload-btn">Upload</button>
                             </div>
                         </div>
