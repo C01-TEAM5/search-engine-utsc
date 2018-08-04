@@ -26,7 +26,7 @@ public class Uploader {
      * @throws CourseDoesNotExistException 
      * @throws IOException 
      */
-    public static void handleUpload(DocFile fileInfo, InputStream fileStream) throws CourseDoesNotExistException, IOException {
+    public static String handleUpload(DocFile fileInfo, InputStream fileStream) throws CourseDoesNotExistException, IOException {
         
         String filePath = getUploadPath(fileInfo.getOwner());
         
@@ -39,7 +39,7 @@ public class Uploader {
         //If the file already exists, do not upload. Exit the method.
         File targetFile = new File(filePath + fileInfo.getFilename());
         if (targetFile.isFile()) {
-            return;
+            return null;
         }
         
         //File does not exist yet.
@@ -61,6 +61,8 @@ public class Uploader {
         fileInfo.setPath(FileManager.download(fileInfo.getId(), fileInfo.getFileType()));
         IndexHandler indexHandler = IndexHandler.getInstance();
         indexHandler.addDoc(fileInfo);
+        
+        return fileId;
     }
     
     /**
