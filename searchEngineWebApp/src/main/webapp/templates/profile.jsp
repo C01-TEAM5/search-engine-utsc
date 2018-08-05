@@ -180,14 +180,16 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </button>
                     </div>
                     <div class="profile-buttons" id="profile-buttons-container">
-                        <div id="follow-buttons">
-                            <c:if test="${following == true}">
-                                <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
-                            </c:if>
-                            <c:if test="${following == false}">
-                                <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
-                            </c:if>
-                        </div>
+                        <c:if test="${owner != true}">
+                            <div id="follow-buttons">
+                                <c:if test="${following == true}">
+                                    <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
+                                </c:if>
+                                <c:if test="${following == false}">
+                                    <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                                </c:if>
+                            </div>
+                        </c:if>
                         <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
                     </div>
                     
@@ -238,7 +240,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 
                             </div>
                         </div>
-                        <button class="ui secondaryColor button remove-file-button signedIn" id="${result.id}">Remove</button>
+                        <c:if test="${owner == true}">
+                            <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
+                        </c:if>
                     </div>
                 </c:forEach>
             </div>

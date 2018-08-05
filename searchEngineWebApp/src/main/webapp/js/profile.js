@@ -21,7 +21,7 @@
     var userId = api.getUserId();
     var isOwner = false;
     var editted = false;
-    if (userId != null && getUrlParameter('id') === userId) {
+    if (userId != null) {
         $(".isOwner").show();
         $("#follow-user").hide();
         isOwner = true;
