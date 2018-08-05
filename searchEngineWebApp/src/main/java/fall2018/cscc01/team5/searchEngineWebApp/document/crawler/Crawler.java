@@ -16,6 +16,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.document.DocFile;
+import fall2018.cscc01.team5.searchEngineWebApp.document.FileUploadTypeException;
 import fall2018.cscc01.team5.searchEngineWebApp.document.Uploader;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 
@@ -135,7 +136,9 @@ public class Crawler extends WebCrawler {
                 e.printStackTrace();
             } catch (CourseDoesNotExistException e) {
                 e.printStackTrace();
-            }            
+            }  catch (FileUploadTypeException e) {
+                e.printStackTrace();
+            }          
             
         }
       

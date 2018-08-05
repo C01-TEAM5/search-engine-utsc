@@ -25,8 +25,16 @@ public class Uploader {
      * @param fileStream The InputStream file that is being uploaded
      * @throws CourseDoesNotExistException 
      * @throws IOException 
+     * @throws FileUploadTypeException 
      */
-    public static String handleUpload(DocFile fileInfo, InputStream fileStream) throws CourseDoesNotExistException, IOException {
+    public static String handleUpload(DocFile fileInfo, InputStream fileStream) throws CourseDoesNotExistException, IOException, FileUploadTypeException {
+        
+        String fileType = fileInfo.getFileType();
+        
+        if (!(fileType.equals("docx") || fileType.equals("pdf") || 
+                fileType.equals("txt") || fileType.equals("html"))) {
+            throw new FileUploadTypeException(); 
+        }
         
         String filePath = getUploadPath(fileInfo.getOwner());
         

@@ -130,6 +130,7 @@ public class UploadServlet extends HttpServlet {
                         // gets file data
                         String fileName = item.getName();
                         String filePath = Uploader.getUploadPath(currentUser);
+
                         //Get file InputStream
                         InputStream initialStream = item.getInputStream();
 
@@ -171,7 +172,11 @@ public class UploadServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 System.out.println("adding course failed");
                 return;
-            } catch (Exception e) {
+            } catch (FileUploadTypeException e) {
+                resp.sendRedirect("/upload?error");
+                return;
+            }
+            catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e);
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

@@ -22,6 +22,8 @@ import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -29,6 +31,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
 import fall2018.cscc01.team5.searchEngineWebApp.course.Course;
+import fall2018.cscc01.team5.searchEngineWebApp.course.CourseAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.course.CourseDoesNotExistException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.AccountManager;
 import fall2018.cscc01.team5.searchEngineWebApp.user.User;
@@ -81,7 +84,7 @@ public class UploaderTest {
      * 
      */
     @Test
-    public void testUpload() throws IOException, CourseDoesNotExistException {
+    public void testUpload() throws IOException, CourseDoesNotExistException, FileUploadTypeException {
         
         File txt = new File("text1.txt");
         InputStream stream = new FileInputStream(txt);
@@ -89,6 +92,18 @@ public class UploaderTest {
         stream.close();
         
         assertEquals(true, FileManager.fileExists(uploadID, "txt"));
+    }
+    
+    /* Test Uploading a file type that is not within the specified filetypes
+     * 
+     */
+    @Test(expected = FileUploadTypeException.class)
+    public void testIncorrectFileTypes() throws IOException, FileUploadTypeException, CourseDoesNotExistException {
+        
+        DocFile badFile = new DocFile("app.exe", "My App", "user0", "app.exe", true);
+        InputStream stream = Mockito.mock(FileInputStream.class);
+        Uploader.handleUpload(badFile, stream);
+        
     }
     
     private static void generateTxt() throws IOException {
