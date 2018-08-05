@@ -169,6 +169,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </button>
                     </div>
                     <div class="courses">
+                    	<pre>User Courses: </pre>
                         <c:forEach var="result" items="${courses}">
                             <a class="ui teal horizontal label" href="/course?id=${result}"><c:out value="${fn:toUpperCase(result)}"/></a>
                         </c:forEach>
