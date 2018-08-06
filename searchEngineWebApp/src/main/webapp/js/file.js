@@ -2,8 +2,6 @@
     "use strict";
 
     var currentUser = api.getCurrentUser();
-    $(".isOwner").hide();
-    $(".file-info-edit-item input").prop('disabled', true);
     $(".file-container .user").html("");
 
     var getUrlParameter = function getUrlParameter(sParam) {
@@ -78,23 +76,7 @@
     });
 
     function init() {
-        api.getFile(getUrlParameter("id"), function(err, data) {
-            if (err) {
-                console.log("err", err);
-            }
-            else {
-                if (data["owner"] === currentUser) {
-                    $("#file-permissions").removeClass("disabled");
-                    $(".isOwner").show();
-                    $('#file-permissions').dropdown();
-                    
-                }
-                else {
-                    $("#file-permissions").addClass("disabled");
-                    $('#file-permissions').dropdown();
-                }
-            }
-        });
+        
 
         console.log($(".file-preview").html().length);
 
