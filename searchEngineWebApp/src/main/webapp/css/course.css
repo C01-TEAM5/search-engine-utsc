@@ -19,6 +19,7 @@ p {
 }
 
 .course-info-title {
+    background: none !important;
     margin-bottom: 5px !important;
     height: 30px !important;
 }
@@ -101,6 +102,10 @@ p {
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+}
+
+.ui.horizontal.divider.header {
+    background: none !important;
 }
 
 .content-info-segment .ui.header.segment {
