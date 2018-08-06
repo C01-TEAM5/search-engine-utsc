@@ -164,9 +164,11 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 <div class="user-info">
                     <div class="ui transparent input" id="input-username">
                         <input placeholder="Name..." type="text" value="${name}" id="username" disabled>
+                        <c:if test="${owner == true}">
                         <button class="ui icon button isOwner" id="edit-username">
                             <i class="edit icon"></i>
                         </button>
+                        </c:if>
                     </div>
                     <c:if test="${fn:length(courses)> 0}">
                         <div class="courses"> <div class="ui red right pointing label">Courses:</div>
@@ -177,12 +179,14 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     </c:if>
                     <div class="ui transparent input" id="input-desc">
                         <textarea id="userDesc" disabled>${desc}</textarea>
+                        <c:if test="${owner == true}">
                         <button class="ui icon button isOwner" id="edit-desc">
                             <i class="edit icon"></i>
                         </button>
+                        </c:if>
                     </div>
                     <div class="profile-buttons" id="profile-buttons-container">
-                        <c:if test="${owner != true}">
+                        <c:if test="${notLoggedIn != true && owner != true}">
                             <div id="follow-buttons">
                                 <c:if test="${following == true}">
                                     <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
@@ -192,7 +196,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 </c:if>
                             </div>
                         </c:if>
+                        <c:if test="${owner == true}">
                         <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
+                        </c:if>
                     </div>
                     
                 </div>
@@ -203,6 +209,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                 Number of Files: <span class="numOfFiles"> ${numOfFiles}</span>
             </h3>
             <c:if test="${permission == 3}">
+                <c:if test="${owner == true}">
                 <div class="ui raised segment isOwner">
                     <h3>Create a course</h3>
                     <hr>
@@ -211,6 +218,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         <button class="ui button" id="course-add">Create Course</button>
                     </div>
                 </div>
+                </c:if>
             </c:if> 
             </div>
             <div class="stats ui raised segment" id="user-file-stats">
