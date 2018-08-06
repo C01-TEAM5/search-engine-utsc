@@ -74,13 +74,16 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
 
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
+              <form class="login-content" method ="POST" enctype = "multipart/form-data">
                 <div class="container-logins">
-                    <label for="username">Username</label>
-                    <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
-
-                    <label for="psw">Password</label>
-                    <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                    <div class="login-content-item">
+                        <div class="label"><i class="user alternative icon"></i>Username </div>
+                        <input class="form-input" id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                    </div>
+                    <div class="login-content-item">
+                        <div class="label"><i class="lock icon"></i>Password </div>
+                        <input class="form-input" id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                    </div>
 
                     <div class="btn-container">
                         <button id = "SC" class = "loginButton" type="submit">Login</button>
@@ -90,39 +93,40 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         class="cancelbtn">Cancel</button>
                     </div>
                 </div>
-                </form>
+              </form>
             </div>
 
 
             <!-- the register pop up window -->
             <div id="RIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                <div class="container-logins">
-                    <div class="row">
-                        <div class = "register-type col-sm-5">
-                            <section class="typeinfo"> toggle register type info</section>
+                <form class="login-content register-content" method ="POST" enctype = "multipart/form-data">
+                    <div class="container-logins">
+                        <div class = "register-info">
+                            <div class="login-content-item">
+                                <div class="label"><i class="envelope icon"></i>Email </div>
+                                <input class="form-input" id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="user icon"></i>Name </div>
+                                <input class="form-input"  id="r-name" type="text" placeholder="Enter name" name="registername" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="user icon"></i>Username </div>
+                                <input class="form-input" id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="lock icon"></i>Password </div>
+                                <input class="form-input" id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>      
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="lock icon"></i>Confirm Password </div>
+                                <input class="form-input" id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                            </div>
+                            <span id = "message"></span><br>
                             <div class="registerchoices">
                                 <button type = "button" class="registertypebutton" id="permission-instructor">Create Instructor Account</button>
                                 <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
                             </div>
-                        </div>
-
-                        <div class = "register-info col-sm-7">
-                            <label for="uemail">User Email</label>
-                            <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
-
-                            <label for="uname">Name</label>
-                            <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
-
-                            <label for="username">Username</label>
-                            <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
-
-                            <label for="userpsw">Password</label>
-                            <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
-
-                            <label for="confirmpsw">Confirm Password</label>
-                            <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
-                            <span id = "message"></span><br>
 
                             <div class="btn-container">
                                 <button id ="RC" class = "loginButton" type="submit" >Register</button>
@@ -133,11 +137,8 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             </div>
                         </div>
                     </div>
-                </div>
                 </form>
             </div>
-
-        </div>
     </div>
 
     <div class="profile-container">
@@ -167,11 +168,13 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             <i class="edit icon"></i>
                         </button>
                     </div>
-                    <div class="courses">
-                        <c:forEach var="result" items="${courses}">
-                            <a class="ui teal horizontal label" href="/course?id=${result}"><c:out value="${fn:toUpperCase(result)}"/></a>
-                        </c:forEach>
-                    </div>
+                    <c:if test="${fn:length(courses)> 0}">
+                        <div class="courses"> <div class="ui red right pointing label">Courses:</div>
+                            <c:forEach var="result" items="${courses}">
+                                <a class="ui teal horizontal label" href="/course?id=${result}"><c:out value="${fn:toUpperCase(result)}"/></a>
+                            </c:forEach>
+                        </div>
+                    </c:if>
                     <div class="ui transparent input" id="input-desc">
                         <textarea id="userDesc" disabled>${desc}</textarea>
                         <button class="ui icon button isOwner" id="edit-desc">
@@ -179,14 +182,16 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </button>
                     </div>
                     <div class="profile-buttons" id="profile-buttons-container">
-                        <div id="follow-buttons">
-                            <c:if test="${following == true}">
-                                <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
-                            </c:if>
-                            <c:if test="${following == false}">
-                                <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
-                            </c:if>
-                        </div>
+                        <c:if test="${owner != true}">
+                            <div id="follow-buttons">
+                                <c:if test="${following == true}">
+                                    <button class="ui icon button blue signedIn" id="unfollow-user"><i class="address book outline icon"></i>Unfollow</button>
+                                </c:if>
+                                <c:if test="${following == false}">
+                                    <button class="ui icon button blue signedIn" id="follow-user"><i class="address book outline icon"></i>Follow</button>
+                                </c:if>
+                            </div>
+                        </c:if>
                         <button class="circular ui icon button teal isOwner" id="save-profile-button"><i class="save icon"></i></button>
                     </div>
                     
@@ -237,7 +242,9 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                                 
                             </div>
                         </div>
-                        <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
+                        <c:if test="${owner == true}">
+                            <button class="ui secondaryColor button remove-file-button" id="${result.id}">Remove</button>
+                        </c:if>
                     </div>
                 </c:forEach>
             </div>
@@ -251,7 +258,7 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="../lib/semantic/semantic.min.js"></script>
     <script src="js/api.js"></script>
-    <script src="./js/profile.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/profile.js"></script>
 </body>
 </html>

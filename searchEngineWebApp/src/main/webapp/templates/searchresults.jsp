@@ -71,54 +71,58 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
             <!-- the sign in pop up window -->
             <div id="SIB" class="popup-login">
                 <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                <div class="container-logins">
-                    <label for="username">Username</label>
-                    <input id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                    <div class="container-logins">
+                        <div class="login-content-item">
+                            <div class="label"><i class="user alternative icon"></i>Username </div>
+                            <input class="form-input" id="s-username" type="text" placeholder="Enter Username" name="loginuname" required>
+                        </div>
+                        <div class="login-content-item">
+                            <div class="label"><i class="lock icon"></i>Password </div>
+                            <input class="form-input" id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                        </div>
 
-                    <label for="psw">Password</label>
-                    <input id="s-pwd" type="password" placeholder="Enter Password" name="loginpsw" required>
+                        <div class="btn-container">
+                            <button id = "SC" class = "loginButton" type="submit">Login</button>
 
-                    <div class="btn-container">
-                        <button id = "SC" class = "loginButton" type="submit">Login</button>
-
-                        <button type="button"
-                        onclick="document.getElementById('SIB').style.display='none'"
-                        class="cancelbtn">Cancel</button>
+                            <button type="button"
+                            onclick="document.getElementById('SIB').style.display='none'"
+                            class="cancelbtn">Cancel</button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
 
 
             <!-- the register pop up window -->
             <div id="RIB" class="popup-login">
-                <form class="login-content" method ="POST" enctype = "multipart/form-data">
-                <div class="container-logins">
-                    <div class="row">
-                        <div class = "register-type col-sm-5">
-                            <section class="typeinfo"> toggle register type info</section>
+                <form class="login-content register-content" method ="POST" enctype = "multipart/form-data">
+                    <div class="container-logins">
+                        <div class = "register-info">
+                            <div class="login-content-item">
+                                <div class="label"><i class="envelope icon"></i>Email </div>
+                                <input class="form-input" id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="user icon"></i>Name </div>
+                                <input class="form-input"  id="r-name" type="text" placeholder="Enter name" name="registername" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="user icon"></i>Username </div>
+                                <input class="form-input" id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="lock icon"></i>Password </div>
+                                <input class="form-input" id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>      
+                            </div>
+                            <div class="login-content-item">
+                                <div class="label"><i class="lock icon"></i>Confirm Password </div>
+                                <input class="form-input" id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                            </div>
+                            <span id = "message"></span><br>
                             <div class="registerchoices">
                                 <button type = "button" class="registertypebutton" id="permission-instructor">Create Instructor Account</button>
                                 <button type = "button" class="registertypebutton active-permission" id="permission-student">Create Student Account</button>
                             </div>
-                        </div>
-
-                        <div class = "register-info col-sm-7">
-                            <label for="uemail">User Email</label>
-                            <input id="r-email" type="email" placeholder="Enter Email" name="registeruemail" required>
-
-                            <label for="uname">Name</label>
-                            <input id="r-name" type="text" placeholder="Enter name" name="registername" required>
-
-                            <label for="username">Username</label>
-                            <input id="r-username" type="text" placeholder="Enter username" name="registerusername" required>
-
-                            <label for="userpsw">Password</label>
-                            <input id = "r-pwd1" type="password" placeholder="Enter Password" name="registerpsw" required>
-
-                            <label for="confirmpsw">Confirm Password</label>
-                            <input id = "r-pwd2" type="password" placeholder="Confirm Password" name="confirmpsw" required>
-                            <span id = "message"></span><br>
 
                             <div class="btn-container">
                                 <button id ="RC" class = "loginButton" type="submit" >Register</button>
@@ -129,16 +133,12 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             </div>
                         </div>
                     </div>
-                </div>
                 </form>
             </div>
 
     </div>
-
     <div class="search-results-containter">
-        
-        <!-- search results -->
-        <div class="search-results">
+        <div class="filters-containter ui raised segment">
             <div id="docxNum" class="hidden" hidden>${docxresult}</div>
             <div id="htmlNum" class="hidden" hidden>${htmlresult}</div>
             <div id="pdfNum" class="hidden" hidden>${pdfresult}</div>
@@ -158,10 +158,52 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                     <tr><td>${c.key}</td><td>${c.value}</td></tr>
                 </c:forEach>
             </table>
+            <h3 id="filter-header" class="ui green raised segment header filter-graphs">Filters</h3>
+            <div id="fileTypeFilter" class="filter-graphs"></div>  
+            <div id="filePermFilter" class="filter-graphs"></div>                
+            <div id="fileOwnerFilter" class="filter-graphs"></div>                 
+            <div id="courseCodeFilter" class="filter-graphs"></div>
+            <button id="show-filters" class="ui white button mobile"><i class="carret right icon"></i></button>  
+            <div class = "search-form" hidden>
+                <form>
+                    <div class="uploader-filter">
+                        <button id="perm-all" type="button" class="active">All</button>
+                        <button id="perm-instructor" type="button">Instructor</button>
+                        <button id="perm-student" type="button">Student</button>
+                    </div>
+                    <input type="search" placeholder="Search a keyword" id="search">
+                    <button type="submit" id="submit">Go</button>
+                    <div class="search-filters">
+                        <div class="search-check">
+                            <input type="checkbox" id="searchTxt">
+                            <label for="txt">.txt</label>
+                        </div>
 
-            <div class="ui orange horrizontal label total-results" style="z-index: 2;">${totalResults} results found</div>
-            <div class="separator"></div>
+                        <div class="search-check">
+                            <input type="checkbox" id="searchPdf">
+                            <label for="pdf">.pdf</label>
+                        </div>
+
+                        <div class="search-check">
+                            <input type="checkbox" id="searchHtml">
+                            <label for="html">.html</label>
+                        </div>
+
+                        <div class="search-check">
+                            <input type="checkbox" id="searchDocx">
+                            <label for="docx">.docx</label>
+                        </div>
+                    </div>
+                </form>
+            </div>                        
+        </div>
+        <!-- search results -->
+        <div class="search-results">
             <div class="results-table">
+                <div class="ui orange horrizontal label total-results">
+                    <strong>${totalResults}</strong> results found in <strong>${time}</strong> seconds
+                </div>
+                <!-- <div class="separator"></div> -->
                 <c:forEach var="result" items="${searchResults}">
                     <div class="ui raised segment search-results-item">
                         <i class="file alternate outline icon"></i>
@@ -198,81 +240,42 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                         </div>
                     </div>
                 </c:forEach>
+                <div class="pagination">
+                    <div class="page">
+                        <!-- previous link -->
+                        <c:if test="${currentPage != 1}">
+                            <td>
+                                <a href="${noPageUri}page=${currentPage - 1}">
+                                    <button class="page-move-btn">Previous</button>
+                                </a>
+                            </td>
+                        </c:if>
+                        <!-- page number -->
+                        <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
+                            <c:choose>
+                                <c:when test="${currentPage eq index}">
+                                    <td class="page-num" id="active-page">${index}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <!-- next link -->
+                        <c:if test="${currentPage != totalPages}">
+                            <td>
+                                <a href="${noPageUri}page=${currentPage + 1}">
+                                    <button class="page-move-btn">Next</button>
+                                </a>
+                                <td>
+                        </c:if>
+                    </div>
+                </div>
             </div>
 
             <!-- page number -->
-            <div class="pagination">
-                <div class="page">
-                    <!-- previous link -->
-                    <c:if test="${currentPage != 1}">
-                        <td>
-                            <a href="${noPageUri}page=${currentPage - 1}">
-                                <button class="page-move-btn">Previous</button>
-                            </a>
-                        </td>
-                    </c:if>
-                    <!-- page number -->
-                    <c:forEach begin="${minPageDisplay}" end="${maxPageDisplay}" var="index">
-                        <c:choose>
-                            <c:when test="${currentPage eq index}">
-                                <td class="page-num" id="active-page">${index}</td>
-                            </c:when>
-                            <c:otherwise>
-                                <td class="page-num"><a href="${noPageUri}page=${index}">${index}</a></td>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                    <!-- next link -->
-                    <c:if test="${currentPage != totalPages}">
-                        <td>
-                            <a href="${noPageUri}page=${currentPage + 1}">
-                                <button class="page-move-btn">Next</button>
-                            </a>
-                            <td>
-                    </c:if>
-                </div>
-            </div>
+            
         </div>
-        <div class="filters-containter ui raised segment">
-            <button id="show-filters" class="ui white button mobile"><i class="bars icon"></i></button>
-            <div id="fileTypeFilter" class="filter-graphs"></div>  
-            <div id="filePermFilter" class="filter-graphs"></div>                
-            <div id="fileOwnerFilter" class="filter-graphs"></div>                 
-            <div id="courseCodeFilter" class="filter-graphs"></div>  
-            <div class = "search-form" hidden>
-                <form>
-                    <div class="uploader-filter">
-                        <button id="perm-all" type="button" class="active">All</button>
-                        <button id="perm-instructor" type="button">Instructor</button>
-                        <button id="perm-student" type="button">Student</button>
-                    </div>
-                    <input type="search" placeholder="Search a keyword" id="search">
-                    <button type="submit" id="submit">Go</button>
-                    <div class="search-filters">
-                        <div class="search-check">
-                            <input type="checkbox" id="searchTxt">
-                            <label for="txt">.txt</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchPdf">
-                            <label for="pdf">.pdf</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchHtml">
-                            <label for="html">.html</label>
-                        </div>
-
-                        <div class="search-check">
-                            <input type="checkbox" id="searchDocx">
-                            <label for="docx">.docx</label>
-                        </div>
-                    </div>
-                </form>
-            </div>                        
-        </div>
-
     </div>
         
 

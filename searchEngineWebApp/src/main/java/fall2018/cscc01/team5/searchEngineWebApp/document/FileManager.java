@@ -24,11 +24,11 @@ import fall2018.cscc01.team5.searchEngineWebApp.util.Constants;
 
 public class FileManager {
     
-    private static AWSCredentials credentials = new BasicAWSCredentials(Constants.AWS_ACCESS_KEY,Constants.AWS_SECRET_KEY);
+    private static AWSCredentials credentials = new BasicAWSCredentials("AKIAJQ6WFZWKROZFCNSQ", "gzaPlstcqaFPXJ9PgyxCvyiEUaRCUtNEGH4UkmwA");
     private static AmazonS3 s3client = AmazonS3ClientBuilder
             .standard()
-            .withCredentials(new AWSStaticCredentialsProvider(credentials))
             .withRegion(Regions.US_EAST_1)
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
             .build();
     private static String bucketName = "search-engine-utsc";
     

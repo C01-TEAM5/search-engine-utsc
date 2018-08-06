@@ -68,6 +68,5 @@ public class CrawlerController {
 	    CrawlerFactory factory = new CrawlerFactory(currentUser, courseCode);
 		controller.start(factory, 1);
 		
-	}	
-	
+	}
 }

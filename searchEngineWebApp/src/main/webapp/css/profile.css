@@ -132,6 +132,15 @@
     cursor: pointer;
 }
 
+.courses.ui.segment {
+    border: none !important;
+    background: none !important;
+}
+
+.courses.ui.segment .label {
+    
+}
+
 .courses {
     width: 100%;
     height: 30px;

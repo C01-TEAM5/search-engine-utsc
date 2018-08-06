@@ -35,7 +35,7 @@ function drawChart1() {
       ['TXT', parseInt($("#txtNum").html())]
   ]);
   // Set chart options
-  var fileTypeoptions = {'title':'File Type Statistics', 'width':600, 'height':360};
+  var fileTypeoptions = {'title':'File Type Statistics'};
   // Instantiate and draw our chart, passing in some options.
   var fileTypechart = new google.visualization.PieChart(document.getElementById('fileTypeFilter'));
   // click filter
@@ -85,7 +85,7 @@ function drawChart2() {
       ['Student', parseInt($("#permstudent").html())],
   ]);
   // Set chart options
-  var filePermoptions = {'title':'File Uploader Type Statistics', 'width':600, 'height':360};
+  var filePermoptions = {'title':'File Uploader Type Statistics'};
   // Instantiate and draw our chart, passing in some options.
   var filePermchart = new google.visualization.PieChart(document.getElementById('filePermFilter'));
   // click filter

@@ -47,7 +47,7 @@ public class SearchServlet extends HttpServlet {
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         int currentPage = 1; //current page we are on
-        int resultsPerPage = 3; //number of results to be shown per page
+        int resultsPerPage = 10; //number of results to be shown per page
         int totalResults; //total search results on all pages
         int pagesRequired; //pages required to display total search results
         
@@ -70,7 +70,6 @@ public class SearchServlet extends HttpServlet {
             filterParam = "";
         } 
         
-    	System.out.println(filterParam);
         String[] filterQuery = filterParam.split(",");
         
         //Get permission level for search. If none, search all types of docs.
@@ -80,8 +79,10 @@ public class SearchServlet extends HttpServlet {
         }        
         
         //Perform search, only send the results we want shown on page to jsp
-        try { 
+        try {
+            long startTime = System.nanoTime();
         	DocFile[] searchResults = performSearch(query,filterQuery,permParam);
+        	long endTime = System.nanoTime();
       
             totalResults = searchResults.length;
             pagesRequired = (int) Math.ceil((double)totalResults/(double)resultsPerPage);
@@ -157,7 +158,8 @@ public class SearchServlet extends HttpServlet {
             req.setAttribute("totalPages", pagesRequired);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noPageUri", noPageUri);
-            
+            req.setAttribute("time", (double)(endTime - startTime) / 1000000000.0);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
