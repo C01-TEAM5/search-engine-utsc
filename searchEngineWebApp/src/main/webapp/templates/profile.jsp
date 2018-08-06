@@ -168,12 +168,13 @@ https://stackoverflow.com/questions/31410007/how-to-do-pagination-in-jsp -->
                             <i class="edit icon"></i>
                         </button>
                     </div>
-                    <div class="courses">
-                    	<pre>User Courses: </pre>
-                        <c:forEach var="result" items="${courses}">
-                            <a class="ui teal horizontal label" href="/course?id=${result}"><c:out value="${fn:toUpperCase(result)}"/></a>
-                        </c:forEach>
-                    </div>
+                    <c:if test="${fn:length(courses)> 0}">
+                        <div class="courses"> <div class="ui red right pointing label">Courses:</div>
+                            <c:forEach var="result" items="${courses}">
+                                <a class="ui teal horizontal label" href="/course?id=${result}"><c:out value="${fn:toUpperCase(result)}"/></a>
+                            </c:forEach>
+                        </div>
+                    </c:if>
                     <div class="ui transparent input" id="input-desc">
                         <textarea id="userDesc" disabled>${desc}</textarea>
                         <button class="ui icon button isOwner" id="edit-desc">
