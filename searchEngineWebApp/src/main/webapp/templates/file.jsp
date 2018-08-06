@@ -134,27 +134,38 @@
                 <div class="file-info ui raised segment">
                     <div class="buttons-container">
                         <a class="ui blue button" href="${path}" download><i class="cloud download icon"></i>Download</a>
-                        <button class="ui blue button isOwner" id="remove-file-button"><i class="trash icon"></i>Delete</a>
+                        <c:if test="${currentlyOwned == true}">
+                        <button class="ui blue button isOwner" id="remove-file-button"><i class="trash icon"></i>Delete</button>
+                        </c:if>
                     </div>
                     <a class="ui teal label" href="/profile?id=${owner}">
                         <i class="user icon"></i>Owned by: ${owner}
                     </a>
                     <div class="file-info-edit-item ui transparent input" id="file-name">
                         <input placeholder="File Name..." type="text" value="${fileName}" id="file-name-input" disabled>
+                        <c:if test="${currentlyOwned == true}">
                         <button class="ui icon button isOwner" id="edit-file-name">
                             <i class="edit icon"></i>
                         </button>
+                        </c:if>
                     </div>
                     <div class="file-info-edit-item file-info-edit-item-smaller ui transparent input" id="courseId">
                         <input placeholder="Course code..." type="text" value="${courseId}" id="courseId-input" disabled>
+                        <c:if test="${currentlyOwned == true}">
                         <button class="ui icon button isOwner" id="edit-courseId">
                             <i class="edit icon"></i>
                         </button>
+                        </c:if>
                         <a class="ui icon teal button" href="/course?id=${courseId}">
                             <i class="linkify icon"></i>
                         </a>
                     </div>
+                    <c:if test="${currentlyOwned == true}">
+                    <select name="gender" class="ui dropdown" id="file-permissions">
+                    </c:if> 
+                    <c:if test="${currentlyOwned == false}">
                     <select name="gender" class="ui dropdown disabled" id="file-permissions">
+                    </c:if> 
                         <option value="">Permission</option>
                         <c:if test="${permission == 3}">
                             <option value="0">All</option>
@@ -172,7 +183,10 @@
                             <option value="3">Instructor</option>
                         </c:if>
                     </select>
-                    <button class="ui blue button isOwner" id="save-file-info"><i class="save icon"></i>Save</a>
+                    <c:if test="${currentlyOwned == true}">
+                    <button class="ui blue button isOwner" id="save-file-info"><i class="save icon"></i>Save
+                        </button>
+                    </c:if>
                 </div>
             </div>
             <div class="file-container-item ui raised segment">
@@ -195,7 +209,7 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../lib/semantic/semantic.min.js"></script>
         <script src="../js/api.js"></script>
-        <script src="../js/file.js"></script>
         <script src="../js/login.js"></script>
+        <script src="../js/file.js"></script>
     </body>
 </html>

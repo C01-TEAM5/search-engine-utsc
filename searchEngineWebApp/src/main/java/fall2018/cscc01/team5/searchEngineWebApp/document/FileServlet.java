@@ -79,8 +79,9 @@ public class FileServlet extends HttpServlet {
             return;
         }
 
+        DocFile file = null;
         try {
-            DocFile file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
+            file = IndexHandler.getInstance().searchById(id.toLowerCase(), new String[]{"html", "pdf", "txt", "docx"})[0];
             String path = FileManager.buildPublicUrl(file.getId(), file.getFileType());
             req.setAttribute("path", path);
             req.setAttribute("fileName", file.getTitle());
@@ -109,6 +110,7 @@ public class FileServlet extends HttpServlet {
             req.setAttribute("loggedIn", false);
             req.setAttribute("hasNew", false);
         }
+        req.setAttribute("currentlyOwned", (file != null && file.getOwner().equals(currentUser)));
 
         RequestDispatcher view = req.getRequestDispatcher("templates/file.jsp");
         view.forward(req, resp);
