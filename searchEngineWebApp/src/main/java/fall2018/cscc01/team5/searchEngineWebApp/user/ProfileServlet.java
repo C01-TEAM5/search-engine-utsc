@@ -280,6 +280,7 @@ public class ProfileServlet extends HttpServlet {
             else {
                 req.setAttribute("owner", false);
             }
+            req.setAttribute("notLoggedIn",  currentUser == null || currentUser == "");
             RequestDispatcher view = req.getRequestDispatcher("templates/profile.jsp");
             view.forward(req, resp);
         } catch (InvalidUsernameException e) {
