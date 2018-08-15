@@ -31,7 +31,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "searchEngineWebApp/pom.xml" }}
         
       # run tests!
       - run: mvn -f searchEngineWebApp/pom.xml integration-test
