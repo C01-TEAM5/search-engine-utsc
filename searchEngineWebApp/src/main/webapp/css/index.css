@@ -100,7 +100,6 @@ body {
 }
 
 .search-check {
-    width: 70px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
