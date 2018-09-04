@@ -51,7 +51,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: 
+          commands: 
             - |
               cat >~/.netrc <<EOF
               machine api.heroku.com
