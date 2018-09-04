@@ -35,3 +35,13 @@ jobs:
         
       # run tests!
       - run: mvn -f searchEngineWebApp/pom.xml integration-test
+  deploy:
+    working_directory: ~/repo
+    environment:
+      HEROKU_APP: "search-engine-utsc"
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git `git subtree split --prefix searchEngineWebApp master`:master --force
