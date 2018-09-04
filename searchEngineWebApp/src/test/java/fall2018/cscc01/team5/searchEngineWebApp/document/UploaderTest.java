@@ -21,6 +21,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -38,7 +39,8 @@ import fall2018.cscc01.team5.searchEngineWebApp.user.User;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.EmailAlreadyExistsException;
 import fall2018.cscc01.team5.searchEngineWebApp.user.register.UsernameAlreadyExistsException;
 
-public class UploaderTest {
+// ignoring 
+@Ignore public class UploaderTest {
     
     private static MongoClientURI uri = new MongoClientURI(
             "mongodb+srv://user01:CWu73Dl13bTLZ5uD@search-engine-oslo6.mongodb.net/");
